@@ -1,0 +1,42 @@
+<?php
+  /** @var $lista \Principal\Service\Principal[] */
+?>
+<div class="page-head">
+    <div class="container">
+        <div align="center">
+            </br> </br> </br> </br></br> </br> </br></br> </br> </br>
+            <font size="28"> Escola Jurídica </br> Sistema de Sorteio de Provas</font>
+            </br>
+            
+        </div>
+    </div>
+    <?php //echo $this->Auth()->nm_usuario; ?>
+    <?php //echo $this->Auth()->id_usuario; ?>
+    <br /><br />
+    
+</div>
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+
+
+<script type="text/javascript" language="javascript" class="init">
+    $(document).ready(function() {
+        $('#competicao').click(function(){
+            href = 'evento-evento';
+            window.location.href = href;
+        });
+        $('#academias').click(function(){
+            href = 'academia-academia';
+            window.location.href = href;
+        });
+        $('#inscricao').click(function(){
+            href = 'inscricoes_evento-inscricoesevento';
+            window.location.href = href;
+        });
+        $('#chavesdeluta').click(function(){
+            href = 'chaves_luta-chavesluta';
+            window.location.href = href;
+        });
+    });
+</script>

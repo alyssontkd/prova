@@ -1,0 +1,48 @@
+<link rel="stylesheet" href="/assets/compact-css/jquery.tablesorter.theme.bootstrap.css,jquery.tablesorter.pager.css">
+
+<!--<link rel="stylesheet" href="/assets/css/jquery.tablesorter.theme.bootstrap.css">-->
+<!--<link rel="stylesheet" href="/assets/css/jquery.tablesorter.pager.css">-->
+
+
+<?php
+/** @var $form \Materia\Form\Materia */
+/** @var $lista \Materia\Service\Materia[] */
+?>
+<div class="page-head">
+    <h2>Lista de Matérias</h2><!-- correção - Nathália-->
+</div>
+<div class="cl-mcont">
+    <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-default" href="<?= $this->url('navegacao', array('controller' => $controller, 'action' => 'cadastro')) ?>" title="Adiciona uma nova matéria">Nova Matéria</a>
+        </div>
+    </div>
+    <br />
+    <div class="row" id="materia-pagination"></div>
+</div>
+
+<script>
+    $(function () {
+
+        $.ajax({
+            type: "post",
+            dataType: "text",
+            cache: false,
+            url: '/materia-materia/index-pagination',
+            async: true,
+            data: {
+            },
+            beforeSend: function () {
+
+                $('#materia-pagination').html(
+                    '<div class="row"><div class="col-md-12 text-center"><p><img src="/assets/img/carregando.gif"><p></div></div>'
+                );
+            },
+            success: function (data) {
+
+                $('#materia-pagination').html(data);
+            }
+        });
+
+    })
+</script>

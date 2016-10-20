@@ -1,0 +1,13 @@
+create table materia_semestre
+(
+   id_materia_semestre  int not null auto_increment,
+   id_classificacao_semestre smallint,
+   id_materia           smallint,
+   primary key (id_materia_semestre)
+);
+
+alter table materia_semestre add constraint FK_Reference_117 foreign key (id_classificacao_semestre)
+      references classificacao_semestre (id_classificacao_semestre) on delete restrict on update restrict;
+
+alter table materia_semestre add constraint FK_Reference_118 foreign key (id_materia)
+      references materia (id_materia) on delete restrict on update restrict;

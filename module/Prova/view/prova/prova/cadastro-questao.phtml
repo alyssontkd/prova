@@ -1,0 +1,119 @@
+<div class="page-head"><h2>Provas</h2> </br>
+</div>
+<div class="block-flat">
+    <div class="content">
+        <?php
+        $form->setAttribute('action', $this->url('navegacao', array('controller' => $controller, 'action' => 'imprimir-prova-pdf', 'id'=> Estrutura\Helpers\Cript::enc($dadosProva->getId()))));
+        $form->setAttribute('class', 'form-horizontal');
+        $form->setAttribute('data-role', 'form');
+        $form->prepare();
+        echo $this->form()->openTag($form);
+        $form->get('id')->setValue(Estrutura\Helpers\Cript::enc($form->get('id')->getValue()));
+        echo $this->formHidden($form->get('id'));
+        #xd($dadosProva);
+        ?>
+        <div class="bs-callout bs-callout-primary">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4><b>Registro nº:</b> <?= $dadosProva->getId() ?></h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5">
+                    <b>Data da
+                        Aplicaçao:</b> <?= Estrutura\Helpers\Data::converterDataBancoMySQL2Brazil($dadosProva->getDtAplicacaoProva()) ?>
+                </div>
+                <div class="col-md-7">
+                    <b>Nome da Prova:</b> <?= $dadosProva->getNmProva() ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <b>Resumo:</b> <?= $dadosProva->getDsProva() ?>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center" class="row form-group">
+            <div class="well col-md-12">
+                <div class="col-md-6">
+                    <a href="<?= $this->url('navegacao', ['controller' => 'questao-questao', 'action' => 'cadastro-via-prova', 'id' => Estrutura\Helpers\Cript::enc($dadosProva->getId()) ]) ?>"
+                       class="btn btn-primary">Adicionar Questão Manualmente</a>
+                </div>
+                <div class="col-md-6">
+                    <a href="<?= $this->url('navegacao', ['controller' => $controller, 'action' => 'adicionar-questao-aleatoria', 'id' => Estrutura\Helpers\Cript::enc($dadosProva->getId())]) ?>"
+                       class="btn btn-primary">Adicionar Questão Aleatória</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monta a prova para exibicao       -->
+        <div style="text-align: center" class="row form-group">
+            <div class="well col-md-12">
+                <?php
+                $nrQuestoes = count($arQuestoesProva);
+                if ($nrQuestoes == 0) { ?>
+                    <div style="text-align: center" class="row form-group">
+                        <div class="col-md-12">
+                            <?php
+                            echo "<h2> Não existem questões adicionadas a esta avaliação</h2>";
+                            ?>
+                        </div>
+                    </div>
+                    <?php
+                } else {
+                    echo "<h2> Questoes da Prova </h2>";
+                    ?>
+                    <div style="text-align: left" class="row form-group">
+                        <div class="col-md-12">
+                            <?php
+                            $questaoService = new \Questao\Service\QuestaoService();
+                            $alternativaquestaoService = new \AlternativaQuestao\Service\AlternativaQuestaoService();
+                            $i = 1;
+                            foreach ($arQuestoesProva as $key => $item) {
+                                $arQuestao = $questaoService->buscar($item['id_questao'])->toArray();
+                                echo "<div id='quest_{$i}'>";
+                                    echo "<span> <button id='btnquest_{$item['id_questao']}'> {$i} - Remover </button></span>";
+                                    echo "<span> <button id='btnquest_{$item['id_questao']}'> {$i} - Corrigir </button></span>";
+                                    echo "<h3>" . $i++ . " - " . $arQuestao['nm_titulo_questao'] . "</h3>";
+                                    echo "<h4>" . $arQuestao['tx_enunciado'] . "</h4>";
+                                    $arAlternativaQuestao = $alternativaquestaoService->fetchAllById(['id_questao' => $item['id_questao']]);
+                                    $j = 'a';
+                                    foreach ($arAlternativaQuestao as $key => $alternativa) {
+                                        if($alternativa['cs_correta'] == 'C'){
+                                            echo "<h4 style='background-color: #4cae4c'>" . $j++ . ") - (_x_) " . $alternativa['tx_alternativa_questao'] . "</h4>";
+                                            echo "<h5 style='background-color: #4cae4c'>Justificativa: " . $alternativa['tx_justificativa'] . "</h5>";
+                                        } else {
+                                            echo "<h4>" . $j++ . ") - (___) " . $alternativa['tx_alternativa_questao'] . "</h4>";
+                                            echo "<h5>Justificativa: " . $alternativa['tx_justificativa'] . "</h5>";
+                                        }
+                                    }
+                                    echo "<br/>";
+                                echo "</div>";
+                            } ?>
+                        </div>
+                    </div>
+                    <?php
+                }
+                ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <button type="submit" class="btn btn-primary">Imprimir Prova</button>
+                <a href="<?= $this->url('navegacao', ['controller' => $controller, 'action' => 'imprimir-gabarito-pdf', 'id'=> Estrutura\Helpers\Cript::enc($dadosProva->getId())]) ?>"
+                   class="btn btn-default">Imprimir Gabarito</a>
+                <a href="<?= $this->url('navegacao', ['controller' => $controller]) ?>"
+                   class="btn btn-default">Voltar</a>
+            </div>
+        </div>
+    </div>
+    <?= $this->form()->closeTag(); ?>
+</div>
+
+<script type="text/javascript" language="javascript" class="init">
+    $(document).ready(function () {
+        $("#dt_aplicacao_prova").datepicker(
+            {dateFormat: 'dd/mm/yy'}
+        );
+    });
+</script>

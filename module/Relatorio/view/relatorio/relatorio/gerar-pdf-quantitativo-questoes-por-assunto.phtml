@@ -1,0 +1,26 @@
+<div>
+    <h2>Relatório Quantitativo de Questões por Assunto</h2>
+</div>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Fonte Questão</th>
+                <th>Assunto</th>
+                <th>Quantidade de Questões</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($resultado as $linha) { ?>
+                <tr>
+                    <td><?= $linha['nm_fonte_questao'] ?></td> 
+                    <td><?= $linha['nm_assunto_materia'] ?></td> 
+                    <td><?= $linha['quantidade'] ?></td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+
+</div>
+
+

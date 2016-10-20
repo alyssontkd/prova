@@ -1,0 +1,46 @@
+<link rel="stylesheet" href="/assets/compact-css/jquery.tablesorter.theme.bootstrap.css,jquery.tablesorter.pager.css">
+
+<?php
+  /** @var $form \Academia\Form\Academia */
+  /** @var $lista \Academia\Service\Academia[] */
+?>
+<div class="page-head">
+    <h2>Lista de Temporizacao</h2>
+</div>
+<div class="cl-mcont">
+    <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-default" href="<?=$this->url('navegacao',array('controller'=>$controller,'action'=>'cadastro'))?>" title="Adicionar Prova">Novo Temporizacao</a>
+        </div>
+    </div>
+    <br />
+    <div class="row" id="temporizacao-pagination"></div>    
+</div>
+
+<script>
+    $(function () {
+
+        $.ajax({
+            type: "post",
+            dataType: "text",
+            cache: false,
+            url: '/temporizacao-temporizacao/index-pagination',
+            async: true,
+            data: {
+            },
+            beforeSend: function () {
+
+                $('#temporizacao-pagination').html(
+                        '<div class="row"><div class="col-md-12 text-center"><p><img src="/assets/img/carregando.gif"><p></div></div>'
+                        );
+            },
+            success: function (data) {
+
+                $('#temporizacao-pagination').html(data);
+            }
+        });
+
+    })
+</script>
+        
+

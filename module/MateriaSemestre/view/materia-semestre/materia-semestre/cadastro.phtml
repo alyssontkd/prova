@@ -1,0 +1,128 @@
+<div class="page-head">
+    <h2>Nova Matéria por Semestre</h2>
+</div>
+<div class="cl-mcont">
+    <div class="row">
+        <div class="block-flat">
+            <div class="content">
+                <?php
+                $form->setAttribute('action', $this->url('navegacao', array('controller' => $controller, 'action' => 'gravar')));
+                $form->setAttribute('class', 'form-horizontal');
+                $form->setAttribute('data-role', 'form');
+                $form->prepare();
+                echo $this->form()->openTag($form);
+                $form->get('id')->setValue(Estrutura\Helpers\Cript::enc($form->get('id')->getValue()));
+                echo $this->formHidden($form->get('id'));
+                ?>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <?= $this->formRow($form->get('id_classificacao_semestre')) ?>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <?= $this->formRow($form->get('id_materia')) ?>
+                    <div class="help-block with-errors"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    <a id="relacionar_disciplina" class="btn btn-primary" href="#" title="Adicionar data do encontro">Relacionar
+                        Disciplina</a>
+                    <a href="<?= $this->url('navegacao', ['controller' => $controller]) ?>" class="btn btn-default">Voltar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <div class="row" id="materiasemestre-pagination"></div>
+    <?= $this->form()->closeTag(); ?>
+</div>
+
+<script type="text/javascript"
+        src="/assets/compact-js/moment.js,bootstrap-datetimepicker.min.js,validator.min.js,jquery.mask.min.js,jquery.complexify.js,usuario|usuario|cadastro.js"></script>
+<script type="text/javascript" language="javascript" class="init">
+    $(document).ready(function () {
+        $('#relacionar_disciplina').hide();
+        function carregarDisciplinasPorSemestreAposInserir() {
+            <?php
+            if( (isset($id_classificacao_semestre) && $id_classificacao_semestre) ) { ?>
+            id_classificacao_semestre = <?=$id_classificacao_semestre?>;
+            if (id_classificacao_semestre) {
+                carregarDisciplinasPorSemestreAjax(id_classificacao_semestre); //Chama a Paginação da listagem
+            }
+            <?php
+            }
+            ?>
+        }
+
+        //Função que faz a listagem ser paginada.
+        function carregarDisciplinasPorSemestreAjax(id_classificacao_semestre) {
+            $('#relacionar_disciplina').show();
+            $.ajax({
+                type: "post",
+                dataType: "text",
+                cache: false,
+                url: '/materia_semestre-materiasemestre/detalhe-pagination',
+                async: true,
+                data: {
+                    id_classificacao_semestre: id_classificacao_semestre
+                },
+                beforeSend: function () {
+                    $('#materiasemestre-pagination').html(
+                        '<div class="row"><div class="col-md-12 text-center"><p><img src="/assets/img/carregando.gif"><p></div></div>'
+                    );
+                },
+                success: function (data) {
+                    $('#materiasemestre-pagination').html(data);
+                }
+            });
+        }
+
+        //Realiza a chamada Ajax, caso os dois combos estejam preenchidos
+        $('#id_classificacao_semestre').change(function () {
+            id_classificacao_semestre = $(this).val();
+            if (id_classificacao_semestre) {
+                carregarDisciplinasPorSemestreAjax(id_classificacao_semestre);//Chama a Paginação da listagem
+            } else {
+                $('#materiasemestre-pagination').html(
+                    '<div class="row"><div class="col-md-12 text-center"></div></div>'
+                );
+            }
+        });
+
+        //Função Ajax que adiciona alunos a uma determinada turma
+        $('#relacionar_disciplina').click(function () {
+            var dados = $('#materiasemestreform').serialize();
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '/materia_semestre-materiasemestre/relacionar-materia',
+                async: true,
+                data: dados,
+                success: function (response) {
+                    $("#id_classificacao_semestre").val("");
+                    $("#id_materia").val("");
+
+                    //Caso a insersao tenha sido realizada com sucesso
+                    if (response.sucesso == true) {
+                        //carrego a lista apenas com os alunos da turma
+                        carregarDisciplinasPorSemestreAjax(response.id_classificacao_semestre);//Chama a Paginação da listagem
+                        $("#id_classificacao_semestre").val(response.id_classificacao_semestre); //Deixo setado a turma
+                        //$("#id_periodo_letivo").val(response.id_periodo_letivo); //Deixo setado o periodo letivo
+                    }
+                }
+            });
+
+            return false;
+        });
+
+        carregarDisciplinasPorSemestreAposInserir();
+    });
+</script>

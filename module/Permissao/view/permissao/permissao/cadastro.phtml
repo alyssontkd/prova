@@ -1,0 +1,103 @@
+<div class="page-head">
+    <h2>Cadastro</h2>
+</div>
+<div class="cl-mcont">
+    <div class="row">
+        <div class="block-flat">
+            <div class="content">
+                <?php
+                $form->setAttribute('action', $this->url('navegacao', array('controller' => $controller, 'action' => 'gravar')));
+                $form->setAttribute('class', 'form-horizontal');
+                $form->setAttribute('data-role', 'form');
+                $form->prepare();
+                echo $this->form()->openTag($form);
+                $form->get('id')->setValue(Estrutura\Helpers\Cript::enc($form->get('id')->getValue()));
+                echo $this->formHidden($form->get('id'));
+
+                ?>
+                <div class="form-group">
+                    <div class="col-md-4">
+                        <?= $this->formRow($form->get('id_perfil')) ?>
+                    </div>
+                    <div class="col-md-4">
+                        <?= $this->formRow($form->get('id_modulo')) ?>
+                    </div>
+                </div>
+
+                <div class="row" id="lista-permissoes"></div>
+
+                <?= $this->form()->closeTag(); ?>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+
+        function carregarPermissoesRetornoInserir(){
+            <?php
+            if( (isset($id_perfil) && $id_perfil) && (isset($id_controller) && $id_controller) ) { ?>
+                id_perfil = <?=$id_perfil?>;
+                id_modulo = <?=$id_controller?>;
+                if(id_perfil && id_modulo){
+                    carregarListaPermissoesAjax(id_modulo, id_perfil); //Chama a Paginação da listagem
+                }
+            <?php
+            }
+            ?>
+        }
+        function carregarListaPermissoesAjax(id_modulo, id_perfil){
+            $.ajax({
+                type: "post",
+                dataType: "text",
+                cache: false,
+                url: '/permissao-permissao/listar-permissoes-acoes',
+                async: true,
+                data: {
+                    id_controller: id_modulo,
+                    id_perfil: id_perfil
+                },
+                beforeSend: function () {
+                    $('#lista-permissoes').html(
+                        '<div class="row"><div class="col-md-12 text-center"><p><img src="/assets/img/carregando.gif"><p></div></div>'
+                    );
+                },
+                success: function (data) {
+
+                    $('#lista-permissoes').html(data);
+                }
+            });
+        }
+
+        //Realiza a chamada Ajax, caso os dois combos estejam preenchidos
+        $('#id_perfil').change(function() {
+            id_perfil = $(this).val();
+            id_modulo = $('#id_modulo').val();
+            if(id_perfil && id_modulo){
+                carregarListaPermissoesAjax(id_modulo, id_perfil); //Chama a Paginação da listagem
+            } else {
+                $('#lista-permissoes').html(
+                    '<div class="row"><div class="col-md-12 text-center"></div></div>'
+                );
+            }
+        });
+
+        //Realiza a chamada Ajax, caso os dois combos estejam preenchidos
+        $('#id_modulo').change(function() {
+            id_perfil = $('#id_perfil').val();
+            id_modulo = $(this).val();
+            if(id_perfil && id_modulo){
+                carregarListaPermissoesAjax(id_modulo, id_perfil); //Chama a Paginação da listagem
+            } else {
+                $('#lista-permissoes').html(
+                    '<div class="row"><div class="col-md-12 text-center"></div></div>'
+                );
+            }
+        });
+
+
+        carregarPermissoesRetornoInserir();
+
+
+    });
+</script>

@@ -1,0 +1,40 @@
+
+<div class="page-head">
+    <h2>Lista de Assuntos</h2>
+</div>
+<div class="cl-mcont">
+    <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-default" href="<?=$this->url('navegacao',array('controller'=>$controller,'action'=>'cadastro'))?>">Novo</a>
+        </div>
+    </div>
+    <br />
+    <div class="row" id="assuntomateria-pagination"></div>
+</div>
+
+<script>
+    $(function () {
+
+        $.ajax({
+            type: "post",
+            dataType: "text",
+            cache: false,
+            url: '/assunto_materia-assuntomateria/index-pagination',
+            async: true,
+            data: {
+            },
+            beforeSend: function () {
+
+                $('#assuntomateria-pagination').html(
+                    '<div class="row"><div class="col-md-12 text-center"><p><img src="/assets/img/carregando.gif"><p></div></div>'
+                );
+            },
+            success: function (data) {
+
+                $('#assuntomateria-pagination').html(data);
+            }
+        });
+
+    })
+</script>
+

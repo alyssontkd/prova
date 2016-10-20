@@ -1,0 +1,117 @@
+<div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="/principal-principal" style="padding-top: 0px;">
+        <img src="/assets/img/logo/transparente.png" height="50" width="180"/>
+    </a>
+</div>
+<div class="collapse navbar-collapse">
+    <?=
+    $this->navigation('navigation')
+        ->setAcl($this->acl)
+        ->setRole($this->role)
+        ->menu()
+        ->setPartial(array('partials/menu.phtml', 'default'))
+        ->render();
+    ?>
+
+    <?php if ($this->Auth()) { ?>
+    <ul class="nav navbar-nav">
+        <li class="active"><a href="/principal-principal">Início</a></li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                Cadastros
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="/questao-questao">Cad. Questao</a></li>
+                <li><a href="/prova-prova">Cad. Provas</a></li>
+                <li class="divider"></li>
+                <li><a href="/materia_semestre-materiasemestre">Cad. Matérias por Semestre</a></li>
+                <li><a href="/nivel_dificuldade-niveldificuldade">Cad. Niveis de Dificuldade</a></li>
+                <li><a href="/unidade_tempo-unidadetempo">Cad. Unidades de Tempo</a></li>
+                <li><a href="/temporizacao-temporizacao">Cad. Temporizacao</a></li>
+                <li><a href="/classificacao-classificacao">Cad. Classificação Semestre</a></li>
+                <li><a href="/fonte-fonte">Cad. Fonte da Questão</a></li>
+                <li><a href="/materia-materia">Cad. Materias</a></li>
+                <li><a href="/assunto_materia-assuntomateria">Cad. Assunto Materia</a></li>
+                <li><a href="/tipo_questao-tipoquestao">Cad. Tipo Questão</a></li>
+            </ul>
+        </li>
+        <?php
+        #Alysson - Exibe este item de menu apenas para administradores
+        $usuario_logado = $this->Auth(); #Pega o Usuario Logado
+        if ($usuario_logado->id_perfil == TXT_CONST_PERFIL_ADMINISTRADOR) { ?>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                Relatórios
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="/relatorio-relatorio/gerar-pdf-quantitativo-questoes-por-assunto">
+                        Quantitativo Questões por Assunto
+                    </a>
+                </li>
+                <li><a href="/prova-prova/gerar-relatorio-pdf">Teste de PDF</a></li>
+            </ul>
+        </li>
+        <?php
+        #Alysson - Exibe este item de menu apenas para administradores
+        $usuario_logado = $this->Auth(); #Pega o Usuario Logado
+        if ($usuario_logado->id_perfil == TXT_CONST_PERFIL_ADMINISTRADOR) {
+            ?>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    Configurações
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="/permissao-permissao/cadastro">Gerenciador de Permissões</a></li>
+                    <li><a href="/controller-controller">Cad. Controller</a></li>
+                    <li><a href="/action-action">Cad. Action</a></li>
+                </ul>
+            </li>
+        <?php } ?>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                Básicos
+                <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="/usuario-usuario">Usuários</a></li>
+                <li><a href="/perfil-perfil">Perfis</a></li>
+                <li class="divider"></li>
+                <li><a href="/cidade-cidade">Cidades</a></li>
+                <li><a href="/estado-estado">UF</a></li>
+            </ul>
+        </li>
+    </ul>
+    <?php if ($this->Auth()->id_perfil == TXT_CONST_PERFIL_ADMINISTRADOR) { ?>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="/infra-infra" title="Botão para limpar as pastas Cache automaticamente.">
+                    <span class="glyphicon glyphicon-ban-circle"></span> Limpar
+                </a>
+            </li>
+        </ul>
+    <?php } ?>
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <a href="/usuario-usuario">
+                <?= ucwords($this->Auth()->nm_usuario); ?>
+            </a>
+        </li>
+        <li class="dropdown">
+            <a href="<?= $this->url('logoff') ?>">
+                <span class="glyphicon glyphicon-log-out"></span> Sair
+            </a>
+        </li>
+    </ul>
+</div>
+<?php } ?>
+<?php } ?>
