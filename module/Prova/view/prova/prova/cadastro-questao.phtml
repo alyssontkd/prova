@@ -35,13 +35,19 @@
         </div>
         <div style="text-align: center" class="row form-group">
             <div class="well col-md-12">
-                <div class="col-md-6">
-                    <a href="<?= $this->url('navegacao', ['controller' => 'questao-questao', 'action' => 'cadastro-via-prova', 'id' => Estrutura\Helpers\Cript::enc($dadosProva->getId()) ]) ?>"
-                       class="btn btn-primary">Adicionar Questão Manualmente</a>
+                <div class="col-md-4">
+                    <a href="<?= $this->url('navegacao', ['controller' => $controller, 'action' => 'adicionar-questao-manual', 'id' => Estrutura\Helpers\Cript::enc($dadosProva->getId()) ]) ?>"
+                       class="btn btn-primary">Adicionar Questão Manual</a>
                 </div>
-                <div class="col-md-6">
+
+                <div class="col-md-4">
                     <a href="<?= $this->url('navegacao', ['controller' => $controller, 'action' => 'adicionar-questao-aleatoria', 'id' => Estrutura\Helpers\Cript::enc($dadosProva->getId())]) ?>"
                        class="btn btn-primary">Adicionar Questão Aleatória</a>
+                </div>
+
+                <div class="col-md-4">
+                    <a href="<?= $this->url('navegacao', ['controller' => $controller, 'action' => 'adicionar-varias-questoes-aleatorias', 'id' => Estrutura\Helpers\Cript::enc($dadosProva->getId())]) ?>"
+                       class="btn btn-primary">Adicionar Varias Questoes</a>
                 </div>
             </div>
         </div>

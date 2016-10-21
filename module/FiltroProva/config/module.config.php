@@ -3,25 +3,15 @@
 return array(
     'router' => array(
         'routes' => array(
-            'navegacao' => array(
-                'type' => 'Segment',
+            'filtro_prova-home' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/:controller[/:action[/:id]]',
+                    'route'    => '/filtro_prova',
                     'defaults' => array(
+                        'controller' => 'filtro_prova',
                         'action'     => 'index',
                     ),
                 ),
-            ),
-            'rota_prova_aleatoria' => array(
-                'type'    => 'Segment',
-                'options' => array(
-                    'route'    => '/prova-prova/:action[/:id][/:aux]',
-                    'defaults' => array(
-                        'controller' => 'prova-prova',
-                        'action'     => 'index',
-                    ),
-                ),
-
             ),
         ),
     ),
@@ -46,8 +36,8 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'prova' => 'Prova\Controller\ProvaController',
-            'prova-prova' => 'Prova\Controller\ProvaController',
+            'filtro_prova' => 'FiltroProva\Controller\FiltroProvaController',
+            'filtro_prova-filtroprova' => 'FiltroProva\Controller\FiltroProvaController',
 
         ),
     ),

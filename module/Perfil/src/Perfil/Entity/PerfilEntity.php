@@ -4,11 +4,10 @@ namespace Perfil\Entity;
 
 use Estrutura\Service\AbstractEstruturaService;
 
-class PerfilEntity extends AbstractEstruturaService{
+class PerfilEntity extends AbstractEstruturaService
+{
 
-        protected $id; 
-        protected $nm_perfil; 
-
-
+    protected $id;
+    protected $nm_perfil;
 
 }

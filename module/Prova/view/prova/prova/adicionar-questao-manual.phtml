@@ -1,0 +1,69 @@
+<div class="page-head"><h2>Filtrar Questões para a Provas</h2> </br>
+</div>
+<div class="cl-mcont">
+    <div class="row">
+        <div class="block-flat">
+            <div class="content">
+                <?php
+                $form->setAttribute('action', $this->url('navegacao', array('controller' => $controller, 'action' => 'gravar-questao-manual')));
+                $form->setAttribute('class', 'form-horizontal');
+                $form->setAttribute('data-role', 'form');
+                $form->prepare();
+                echo $this->form()->openTag($form);
+
+                $form->get('id')->setValue(Estrutura\Helpers\Cript::enc($dadosProva->getId()));
+                echo $this->formHidden($form->get('id'));
+                ?>
+                <div class="form-group">
+                    <div class="col-md-6">-
+                        <?= $this->formRow($form->get('id_tipo_questao')) ?>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="col-md-6">-
+                        <?= $this->formRow($form->get('id_fonte_questao')) ?>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-4">-
+                        <?= $this->formRow($form->get('id_materia')) ?>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="col-md-4">-
+                        <?= $this->formRow($form->get('id_assunto_materia')) ?>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="col-md-4">-
+                        <?= $this->formRow($form->get('id_nivel_dificuldade')) ?>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">-
+                        <?= $this->formRow($form->get('id_classificacao_semestre')) ?>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="col-md-6">-
+                        <?= $this->formRow($form->get('nr_questoes')) ?>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <button type="submit" class="btn btn-primary">Adicionar</button>
+                        <a href="<?= $this->url('navegacao', ['controller' => $controller, 'action'=>'cadastro-questao', 'id'=> Estrutura\Helpers\Cript::enc($dadosProva->getId()) ]) ?>" class="btn btn-default">Voltar</a>
+                    </div>
+                </div>
+                <?= $this->form()->closeTag(); ?>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" language="javascript" class="init">
+    $(document).ready(function () {
+        $("#dt_aplicacao_prova").datepicker(
+            {dateFormat: 'dd/mm/yy'}
+        );
+    });
+</script>

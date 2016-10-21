@@ -185,7 +185,7 @@ class ProvaController extends AbstractCrudController
         $dadosProva = $obProvaService->buscar($id_prova);
 
         $obQuestoesProvaService = new \QuestoesProva\Service\QuestoesProvaService();
-        $arQuestoesProva = $obQuestoesProvaService->fetchAllByArrayAtributo(['id_prova'=>$id_prova]);
+        $arQuestoesProva = $obQuestoesProvaService->fetchAllByArrayAtributo(['id_prova' => $id_prova]);
 
         $dadosView = [
             'service' => $service,
@@ -223,7 +223,6 @@ class ProvaController extends AbstractCrudController
 
     public function adicionarQuestaoAleatoriaAction()
     {
-        $controller = $this->params('controller');
         $request = $this->getRequest();
         $service = $this->service;
         $form = new \Prova\Form\QuestaoAleatoriaForm();
@@ -288,22 +287,22 @@ class ProvaController extends AbstractCrudController
             shuffle($resultado);
 
             $arIdQuestoesSelecionadas = array();
-            foreach($resultado as $item){
+            foreach ($resultado as $item) {
                 $arIdQuestoesSelecionadas[] = $item['id_questao'];
             }
 
             #Chama o modulo que efetuara a gravacao na tabela Questoes_prova
             $questoes_provaService = new \QuestoesProva\Service\QuestoesProvaService();
-            $resultQuestoesProva = $questoes_provaService->retornaQuestoesExistentes($arIdQuestoesSelecionadas, $id_prova );
+            $resultQuestoesProva = $questoes_provaService->retornaQuestoesExistentes($arIdQuestoesSelecionadas, $id_prova);
             $arIdQuestoesExistentes = array();
-            foreach($resultQuestoesProva as $objeto){
+            foreach ($resultQuestoesProva as $objeto) {
                 $arIdQuestoesExistentes[] = $objeto['id_questao'];
             }
 
             #Este Código não permita inserir questões repetidas ao exame.
-            foreach($resultado as $key => $item) {
+            foreach ($resultado as $key => $item) {
                 #Se a questao ja existir cadastrada para a prova, ela nao sera adicionada a prova.
-                if(!in_array($item['id_questao'], $arIdQuestoesExistentes)) {
+                if (!in_array($item['id_questao'], $arIdQuestoesExistentes)) {
                     $dados['id_prova'] = $id_prova;
                     $dados['id_questao'] = $item['id_questao'];
 
@@ -331,13 +330,316 @@ class ProvaController extends AbstractCrudController
 
     }
 
-    public function imprimirProvaPdfAction() {
+    public function adicionarQuestaoManualAction()
+    {
+        $request = $this->getRequest();
+        $service = $this->service;
+        $form = new \Prova\Form\QuestaoAleatoriaForm();
+
+        $id_prova = Cript::dec($this->params('id'));
+
+        $obProva = new \Prova\Service\ProvaService();
+        $dadosProva = $obProva->buscar($id_prova);
+        $dadosView = [
+            'service' => $service,
+            'form' => $form,
+            'controller' => $this->params('controller'),
+            'dadosProva' => $dadosProva,
+            'atributos' => array(),
+        ];
+
+        return new ViewModel($dadosView);
+    }
+
+    public function gravarQuestaoManualAction()
+    {
+        try {
+
+            $controller = $this->params('controller');
+            $request = $this->getRequest();
+
+            if (!$request->isPost()) {
+                throw new \Exception('Dados Inválidos');
+            }
+
+            $post = \Estrutura\Helpers\Utilities::arrayMapArray('trim', $request->getPost()->toArray());
+
+            #Alysson - O array $post['id'] armazena o ID da Prova
+            if (isset($post['id']) && $post['id']) {
+                $post['id'] = Cript::dec($post['id']);
+                $id_prova = $post['id'];
+            }
+
+            #Prepara o array de filtros para trazer as questoes que atenam aos filtros selecionados
+            $arrFiltro['bo_utilizavel'] = 'S';
+            if (isset($post['id_tipo_questao']) && $post['id_tipo_questao']) {
+                $arrFiltro['id_tipo_questao'] = $post['id_tipo_questao'];
+            }
+            if (isset($post['id_fonte_questao']) && $post['id_fonte_questao']) {
+                $arrFiltro['id_fonte_questao'] = $post['id_fonte_questao'];
+            }
+            if (isset($post['id_assunto_materia']) && $post['id_assunto_materia']) {
+                $arrFiltro['id_assunto_materia'] = $post['id_assunto_materia'];
+            }
+            if (isset($post['id_nivel_dificuldade']) && $post['id_nivel_dificuldade']) {
+                $arrFiltro['id_nivel_dificuldade'] = $post['id_nivel_dificuldade'];
+            }
+            if (isset($post['id_classificacao_semestre']) && $post['id_classificacao_semestre']) {
+                $arrFiltro['id_classificacao_semestre'] = $post['id_classificacao_semestre'];
+            }
+
+            #Busca as questoes que atendam aos filtros selecionados
+            $questaoService = new \Questao\Service\QuestaoService();
+            $resultado = $questaoService->fetchAllByArrayAtributo($arrFiltro);
+
+            #Essa função mistura de forma aleatória os elementos de um array.
+            shuffle($resultado);
+
+            $arIdQuestoesSelecionadas = array();
+            foreach ($resultado as $item) {
+                $arIdQuestoesSelecionadas[] = $item['id_questao'];
+            }
+
+            #Chama o modulo que efetuara a gravacao na tabela Questoes_prova
+            $questoes_provaService = new \QuestoesProva\Service\QuestoesProvaService();
+            $resultQuestoesProva = $questoes_provaService->retornaQuestoesExistentes($arIdQuestoesSelecionadas, $id_prova);
+            $arIdQuestoesExistentes = array();
+            foreach ($resultQuestoesProva as $objeto) {
+                $arIdQuestoesExistentes[] = $objeto['id_questao'];
+            }
+
+            #Este Código não permita inserir questões repetidas ao exame.
+            foreach ($resultado as $key => $item) {
+                #Se a questao ja existir cadastrada para a prova, ela nao sera adicionada a prova.
+                if (!in_array($item['id_questao'], $arIdQuestoesExistentes)) {
+                    $dados['id_prova'] = $id_prova;
+                    $dados['id_questao'] = $item['id_questao'];
+
+                    #Grava na Tabela Questoes_Prova as questoes retornadas no filtro
+                    $resultGravacao = $questoes_provaService->getTable()->salvar($dados, null);
+                    if (!$resultGravacao) {
+                        $this->setPost($post);
+                        $this->addSuccessMessage('Houve problema ao relacionar a questao!');
+                        $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'adicionar-questao-aleatoria', 'id' => Cript::enc($id_prova)));
+                        return false;
+                    }
+                }
+            }
+
+            $this->addSuccessMessage('Questoes adicionadas na avaliaçao com sucesso! ');
+            $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'cadastro-questao', 'id' => Cript::enc($id_prova)));
+            return true;
+        } catch (\Exception $e) {
+
+            $this->setPost($post);
+            $this->addErrorMessage($e->getMessage());
+            $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'cadastro'));
+            return false;
+        }
+
+    }
+
+    public function adicionarVariasQuestoesAleatoriasAction()
+    {
+        $request = $this->getRequest();
+        $service = $this->service;
+        $form = new \Prova\Form\VariasQuestoesAleatoriasForm();
+
+        $id_prova = Cript::dec($this->params('id'));
+
+        $obProva = new \Prova\Service\ProvaService();
+        $dadosProva = $obProva->buscar($id_prova);
+        $dadosView = [
+            'service' => $service,
+            'form' => $form,
+            'controller' => $this->params('controller'),
+            'dadosProva' => $dadosProva,
+            'atributos' => array(),
+        ];
+
+        return new ViewModel($dadosView);
+    }
+
+    public function gravarAdicionarVariasQuestoesAleatoriasAction()
+    {
+        $controller = $this->params('controller');
+        $request = $this->getRequest();
+
+        if (!$request->isPost()) {
+            throw new \Exception('Dados Inválidos');
+        }
+        $post = \Estrutura\Helpers\Utilities::arrayMapArray('trim', $request->getPost()->toArray());
+        #Alysson - O array $post['id'] armazena o ID da Prova
+        if (isset($post['id']) && $post['id']) {
+            $post['id'] = Cript::dec($post['id']);
+            $id_prova = $post['id'];
+        }
+
+        $campos = [
+            'id_prova' => $post['id'],
+            'id_tipo_questao' => $post['id_tipo_questao'],
+            'id_fonte_questao' => $post['id_fonte_questao'],
+            'id_assunto_materia' => $post['id_assunto_materia'],
+            'id_nivel_dificuldade' => $post['id_nivel_dificuldade'],
+            'id_classificacao_semestre' => $post['id_classificacao_semestre'],
+            'nr_questoes' => $post['nr_questoes'],
+        ];
+
+        $filtroProvaService = new \FiltroProva\Service\FiltroProvaService();
+
+        $id_inserido = $filtroProvaService->getTable()->salvar($campos, null);
+        $valuesJson = new JsonModel(array('id_inserido' => $id_inserido, 'sucesso' => true, 'id_prova' => $id_prova));
+
+        return $valuesJson;
+
+    }
+
+    public function gravarVariasQuestoesAleatoriasAction()
+    {
+        try {
+            $controller = $this->params('controller');
+            $request = $this->getRequest();
+
+            if (!$request->isPost()) {
+                throw new \Exception('Dados Inválidos');
+            }
+
+            $post = \Estrutura\Helpers\Utilities::arrayMapArray('trim', $request->getPost()->toArray());
+
+            #Alysson - O array $post['id'] armazena o ID da Prova
+            if (isset($post['id']) && $post['id']) {
+                $post['id'] = Cript::dec($post['id']);
+                $id_prova = $post['id'];
+            }
+
+            #Prepara o array de filtros para trazer as questoes que atenam aos filtros selecionados
+            $arrFiltro['bo_utilizavel'] = 'S';
+            $filtroProvaService = new \FiltroProva\Service\FiltroProvaService();
+            $arRetornoFiltroProva = $filtroProvaService->fetchAllById(['id_prova' => $id_prova]);
+            #Percorre o Array de filtros e insere as questoes que atendam a este filtro
+            foreach ($arRetornoFiltroProva as $item) {
+
+                if (isset($item['id_tipo_questao']) && $item['id_tipo_questao']) {
+                    $arrFiltro['id_tipo_questao'] = $item['id_tipo_questao'];
+                }
+                if (isset($item['id_fonte_questao']) && $item['id_fonte_questao']) {
+                    $arrFiltro['id_fonte_questao'] = $item['id_fonte_questao'];
+                }
+                if (isset($item['id_assunto_materia']) && $item['id_assunto_materia']) {
+                    $arrFiltro['id_assunto_materia'] = $item['id_assunto_materia'];
+                }
+                if (isset($item['id_nivel_dificuldade']) && $item['id_nivel_dificuldade']) {
+                    $arrFiltro['id_nivel_dificuldade'] = $item['id_nivel_dificuldade'];
+                }
+                if (isset($item['id_classificacao_semestre']) && $item['id_classificacao_semestre']) {
+                    $arrFiltro['id_classificacao_semestre'] = $item['id_classificacao_semestre'];
+                }
+                
+                #Busca as questoes que atendam aos filtros selecionados
+                $questaoService = new \Questao\Service\QuestaoService();
+                $resultado = $questaoService->fetchAllByArrayAtributo($arrFiltro);
+
+                #Essa função mistura de forma aleatória os elementos de um array.
+                shuffle($resultado);
+
+                $arIdQuestoesSelecionadas = array();
+                foreach ($resultado as $questao) {
+                    $arIdQuestoesSelecionadas[] = $questao['id_questao'];
+                }
+
+                #Chama o modulo que efetuara a gravacao na tabela Questoes_prova
+                $questoes_provaService = new \QuestoesProva\Service\QuestoesProvaService();
+                $resultQuestoesProva = $questoes_provaService->retornaQuestoesExistentes($arIdQuestoesSelecionadas, $id_prova);
+                $arIdQuestoesExistentes = array();
+                foreach ($resultQuestoesProva as $objeto) {
+                    $arIdQuestoesExistentes[] = $objeto['id_questao'];
+                }
+
+                #Este Código não permita inserir questões repetidas ao exame.
+                foreach ($resultado as $key => $item) {
+                    #Se a questao ja existir cadastrada para a prova, ela nao sera adicionada a prova.
+                    if (!in_array($item['id_questao'], $arIdQuestoesExistentes)) {
+                        $dados['id_prova'] = $id_prova;
+                        $dados['id_questao'] = $item['id_questao'];
+
+                        #Grava na Tabela Questoes_Prova as questoes retornadas no filtro
+                        $resultGravacao = $questoes_provaService->getTable()->salvar($dados, null);
+                        if (!$resultGravacao) {
+                            $this->setPost($post);
+                            $this->addSuccessMessage('Houve problema ao relacionar a questao!');
+                            $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'adicionar-questao-aleatoria', 'id' => Cript::enc($id_prova)));
+                            return false;
+                        }
+                    }
+                }
+            }
+            $this->addSuccessMessage('Questoes adicionadas na avaliaçao com sucesso! ');
+            $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'cadastro-questao', 'id' => Cript::enc($id_prova)));
+            return true;
+        } catch (\Exception $e) {
+
+            $this->setPost($post);
+            $this->addErrorMessage($e->getMessage());
+            $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'cadastro'));
+            return false;
+        }
+
+    }
+
+    public function detalhesFiltrosPaginationAction()
+    {
+        #$this->params()->fromPost('paramname');   // From POST
+        #$this->params()->fromQuery('paramname');  // From GET
+        #$this->params()->fromRoute('paramname');  // From RouteMatch
+        #$this->params()->fromHeader('paramname'); // From header
+        #$this->params()->fromFiles('paramname');  // From file being uploaded
+        $filter = $this->getFilterPage();
+
+        $request = $this->getRequest();
+        $post = \Estrutura\Helpers\Utilities::arrayMapArray('trim', $request->getPost()->toArray());
+        $id_prova = $post['id_prova'];
+
+        $camposFilter = [
+            '0' => [
+                //'filter' => "periodoletivodetalhe.nm_sacramento LIKE ?",
+            ],
+
+        ];
+
+        $paginator = $this->service->getDetalhesFiltrosPaginator($id_prova, $filter, $camposFilter);
+        $paginator->setItemCountPerPage($paginator->getTotalItemCount());
+
+        $countPerPage = $this->getCountPerPage(
+            current(\Estrutura\Helpers\Pagination::getCountPerPage($paginator->getTotalItemCount()))
+        );
+
+        $paginator->setItemCountPerPage($this->getCountPerPage(
+            current(\Estrutura\Helpers\Pagination::getCountPerPage($paginator->getTotalItemCount()))
+        ))->setCurrentPageNumber($this->getCurrentPage());
+
+        $viewModel = new ViewModel([
+            'service' => $this->service,
+            'form' => new \Prova\Form\QuestaoAleatoriaForm(),
+            'paginator' => $paginator,
+            'filter' => $filter,
+            'countPerPage' => $countPerPage,
+            'camposFilter' => $camposFilter,
+            'controller' => $this->params('controller'),
+            'id_prova' => $id_prova,
+            'atributos' => array()
+        ]);
+
+        return $viewModel->setTerminal(TRUE);
+    }
+
+    public function imprimirProvaPdfAction()
+    {
         $id_prova = Cript::dec($this->params()->fromRoute('id'));  // From RouteMatch
         $obProvaService = new \Prova\Service\ProvaService();
         $dadosProva = $obProvaService->buscar($id_prova);
 
         $obQuestoesProvaService = new \QuestoesProva\Service\QuestoesProvaService();
-        $arQuestoesProva = $obQuestoesProvaService->fetchAllByArrayAtributo(['id_prova'=>$id_prova]);
+        $arQuestoesProva = $obQuestoesProvaService->fetchAllByArrayAtributo(['id_prova' => $id_prova]);
 
         $pdf = new PdfModel();
 
@@ -354,13 +656,14 @@ class ProvaController extends AbstractCrudController
         return $pdf;
     }
 
-    public function imprimirGabaritoPdfAction() {
+    public function imprimirGabaritoPdfAction()
+    {
         $id_prova = Cript::dec($this->params()->fromRoute('id'));  // From RouteMatch
         $obProvaService = new \Prova\Service\ProvaService();
         $dadosProva = $obProvaService->buscar($id_prova);
 
         $obQuestoesProvaService = new \QuestoesProva\Service\QuestoesProvaService();
-        $arQuestoesProva = $obQuestoesProvaService->fetchAllByArrayAtributo(['id_prova'=>$id_prova]);
+        $arQuestoesProva = $obQuestoesProvaService->fetchAllByArrayAtributo(['id_prova' => $id_prova]);
 
         $pdf = new PdfModel();
 
