@@ -52,7 +52,9 @@ class ControllerService extends Entity {
      * @return \Zend\Db\ResultSet\ResultSet
      */
     public function fetchAllModulos() {
-        return $this->select();
+        $select = new \Zend\Db\Sql\Select('controller');
+        $select->order(['nm_modulo ASC']);
+        return $this->getTable()->getTableGateway()->selectWith($select);
     }
 
 }
