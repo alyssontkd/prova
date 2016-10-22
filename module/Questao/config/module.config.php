@@ -24,6 +24,17 @@ return array(
                 ),
 
             ),
+            'rota_questao_via_prova' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/questao-questao/:action[/:id][/:id_prova]',
+                    'defaults' => array(
+                        'controller' => 'questao-questao',
+                        'action'     => 'index',
+                    ),
+                ),
+
+            ),
         ),
     ),
     'service_manager' => array(

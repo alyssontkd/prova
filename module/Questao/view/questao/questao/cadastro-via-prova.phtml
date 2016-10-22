@@ -11,15 +11,14 @@
     <div class="row">
         <div class="col-md-12">
             <?php
-            $form->setAttribute('action', $this->url('navegacao', array('controller' => $controller, 'action' => 'gravar')));
+            $form->setAttribute('action', $this->url('navegacao', array('controller' => $controller, 'action' => 'gravar-via-prova')));
             $form->setAttribute('class', 'form-horizontal');
             $form->setAttribute('data-role', 'form');
             $form->prepare();
             echo $this->form()->openTag($form);
-            #xd($id_prova);
             $form->get('id')->setValue(Estrutura\Helpers\Cript::enc($form->get('id')->getValue()));
             echo $this->formHidden($form->get('id'));
-
+            echo "<input type='hidden' id='id_prova' name='id_prova' class='form-control'value='$id_prova'>";
             $assunto_materiaService = new \AssuntoMateria\Service\AssuntoMateriaService();
             if(!empty($form->get('id_assunto_materia')->getValue())) {
                 $ob_assunto_materia = $assunto_materiaService->buscar($form->get('id_assunto_materia')->getValue());
@@ -76,8 +75,8 @@
             <div class="form-group">
                 <div class="col-md-10">
                     <br/>
-                    <button type="submit" class="btn btn-primary">Adicionar Alternativas</button>
-
+                    <button type="submit" class="btn btn-primary">Salvar/Editar Alternativas</button>
+                    <a href="<?= $this->url('navegacao', ['controller' => 'prova-prova', 'action'=>'cadastro-questao', 'id'=>Estrutura\Helpers\Cript::enc($id_prova)]) ?>" class="btn btn-default">Voltar</a>
                 </div>
             </div>
 

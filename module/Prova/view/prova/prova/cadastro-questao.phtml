@@ -57,7 +57,9 @@
             <div class="well col-md-12">
                 <?php
                 $nrQuestoes = count($arQuestoesProva);
-                if ($nrQuestoes == 0) { ?>
+                if ($nrQuestoes == 0) {
+                    $ocultarBotoes = true;
+                    ?>
                     <div style="text-align: center" class="row form-group">
                         <div class="col-md-12">
                             <?php
@@ -65,8 +67,9 @@
                             ?>
                         </div>
                     </div>
-                <?php
+                    <?php
                 } else {
+                    $ocultarBotoes = false;
                     echo "<h2> Questoes da Prova </h2>";
                     ?>
                     <div style="text-align: left" class="row form-group">
@@ -79,8 +82,8 @@
                                 $arQuestao = $questaoService->buscar($item['id_questao'])->toArray();
                                 echo "<div id='quest_{$item['id_questao']}'>";
                                 echo "<span> <button id='btnremoverquest_{$item['id_questao']}' name='btnremoverquest' value='{$item['id_questao']}'> {$i} - Remover </button></span>";
-                                echo "<span> <button id='btnalterarquest_{$item['id_questao']}' name='btnalterarquest' value='{$item['id_questao']}'> {$i} - Corrigir </button></span>";
-                                echo "<h3>" . $i++ . " - " . $arQuestao['nm_titulo_questao'] . "</h3>";
+                                echo "<span> <a href='" . $this->url('rota_questao_via_prova', ['controller' => 'questao-questao', 'action'=> 'cadastro-via-prova', 'id' => Estrutura\Helpers\Cript::enc($item['id_questao']), 'id_prova' => Estrutura\Helpers\Cript::enc($dadosProva->getId())]) . "' class='btn btn-default'> {$i} - Corrigir</a></span>";
+                                echo "<h3>" . $i++ . " - " . $arQuestao['nm_titulo_questao'] . " [Identificador: {$item['id_questao']}]" . "</h3>";
                                 echo "<h4>" . $arQuestao['tx_enunciado'] . "</h4>";
                                 $arAlternativaQuestao = $alternativaquestaoService->fetchAllById(['id_questao' => $item['id_questao']]);
                                 $j = 'a';
@@ -98,18 +101,19 @@
                             } ?>
                         </div>
                     </div>
-                <?php
+                    <?php
                 }
                 ?>
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-10">
-                <button type="submit" class="btn btn-primary">Imprimir Prova</button>
-                <a href="<?= $this->url('navegacao', ['controller' => $controller, 'action' => 'imprimir-gabarito-pdf', 'id' => Estrutura\Helpers\Cript::enc($dadosProva->getId())]) ?>"
-                   class="btn btn-default">Imprimir Gabarito</a>
-                <a href="<?= $this->url('navegacao', ['controller' => $controller]) ?>"
-                   class="btn btn-default">Voltar</a>
+                <?php if(!$ocultarBotoes) { ?>
+                    <button type="submit" class="btn btn-primary">Imprimir Prova</button>
+                    <a href="<?= $this->url('navegacao', ['controller' => $controller, 'action' => 'imprimir-gabarito-pdf', 'id' => Estrutura\Helpers\Cript::enc($dadosProva->getId())]) ?>"
+                       class="btn btn-default">Imprimir Gabarito</a>
+                <?php } ?>
+                <a href="<?= $this->url('navegacao', ['controller' => $controller]) ?>" class="btn btn-default">Voltar</a>
             </div>
         </div>
     </div>
@@ -151,31 +155,5 @@
             return false;
         });
 
-        $("*[name='btnalterarquest']").click(function () {
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                url: '/prova-prova/carregar-combo-materias-ajax',
-                async: true,
-                data: {
-                    id_questao: $(this).val(),
-                    id_prova: <?=$dadosProva->getId()?>
-                },
-                success: function (response) {
-                    if (response.sucesso == true) {
-                        $('.carregando').hide();
-                        //faço o redirecionamento para que as questões da Prova se carreguem na ordem correta de impressão
-                        var url = "<?= $this->url('navegacao', ['controller' => 'questao-questao', 'action' => 'cadastro', 'id'=> Estrutura\Helpers\Cript::enc($dadosProva->getId())]) ?>";
-                        $(location).attr('href', url);
-                    }
-                    $('.carregando').hide();
-                }
-            });
-
-            alert($(this).val());
-
-            //Cancelar o submit do formulario.
-            return false;
-        });
     });
 </script>
