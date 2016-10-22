@@ -65,13 +65,12 @@
                         </td>
                         <td class="text-center">
                                 <span class="btn-group" style="width: 100px;">
-                                    <?= \Estrutura\Service\HtmlHelper::botaoExcluir($this->url('detalhe_periodo_letivo', array('controller' => 'detalhe_periodo_letivo-detalheperiodoletivo', 'action' => 'excluirvialistagemperiodoletivo', 'id' => Estrutura\Helpers\Cript::enc($item['id_filtro_prova']), 'aux' => $id_prova))) ?>
+                                    <?= \Estrutura\Service\HtmlHelper::botaoExcluir($this->url('rota_prova_aleatoria', array('controller' => 'prova-prova', 'action' => 'excluir-filtro-questao', 'id' => Estrutura\Helpers\Cript::enc($item['id_filtro_prova']), 'aux' => $id_prova))) ?>
                                 </span>
                         </td>
                     </tr>
                 <?php
                 }
-
 
                 ?>
                 </tbody>

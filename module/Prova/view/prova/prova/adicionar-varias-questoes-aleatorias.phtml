@@ -1,4 +1,4 @@
-<div class="page-head"><h2>Filtrar Questões para a Provas</h2> </br>
+<div class="page-head"><h2>Filtrar Vários Tipos Questões Aleatórias para a Prova</h2> </br>
 </div>
 <div class="cl-mcont">
     <div class="row">
@@ -17,7 +17,7 @@
                 ?>
                 <div class="form-group">
                     <div class="col-md-6">-
-                        <?= $this->formRow($form->get('id_tipo_questao')) ?>
+                        <?= $this->formRow($form->get('id_classificacao_semestre')) ?>
                         <div class="help-block with-errors"></div>
                     </div>
                     <div class="col-md-6">-
@@ -41,7 +41,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-6">-
-                        <?= $this->formRow($form->get('id_classificacao_semestre')) ?>
+                        <?= $this->formRow($form->get('id_tipo_questao')) ?>
                         <div class="help-block with-errors"></div>
                     </div>
                     <div class="col-md-6">-
@@ -67,8 +67,11 @@
         </div>
     </div>
 </div>
+<div class="carregando"><p><img src="/assets/img/carregando1.gif"><p></div>
 <script type="text/javascript" language="javascript" class="init">
     $(document).ready(function () {
+        $('.carregando').hide();
+
         $("#dt_aplicacao_prova").datepicker(
             {dateFormat: 'dd/mm/yy'}
         );
@@ -114,6 +117,67 @@
             return false;
         });
 
+        $('#id_classificacao_semestre').change(function(){
+            if( $(this).val() ) {
+                $('#id_materia').hide();
+                $('.carregando').show();
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: '/prova-prova/carregar-combo-materias-ajax',
+                    async: true,
+                    data: {
+                            id_classificacao_semestre: $(this).val(),
+                            id_prova : <?=$dadosProva->getId()?>
+                    },
+                    success: function(response) {
+                        if(response.sucesso == true){
+                            var options = '<option value=""> Selecione...</option>';
+                            $.each(response.ar_materias, function(i, item) {
+                                options += '<option value="' + response.ar_materias[i].id + '">' + response.ar_materias[i].descricao + '</option>';
+                            });
+                            $('#id_materia').html(options).show();
+                            $('.carregando').hide();
+                        } else{
+                            $('#id_materia').html('<option value="">-- Erro ao carregar matérias --</option>');
+                        }
+                    }
+                });
+            } else {
+                $('#id_materia').html('<option value="">-- Escolha uma Classificação --</option>');
+            }
+        });
+
+        $('#id_materia').change(function(){
+            if( $(this).val() ) {
+                $('#id_assunto_materia').hide();
+                $('.carregando').show();
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: '/prova-prova/carregar-combo-assunto-materia-ajax',
+                    async: true,
+                    data: {
+                        id_materia: $(this).val(),
+                        id_prova : <?=$dadosProva->getId()?>
+                    },
+                    success: function(response) {
+                        if(response.sucesso == true){
+                            var options = '<option value=""> Selecione...</option>';
+                            $.each(response.ar_assunto_materia, function(i, item) {
+                                options += '<option value="' + response.ar_assunto_materia[i].id + '">' + response.ar_assunto_materia[i].descricao + '</option>';
+                            });
+                            $('#id_assunto_materia').html(options).show();
+                            $('.carregando').hide();
+                        } else{
+                            $('#id_assunto_materia').html('<option value="">-- Erro ao carregar Assuntos --</option>');
+                        }
+                    }
+                });
+            } else {
+                $('#id_assunto_materia').html('<option value="">-- Escolha uma Matéria --</option>');
+            }
+        });
 
     });
 </script>

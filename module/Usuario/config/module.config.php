@@ -48,6 +48,7 @@ return array(
         'invokables' => array(
             'usuario' => 'Usuario\Controller\UsuarioController',
             'usuario-usuario' => 'Usuario\Controller\UsuarioController',
+
         ),
     ),
     'view_manager' => array(
@@ -62,4 +63,5 @@ return array(
             ),
         ),
     ),
+
 );

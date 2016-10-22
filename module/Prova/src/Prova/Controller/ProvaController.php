@@ -334,7 +334,7 @@ class ProvaController extends AbstractCrudController
     {
         $request = $this->getRequest();
         $service = $this->service;
-        $form = new \Prova\Form\QuestaoAleatoriaForm();
+        $form = new \Prova\Form\QuestaoManualForm();
 
         $id_prova = Cript::dec($this->params('id'));
 
@@ -534,7 +534,7 @@ class ProvaController extends AbstractCrudController
                 if (isset($item['id_classificacao_semestre']) && $item['id_classificacao_semestre']) {
                     $arrFiltro['id_classificacao_semestre'] = $item['id_classificacao_semestre'];
                 }
-                
+
                 #Busca as questoes que atendam aos filtros selecionados
                 $questaoService = new \Questao\Service\QuestaoService();
                 $resultado = $questaoService->fetchAllByArrayAtributo($arrFiltro);
@@ -630,6 +630,98 @@ class ProvaController extends AbstractCrudController
         ]);
 
         return $viewModel->setTerminal(TRUE);
+    }
+
+    public function carregarComboMateriasAjaxAction()
+    {
+        $request = $this->getRequest();
+
+        if (!$request->isPost()) {
+            throw new \Exception('Dados Inválidos');
+        }
+        $post = \Estrutura\Helpers\Utilities::arrayMapArray('trim', $request->getPost()->toArray());
+        $id_classificacao_semestre = $post['id_classificacao_semestre'];
+        $id_prova = $post['id_prova'];
+
+        #Recupera os materias cadastradas por semestre
+        $materiaSemestreService = new \MateriaSemestre\Service\MateriaSemestreService();
+        $arMaterias = $materiaSemestreService->fetchAllById(['id_classificacao_semestre' => $id_classificacao_semestre]);
+
+        #Faz o Tratamento do Array para enviar para View
+        $arMateriasCombo = array();
+        $materiaService = new \Materia\Service\MateriaService();
+        foreach ($arMaterias as $key => $item) {
+            $obDadosMateria = $materiaService->buscar($item['id_materia']);
+            $arMateriasCombo[$key]['id'] = $obDadosMateria->getId();
+            $arMateriasCombo[$key]['descricao'] = $obDadosMateria->getNmMateria();
+        }
+
+        if (count($arMateriasCombo) > 0) {
+            $valuesJson = new JsonModel(array('ar_materias' => $arMateriasCombo, 'sucesso' => true, 'id_prova' => $id_prova, 'id_classificacao_semestre' => $id_classificacao_semestre));
+        } else {
+            $arMateriasCombo[0]['id'] = "";
+            $arMateriasCombo[0]['descricao'] = 'Não Existem Matérias cadastradas';
+            $valuesJson = new JsonModel(array('ar_materias' => $arMateriasCombo, 'sucesso' => true, 'id_prova' => $id_prova, 'id_classificacao_semestre' => $id_classificacao_semestre));
+        }
+
+        return $valuesJson;
+
+    }
+
+    public function carregarComboAssuntoMateriaAjaxAction()
+    {
+        $request = $this->getRequest();
+
+        if (!$request->isPost()) {
+            throw new \Exception('Dados Inválidos');
+        }
+        $post = \Estrutura\Helpers\Utilities::arrayMapArray('trim', $request->getPost()->toArray());
+        $id_materia = $post['id_materia'];
+        $id_prova = $post['id_prova'];
+
+        #Recupera os materias cadastradas por semestre
+        $assuntoMateriaService = new \AssuntoMateria\Service\AssuntoMateriaService();
+        $arAssuntoMaterias = $assuntoMateriaService->fetchAllById(['id_materia' => $id_materia]);
+
+        #Faz o Tratamento do Array para enviar para View
+        $arAssuntoMateriaCombo = array();
+        foreach ($arAssuntoMaterias as $key => $item) {
+            #xd($item);
+            $arAssuntoMateriaCombo[$key]['id'] = $item['id_assunto_materia'];
+            $arAssuntoMateriaCombo[$key]['descricao'] = $item['nm_assunto_materia'];
+        }
+
+        if (count($arAssuntoMateriaCombo) > 0) {
+            $valuesJson = new JsonModel(array('ar_assunto_materia' => $arAssuntoMateriaCombo, 'sucesso' => true, 'id_prova' => $id_prova, 'id_materia' => $id_materia));
+        } else {
+            $arAssuntoMateriaCombo[0]['id'] = "";
+            $arAssuntoMateriaCombo[0]['descricao'] = 'Não Existem Assuntos cadastrados';
+            $valuesJson = new JsonModel(array('ar_assunto_materia' => $arAssuntoMateriaCombo, 'sucesso' => true, 'id_prova' => $id_prova, 'id_materia' => $id_materia));
+        }
+
+        return $valuesJson;
+
+    }
+
+    public function removerQuestaoProvaAjaxAction()
+    {
+        $request = $this->getRequest();
+
+        if (!$request->isPost()) {
+            throw new \Exception('Dados Inválidos');
+        }
+        $post = \Estrutura\Helpers\Utilities::arrayMapArray('trim', $request->getPost()->toArray());
+        $id_questao = $post['id_questao'];
+        $id_prova = $post['id_prova'];
+
+        #Chama o modulo que efetuara a gravacao na tabela Questoes_prova
+        $questoes_provaService = new \QuestoesProva\Service\QuestoesProvaService();
+        $questoes_provaService->getTable()->delete(['id_questao'=>$id_questao, 'id_prova'=>$id_prova]);
+
+        $valuesJson = new JsonModel(array('sucesso' => true, 'id_prova' => $id_prova, 'id_questao' => $id_questao));
+
+        return $valuesJson;
+
     }
 
     public function imprimirProvaPdfAction()

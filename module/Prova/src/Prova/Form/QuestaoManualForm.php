@@ -6,12 +6,12 @@ use Estrutura\Form\AbstractForm;
 use Estrutura\Form\FormObject;
 use Zend\InputFilter\InputFilter;
 
-class QuestaoAleatoriaForm extends AbstractForm{
+class QuestaoManualForm extends AbstractForm{
     public function __construct($options=[]){
-        parent::__construct('questaoprovaaleatoriaform');
+        parent::__construct('questaoprovamanualform');
 
         $this->inputFilter = new InputFilter();
-        $objForm = new FormObject('questaoprovaaleatoriaform',$this,$this->inputFilter);
+        $objForm = new FormObject('questaoprovamanualform',$this,$this->inputFilter);
         $objForm->hidden("id")->required(false)->label("Id");  
         $objForm->hidden("id_usuario")->required(false)->label("Id Usuario");
 
