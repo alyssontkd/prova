@@ -2,14 +2,50 @@
     SetEnv APPLICATION_ENV development
     ServerAdmin alysson.oliveira@cultura.gov.br
 	DocumentRoot "C:/xampp/htdocs/prova_tudo/public"
-    ServerName dev.provadetudo.com.br    
+    ServerName dev.provatudo.com.br    
 	<Directory "C:/xampp/htdocs/prova_tudo/public">
     Order allow,deny
     Allow from all
   </Directory>
-    ErrorLog "logs/dev.provadetudo.com.br_error.log"
+    ErrorLog "logs/dev.provatudo.com.br_error.log"
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel info
-    CustomLog "logs/dev.provadetudo.com.br_access.log" combined
+    CustomLog "logs/dev.provatudo.com.br_access.log" combined
+</VirtualHost>
+
+###LINUX - Apache 2.2
+<VirtualHost *:80>
+    SetEnv APPLICATION_ENV development
+    ServerAdmin alyssontkd@gmail.com
+        DocumentRoot /var/www/html/prova_tudo/public
+    ServerName dev.provatudo.com.br
+        <Directory /var/www/html/prova_tudo/public>
+    Order allow,deny
+    Allow from all
+  </Directory>
+  ErrorLog ${APACHE_LOG_DIR}/dev.provatudo.com.br_error.log.log
+  CustomLog ${APACHE_LOG_DIR}/dev.provatudo.com.br_access.log combined
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel info
+</VirtualHost>
+
+
+###LINUX - Apache 2.4
+<VirtualHost *:80>
+	
+	SetEnv APPLICATION_ENV development
+	ServerAdmin alyssontkd@gmail.com
+	DocumentRoot "/var/www/html/prova_tudo/public"
+	ServerName dev.provatudo.com.br
+
+	<Directory "/var/www/html/prova_tudo/public">
+	    AllowOverride All
+	    Require all granted
+	</Directory>
+
+	ErrorLog ${APACHE_LOG_DIR}/dev.provatudo.com.br_error.log.log
+	CustomLog ${APACHE_LOG_DIR}/dev.provatudo.com.br_access.log combined
+	LogLevel info
 </VirtualHost>
