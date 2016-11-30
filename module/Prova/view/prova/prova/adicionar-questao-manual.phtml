@@ -11,8 +11,7 @@
                 $form->prepare();
                 echo $this->form()->openTag($form);
 
-                $form->get('id')->setValue(Estrutura\Helpers\Cript::enc($dadosProva->getId()));
-                echo $this->formHidden($form->get('id'));
+                echo $this->formHidden($form->get('id')->setValue($dadosProva->getId()));
                 ?>
                 <div class="form-group">
                     <div class="col-md-6">-
@@ -51,11 +50,15 @@
 
                 <div class="form-group">
                     <div class="col-md-10">
-                        <button type="submit" class="btn btn-primary">Adicionar</button>
-                        <a href="<?= $this->url('navegacao', ['controller' => $controller, 'action'=>'cadastro-questao', 'id'=> Estrutura\Helpers\Cript::enc($dadosProva->getId()) ]) ?>" class="btn btn-default">Voltar</a>
+                        <a id="adicionar-filtro" class="btn btn-primary" href="#" title="Adicionar Filtro">Adicionar Filtro</a>
+
+                        <a href="<?= $this->url('navegacao', ['controller' => $controller, 'action' => 'cadastro-questao', 'id' => Estrutura\Helpers\Cript::enc($dadosProva->getId())]) ?>" class="btn btn-default">Voltar</a>
                     </div>
                 </div>
                 <?= $this->form()->closeTag(); ?>
+                <div class="form-group">
+                    <div class="row" id="detalhesfiltros-pagination"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -64,13 +67,37 @@
 <script type="text/javascript" language="javascript" class="init">
     $(document).ready(function () {
         $('.carregando').hide();
-
         $("#dt_aplicacao_prova").datepicker(
-            {dateFormat: 'dd/mm/yy'}
+                {dateFormat: 'dd/mm/yy'}
         );
+        function carregarGridPaginadaAjax() {
+            var dados = $('#questaoprovamanualform').serialize();
+            $.ajax({
+                type: "post",
+                dataType: "text",
+                cache: false,
+                url: '/questoes_prova-questoesprova/detalhar-questoes-pagination',
+                async: true,
+                data: dados,
+                beforeSend: function () {
+                    $('#detalhesfiltros-pagination').html(
+                            '<div class="row"><div class="col-md-12 text-center"><p><img src="/assets/img/carregando.gif"><p></div></div>'
+                            );
+                },
+                success: function (data) {
+                    $('#detalhesfiltros-pagination').html(data);
+                }
+            });
+        }
+        carregarGridPaginadaAjax(); //Chama a Paginação da listagem
 
-        $('#id_classificacao_semestre').change(function(){
-            if( $(this).val() ) {
+        /*Função Ajax que adiciona os encontros ao Banco de dados*/
+        $('#adicionar-filtro').click(function () {
+            carregarGridPaginadaAjax();
+        });
+
+        $('#id_classificacao_semestre').change(function () {
+            if ($(this).val()) {
                 $('#id_materia').hide();
                 $('.carregando').show();
                 $.ajax({
@@ -80,17 +107,17 @@
                     async: true,
                     data: {
                         id_classificacao_semestre: $(this).val(),
-                        id_prova : <?=$dadosProva->getId()?>
+                        id_prova: <?= $dadosProva->getId() ?>
                     },
-                    success: function(response) {
-                        if(response.sucesso == true){
+                    success: function (response) {
+                        if (response.sucesso == true) {
                             var options = '<option value=""> Selecione...</option>';
-                            $.each(response.ar_materias, function(i, item) {
+                            $.each(response.ar_materias, function (i, item) {
                                 options += '<option value="' + response.ar_materias[i].id + '">' + response.ar_materias[i].descricao + '</option>';
                             });
                             $('#id_materia').html(options).show();
                             $('.carregando').hide();
-                        } else{
+                        } else {
                             $('#id_materia').html('<option value="">-- Erro ao carregar matérias --</option>');
                         }
                     }
@@ -99,9 +126,8 @@
                 $('#id_materia').html('<option value="">-- Escolha uma Classificação --</option>');
             }
         });
-
-        $('#id_materia').change(function(){
-            if( $(this).val() ) {
+        $('#id_materia').change(function () {
+            if ($(this).val()) {
                 $('#id_assunto_materia').hide();
                 $('.carregando').show();
                 $.ajax({
@@ -111,17 +137,17 @@
                     async: true,
                     data: {
                         id_materia: $(this).val(),
-                        id_prova : <?=$dadosProva->getId()?>
+                        id_prova: <?= $dadosProva->getId() ?>
                     },
-                    success: function(response) {
-                        if(response.sucesso == true){
+                    success: function (response) {
+                        if (response.sucesso == true) {
                             var options = '<option value=""> Selecione...</option>';
-                            $.each(response.ar_assunto_materia, function(i, item) {
+                            $.each(response.ar_assunto_materia, function (i, item) {
                                 options += '<option value="' + response.ar_assunto_materia[i].id + '">' + response.ar_assunto_materia[i].descricao + '</option>';
                             });
                             $('#id_assunto_materia').html(options).show();
                             $('.carregando').hide();
-                        } else{
+                        } else {
                             $('#id_assunto_materia').html('<option value="">-- Erro ao carregar Assuntos --</option>');
                         }
                     }
@@ -130,6 +156,6 @@
                 $('#id_assunto_materia').html('<option value="">-- Escolha uma Matéria --</option>');
             }
         });
-
     });
+
 </script>

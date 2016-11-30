@@ -1,0 +1,24 @@
+<div>
+    <h2>Relatório Usuarios</h2>
+</div>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>NOME USUARIO :</th>
+                <th>PERFIL :</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($resultado as $linha) { ?>
+                <tr>
+                    <td><?= $linha['nm_usuario'] ?></td>
+                    <td><?= $linha['nm_perfil'] ?></td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+
+</div>
+
+

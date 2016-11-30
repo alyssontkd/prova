@@ -10,9 +10,11 @@ use Zend\Stdlib\Hydrator\Reflection;
 use Zend\Paginator\Adapter\DbSelect;
 use Zend\Paginator\Paginator;
 
-class ClassificacaoService extends Entity {
+class ClassificacaoService extends Entity
+{
 
-    public function getClassificacaoToArray($id) {
+    public function getClassificacaoToArray($id)
+    {
 
         $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
 
@@ -26,20 +28,22 @@ class ClassificacaoService extends Entity {
         return $sql->prepareStatementForSqlObject($select)->execute()->current();
     }
 
-    public function getFiltrarClassificacaoPorNomeToArray($nm_classificacao_semestre) {
+    public function getFiltrarClassificacaoPorNomeToArray($nm_classificacao_semestre)
+    {
 
         $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
 
         $select = $sql->select('classificacao_semestre')
-            ->columns(array('nm_classificacao_semestre', 'id_cidade') ) #Colunas a retornar. Basta Omitir que ele traz todas as colunas
+            ->columns(array('nm_classificacao_semestre', 'id_cidade'))#Colunas a retornar. Basta Omitir que ele traz todas as colunas
             ->where([
-                "classificacao_semestre.nm_classificacao_semestre LIKE ?" => '%'.$nm_classificacao_semestre.'%',
+                "classificacao_semestre.nm_classificacao_semestre LIKE ?" => '%' . $nm_classificacao_semestre . '%',
             ]);
 
         return $sql->prepareStatementForSqlObject($select)->execute();
     }
 
-    public function getIdClassificacaoPorNomeToArray($nm_classificacao_semestre) {
+    public function getIdClassificacaoPorNomeToArray($nm_classificacao_semestre)
+    {
 
         $arNomeClassificacao = explode('(', $nm_classificacao_semestre);
         $nm_classificacao_semestre = $arNomeClassificacao[0];
@@ -47,7 +51,7 @@ class ClassificacaoService extends Entity {
         $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
         $filter = new \Zend\Filter\StringTrim();
         $select = $sql->select('classificacao_semestre')
-            ->columns(array('id_classificacao_semestre') )
+            ->columns(array('id_classificacao_semestre'))
             ->where([
                 'classificacao_semestre.nm_classificacao_semestre = ?' => $filter->filter($nm_classificacao_semestre),
             ]);
@@ -56,7 +60,24 @@ class ClassificacaoService extends Entity {
     }
 
     /**
-     * Localizar itens por pagina��o
+     * Busca apenas os semestre que já estão relacionados a alguma questão
+     *
+     * @return null|\Zend\Db\ResultSet\ResultSetInterface
+     */
+    public function filtrarSemestrePorBancoQuestao() {
+        $select = new \Zend\Db\Sql\Select('classificacao_semestre');
+        $select->columns([
+            'id_classificacao_semestre',
+            'nm_classificacao_semestre'
+        ])->join('questao', 'questao.id_classificacao_semestre = classificacao_semestre.id_classificacao_semestre');
+
+        $select->order(['questao.id_classificacao_semestre ASC']);
+
+        return $this->getTable()->getTableGateway()->selectWith($select);
+    }
+
+    /**
+     * Localizar itens por paginação
      *
      * @param type $pagina
      * @param type $itensPagina
@@ -65,7 +86,8 @@ class ClassificacaoService extends Entity {
      * @param type $itensPaginacao
      * @return type Paginator
      */
-    public function fetchPaginator($pagina = 1, $itensPagina = 5, $ordem = 'nm_classificacao_semestre ASC', $like = null, $itensPaginacao = 5) {
+    public function fetchPaginator($pagina = 1, $itensPagina = 5, $ordem = 'nm_classificacao_semestre ASC', $like = null, $itensPaginacao = 5)
+    {
         //http://igorrocha.com.br/tutorial-zf2-parte-9-paginacao-busca-e-listagem/4/
         // preparar um select para tabela contato com uma ordem
         $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
@@ -73,14 +95,14 @@ class ClassificacaoService extends Entity {
 
         if (isset($like)) {
             $select
-                    ->where
-                    ->like('id_classificacao_semestre', "%{$like}%")
-                    ->or
-                    ->like('nm_classificacao_semestre', "%{$like}%")
-            #->or
-            #->like('telefone_principal', "%{$like}%")
-            #->or
-            #->like('data_criacao', "%{$like}%")
+                ->where
+                ->like('id_classificacao_semestre', "%{$like}%")
+                ->or
+                ->like('nm_classificacao_semestre', "%{$like}%")
+                #->or
+                #->like('telefone_principal', "%{$like}%")
+                #->or
+                #->like('data_criacao', "%{$like}%")
             ;
         }
 
@@ -89,48 +111,49 @@ class ClassificacaoService extends Entity {
 
         // criar um objeto adapter paginator
         $paginatorAdapter = new DbSelect(
-                // nosso objeto select
-                $select,
-                // nosso adapter da tabela
-                $this->getAdapter(),
-                // nosso objeto base para ser populado
-                $resultSet
+        // nosso objeto select
+            $select,
+            // nosso adapter da tabela
+            $this->getAdapter(),
+            // nosso objeto base para ser populado
+            $resultSet
         );
 
         # var_dump($paginatorAdapter);
         #die;
-        // resultado da pagina��o
+        // resultado da paginação
         return (new Paginator($paginatorAdapter))
-                        // pagina a ser buscada
-                        ->setCurrentPageNumber((int) $pagina)
-                        // quantidade de itens na p�gina
-                        ->setItemCountPerPage((int) $itensPagina)
-                        ->setPageRange((int) $itensPaginacao);
+            // pagina a ser buscada
+            ->setCurrentPageNumber((int)$pagina)
+            // quantidade de itens na p�gina
+            ->setItemCountPerPage((int)$itensPagina)
+            ->setPageRange((int)$itensPaginacao);
     }
 
     /**
-     * 
+     *
      * @param type $dtInicio
      * @param type $dtFim
      * @return type
      */
-    public function getClassificacaoPaginator($filter = NULL, $camposFilter = NULL) {
+    public function getClassificacaoPaginator($filter = NULL, $camposFilter = NULL)
+    {
 
         $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
 
         $select = $sql->select('classificacao_semestre')->columns([
-                    'id_classificacao_semestre',
-                    'nm_classificacao_semestre'
-                    
-                    
-                ]);
-                /*->join('cidade', 'cidade.id_cidade = academias.id_cidade', [
-                    'nm_cidade'
-                ])
-                ->join('estado', 'estado.id_estado = cidade.id_estado', [
-                    'sg_estado'
-                ]); */              
-               
+            'id_classificacao_semestre',
+            'nm_classificacao_semestre'
+
+
+        ]);
+        /*->join('cidade', 'cidade.id_cidade = academias.id_cidade', [
+            'nm_cidade'
+        ])
+        ->join('estado', 'estado.id_estado = cidade.id_estado', [
+            'sg_estado'
+        ]); */
+
 
         $where = [
         ];
@@ -155,8 +178,5 @@ class ClassificacaoService extends Entity {
 
         return new \Zend\Paginator\Paginator(new \Zend\Paginator\Adapter\DbSelect($select, $this->getAdapter()));
     }
-
-
-
 
 }

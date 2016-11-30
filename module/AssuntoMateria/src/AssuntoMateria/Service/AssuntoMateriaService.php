@@ -114,19 +114,15 @@ class AssuntoMateriaService extends Entity {
             'id_assunto_materia',
             'nm_assunto_materia',
 
-
-
-
         ])
             ->join('materia', 'materia.id_materia = assunto_materia.id_materia', [
                 'nm_materia'
-            ]);
-
-
-
-
-
-
+            ])
+            ->join('materia_semestre', 'materia_semestre.id_materia = materia.id_materia')
+            ->join('classificacao_semestre', 'materia_semestre.id_classificacao_semestre = classificacao_semestre.id_classificacao_semestre', [
+            'nm_classificacao_semestre'
+        ]);
+        
 
         $where = [
         ];

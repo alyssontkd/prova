@@ -1,0 +1,36 @@
+<div>
+    <h2>Relatório Materias Semestre</h2>
+</div>
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Classificação semestre</th>
+                <th>Nome Materia</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <?php $ael = null ?>
+            <?php foreach ($resultado as $linha) { ?>
+            <tr>
+                    <td>
+                    <?php if ($ael != $linha['id_classificacao_semestre']) { ?>
+
+                        <?= $linha['nm_classificacao_semestre']  ?>
+                    <?php } ?>
+                    </td>
+                    
+                        <td><?= $linha['nm_materia'] ?></td> 
+                        
+                    <?php $ael = $linha['id_classificacao_semestre'] ?>
+
+                </tr>
+
+            <?php } ?>
+        </tbody>
+    </table>
+
+</div>
+
+

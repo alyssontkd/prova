@@ -2,15 +2,11 @@
 
 namespace Relatorio\Service;
 
-use \AssuntoMateria\Entity\AssuntoMateriaEntity as Entity;
-//use AssuntoMateria\Table\AssuntoMateriaTable;
-//use Zend\Db\Sql\Select;
-//use Zend\Db\ResultSet\HydratingResultSet;
-//use Zend\Stdlib\Hydrator\Reflection;
-//use Zend\Paginator\Adapter\DbSelect;
+use Estrutura\Service\AbstractEstruturaService;
 use Zend\Db\Sql\Expression;
+use Estrutura\Service\AbstractEstruturaService;
 
-class RelatorioService extends Entity {
+class RelatorioService extends AbstractEstruturaService {
 
     public function getQuantitativoQuestoesPorAssunto() {
         $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
@@ -22,6 +18,32 @@ class RelatorioService extends Entity {
                 ->columns(array('nm_assunto_materia', 'quantidade' => new Expression('COUNT(*)')))
                 ->group(array('nm_fonte_questao', 'nm_assunto_materia'));
 
+        return $sql->prepareStatementForSqlObject($select)->execute();
+    }
+
+    public function getUsuariosPerfis() {
+        $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
+
+        $select = $sql->select()
+            ->from(array('usuario' => 'usuario'))
+            ->join('usuario', 'usuario.id_perfil = pefil.id_usuario')
+            ->columns(array('nm_usaurio', 'perfil' => new Expression('COUNT(*)')))
+            ->group(array('nm_usuario', 'nm_perfil'));
+
+        return $sql->prepareStatementForSqlObject($select)->execute();
+    }
+
+
+    public function getMateriasSemestre() {
+        $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
+
+        $select = $sql->select()
+                ->from(array('materia' => 'materia'))
+                ->join('materia_semestre', 'materia_semestre.id_materia = materia.id_materia')
+                ->join('classificacao_semestre', 'classificacao_semestre.id_classificacao_semestre = materia_semestre.id_classificacao_semestre')
+                ->columns(array('nm_materia'))
+                
+                ->group(array('nm_classificacao_semestre', 'nm_materia'));
         return $sql->prepareStatementForSqlObject($select)->execute();
     }
 

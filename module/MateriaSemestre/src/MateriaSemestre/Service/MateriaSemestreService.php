@@ -56,6 +56,27 @@ class MateriaSemestreService extends Entity {
         return $sql->prepareStatementForSqlObject($select)->execute()->current();
     }
 
+    /**
+     * Busca apenas as Materias que já estão relacionados a alguma questão
+     *
+     * @return null|\Zend\Db\ResultSet\ResultSetInterface
+     */
+    public function filtrarMateriaPorSemestreEBancoQuestao($id_classificacao_semestre) {
+        $select = new \Zend\Db\Sql\Select('materia');
+        $select->columns([
+            'id_materia',
+            'nm_materia'
+        ])->join('assunto_materia', 'assunto_materia.id_materia = materia.id_materia')
+        ->join('questao', 'questao.id_assunto_materia = assunto_materia.id_assunto_materia');
+
+        $select->where([
+            'questao.id_classificacao_semestre = ?' => $id_classificacao_semestre,
+        ]);
+        $select->order(['materia.nm_materia ASC']);
+        $select->quantifier('DISTINCT');
+        return $this->getTable()->getTableGateway()->selectWith($select);
+    }
+
     public function fetchPaginator($pagina = 1, $itensPagina = 5, $ordem = 'nm_assunto_materia DESC', $like = null, $itensPaginacao = 5) {
         //http://igorrocha.com.br/tutorial-zf2-parte-9-paginacao-busca-e-listagem/4/
         // preparar um select para tabela contato com uma ordem
@@ -111,12 +132,12 @@ class MateriaSemestreService extends Entity {
         $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
 
         $select = $sql->select('materia_semestre')->columns([
-            #'id_materia_semestre',
+            'id_materia_semestre',
             'id_classificacao_semestre',
-            #'id_materia',
-        ])#->join('materia', 'materia.id_materia = materia_semestre.id_materia', [
-          #      'nm_materia'
-          #])
+            'id_materia',])
+                
+        ->join('materia', 'materia.id_materia = materia_semestre.id_materia', ['nm_materia'])//NF
+                
         ->join('classificacao_semestre', 'materia_semestre.id_classificacao_semestre = classificacao_semestre.id_classificacao_semestre', [
             'nm_classificacao_semestre'
         ]);

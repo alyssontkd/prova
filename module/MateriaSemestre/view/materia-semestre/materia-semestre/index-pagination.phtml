@@ -5,13 +5,15 @@
         <table class="table table-striped" id="tablesorterMateriaSemestre">
             <thead>
             <tr>
-                <th class="text-center">Assuntos</th>
+                <th class="text-center">Semestre</th>
+                <th class="text-center">Matéria</th>
                 <th class="text-center">Ações</th>
             </tr>
             </thead>
             <tfoot>
             <tr>
-                <th class="text-center">Assuntos</th>
+                <th class="text-center">Semestre</th>
+                <th class="text-center">Matéria</th>
                 <th class="text-center">Ações</th>
             </tr>
             <tr>
@@ -59,7 +61,7 @@
                     ?>
                     <tr>
                         <td class="text-center"><?= \Estrutura\Helpers\String::nomeMaiusculo($semestre['nm_classificacao_semestre']) ?></td>
-
+                        <td class="text-center"><?= \Estrutura\Helpers\String::nomeMaiusculo($semestre['nm_materia']) ?></td>
 
                         <td class="text-center">
                                 <span class="btn-group" style="width: 100px;">
@@ -77,8 +79,8 @@
         </table>
         <div class="row">
             <div class="col-md-12">
-                <a href="<?= $this->url('navegacao', ['controller' => 'principal-principal']) ?>" class="btn btn-primary" title="Retorna para a Página Principal">Home</a>
-                <a class="btn btn-default" href="<?= $this->url('navegacao', array('controller' => $controller, 'action' => 'cadastro')) ?>" title="Adiciona um novo assunto">Novo Assunto</a>
+                <a href="<?= $this->url('navegacao', ['controller' => 'principal-principal']) ?>" class="btn btn-primary" title="Retorna para a Página Principal">Início</a>
+                <a class="btn btn-default" href="<?= $this->url('navegacao', array('controller' => $controller, 'action' => 'cadastro')) ?>" title="Adicionar Matéria por Semestre">Nova Matéria por Semestre</a>
             </div>
         </div>
     </div>

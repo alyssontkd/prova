@@ -56,7 +56,24 @@ class NivelDificuldadeService extends Entity {
     }
 
     /**
-     * Localizar itens por pagina��o
+     * Busca apenas as Nivel de Dificuldade que já estão relacionados a alguma questão
+     *
+     * @return null|\Zend\Db\ResultSet\ResultSetInterface
+     */
+    public function filtrarNivelDificuldadePorBancoQuestao() {
+        $select = new \Zend\Db\Sql\Select('nivel_dificuldade');
+        $select->columns([
+            'id_nivel_dificuldade',
+            'nm_nivel_dificuldade'
+        ])->join('questao', 'questao.id_nivel_dificuldade = nivel_dificuldade.id_nivel_dificuldade');
+
+        $select->order(['nivel_dificuldade.id_nivel_dificuldade ASC']);
+
+        return $this->getTable()->getTableGateway()->selectWith($select);
+    }
+
+    /**
+     * Localizar itens por paginação
      *
      * @param type $pagina
      * @param type $itensPagina

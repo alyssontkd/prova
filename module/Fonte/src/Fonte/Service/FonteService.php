@@ -56,6 +56,24 @@ class FonteService extends Entity {
     }
 
     /**
+     * Busca apenas as Fontes que já estão relacionados a alguma questão
+     *
+     * @return null|\Zend\Db\ResultSet\ResultSetInterface
+     */
+    public function filtrarFontePorBancoQuestao() {
+        $select = new \Zend\Db\Sql\Select('fonte_questao');
+        $select->columns([
+            'id_fonte_questao',
+            'nm_fonte_questao'
+        ])->join('questao', 'questao.id_fonte_questao = fonte_questao.id_fonte_questao');
+
+        $select->order(['fonte_questao.nm_fonte_questao ASC']);
+
+        return $this->getTable()->getTableGateway()->selectWith($select);
+    }
+
+
+    /**
      * Localizar itens por pagina��o
      *
      * @param type $pagina
@@ -99,7 +117,7 @@ class FonteService extends Entity {
 
         # var_dump($paginatorAdapter);
         #die;
-        // resultado da pagina��o
+        // resultado da paginação
         return (new Paginator($paginatorAdapter))
                         // pagina a ser buscada
                         ->setCurrentPageNumber((int) $pagina)
@@ -155,7 +173,6 @@ class FonteService extends Entity {
 
         return new \Zend\Paginator\Paginator(new \Zend\Paginator\Adapter\DbSelect($select, $this->getAdapter()));
     }
-
 
 
 
