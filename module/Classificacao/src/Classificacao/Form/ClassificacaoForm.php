@@ -13,7 +13,7 @@ class ClassificacaoForm extends AbstractForm{
         $this->inputFilter = new InputFilter();
         $objForm = new FormObject('classificacaoform',$this,$this->inputFilter);
         $objForm->hidden("id")->required(false)->label("Id");  
-        $objForm->text("nm_classificacao_semestre")->required(false)->label("Classificacao");  
+        $objForm->text("nm_classificacao_semestre")->required(false)->label("Classificação");
       
        
 

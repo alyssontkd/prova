@@ -5,13 +5,13 @@
         <table class="table table-striped" id="tablesorterTipoQuestao">
             <thead>
             <tr>
-                <th class="text-center">Tipos Questao</th>
+                <th class="text-center">Tipo de Questão</th>
                 <th class="text-center">Ações</th>
             </tr>
             </thead>
             <tfoot>
             <tr>
-                <th class="text-center">Tipo Questao</th>
+                <th class="text-center">Tipo de Questão</th>
                 <th class="text-center">Ações</th>
             </tr>
             <tr>
@@ -19,9 +19,9 @@
                     <?php
                     echo $this->paginationControl(
                         $paginator, 'Sliding', 'partials/pagination.phtml', [
-                        'urlPagination' => '/tipo-questao-tipo-questao/index-pagination',
+                        'urlPagination' => '/tipo_questao-tipoquestao/index-pagination',
                         'countPerPage' => $countPerPage,
-                        'divData' => '#tipo-questao-pagination',
+                        'divData' => '#tipoquestao-pagination',
                     ]);
 
                     ?>
@@ -79,7 +79,7 @@
         <div class="row">
             <div class="col-md-12">
                 <a href="<?= $this->url('navegacao', ['controller' => 'principal-principal']) ?>" class="btn btn-primary" title="Retorna para a Página Principal">Home</a>
-                <a class="btn btn-default" href="<?= $this->url('navegacao', array('controller' => $controller, 'action' => 'cadastro')) ?>" title="Adicionar um Novo Tipo">Novo tipo de questão</a>
+                <a class="btn btn-default" href="<?= $this->url('navegacao', array('controller' => $controller, 'action' => 'cadastro')) ?>" title="Adicionar um novo tipo de Questão">Novo tipo de Questão</a>
             </div>
         </div>
     </div>

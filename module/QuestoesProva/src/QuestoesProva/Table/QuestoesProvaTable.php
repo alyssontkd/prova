@@ -42,4 +42,36 @@ class QuestoesProvaTable extends AbstractEstruturaTable {
         }
     }
 
+    public function gravarQuestaoProvaAleatoria($questao, $dados) {
+        $connection = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+
+        try {
+            $connection->beginTransaction();
+
+            $quantidade = $dados['nr_questoes'];
+            $quantidade_questao = count($questao) - 1;
+
+            $i = 1;
+            while ($quantidade >= $i) {
+                $random = rand(0, $quantidade_questao);
+                if (array_key_exists($random, $questao)) {
+                    parent::inserir(array(
+                        'id_prova' => $dados['id'],
+                        'id_questao' => $questao[$random]['id_questao']
+                    ));
+                    unset($questao[$random]);
+                    $i++;
+                }
+            }
+
+            $connection->commit();
+
+            return true;
+        } catch (\Zend\Db\Adapter\Exception\InvalidQueryException $ex) {
+            $connection->rollback();
+
+            return $ex;
+        }
+    }
+
 }

@@ -14,18 +14,26 @@
                 $form->get('id')->setValue(Estrutura\Helpers\Cript::enc($dadosProva->getId()));
                 echo $this->formHidden($form->get('id'));
 
+                #O Tipo 1 e a questao de multipla eescolha
+                $form->get('id_tipo_questao')->setValue(1);
+                echo $this->formHidden($form->get('id_tipo_questao'));
+
                 ?>
                 <div class="form-group">
-                    <div class="col-md-6">-
-                        <?= $this->formRow($form->get('id_classificacao_semestre')) ?>
-                        <div class="help-block with-errors"></div>
-                    </div>
                     <div class="col-md-6">-
                         <?= $this->formRow($form->get('id_fonte_questao')) ?>
                         <div class="help-block with-errors"></div>
                     </div>
+                    <div class="col-md-6">-
+                        <?= $this->formRow($form->get('id_nivel_dificuldade')) ?>
+                        <div class="help-block with-errors"></div>
+                    </div>
                 </div>
                 <div class="form-group">
+                    <div class="col-md-4">-
+                        <?= $this->formRow($form->get('id_classificacao_semestre')) ?>
+                        <div class="help-block with-errors"></div>
+                    </div>
                     <div class="col-md-4">-
                         <?= $this->formRow($form->get('id_materia')) ?>
                         <div class="help-block with-errors"></div>
@@ -34,16 +42,8 @@
                         <?= $this->formRow($form->get('id_assunto_materia')) ?>
                         <div class="help-block with-errors"></div>
                     </div>
-                    <div class="col-md-4">-
-                        <?= $this->formRow($form->get('id_nivel_dificuldade')) ?>
-                        <div class="help-block with-errors"></div>
-                    </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-md-6">-
-                        <?= $this->formRow($form->get('id_tipo_questao')) ?>
-                        <div class="help-block with-errors"></div>
-                    </div>
                     <div class="col-md-6">-
                         <?= $this->formRow($form->get('nr_questoes')) ?>
                         <div class="help-block with-errors"></div>
@@ -137,9 +137,11 @@
                                 options += '<option value="' + response.ar_materias[i].id + '">' + response.ar_materias[i].descricao + '</option>';
                             });
                             $('#id_materia').html(options).show();
+                            $('#id_assunto_materia').html('<option value="">-- Escolha uma Matéria --</option>');
                             $('.carregando').hide();
                         } else{
                             $('#id_materia').html('<option value="">-- Erro ao carregar matérias --</option>');
+                            $('#id_assunto_materia').html('<option value="">-- Escolha uma Matéria --</option>');
                         }
                     }
                 });

@@ -28,7 +28,7 @@ class ActionController extends AbstractCrudController
 
     public function gravarAction(){
         #Alysson
-        $this->addSuccessMessage('Registro gravado com sucesso');
+        $this->addSuccessMessage('Registro gravado com sucesso!');
         $this->redirect()->toRoute('navegacao', array('controller' => 'action-action', 'action' => 'index'));
         return parent::gravar($this->service, $this->form);
     }

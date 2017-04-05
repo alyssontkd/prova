@@ -18,7 +18,8 @@ class AssuntoMateriaController extends AbstractCrudController
      */
     protected $form;
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::init();
     }
 
@@ -44,7 +45,13 @@ class AssuntoMateriaController extends AbstractCrudController
             '0' => [
                 'filter' => "assunto_materia.nm_assunto_materia LIKE ?",
             ],
-            '1' => NULL,
+            '1' => [
+                'filter' => "materia.nm_materia LIKE ?",
+            ],
+            '2' => [
+                'filter' => "classificacao_semestre.nm_classificacao_semestre LIKE ?",
+            ],
+            '3' => NULL
         ];
 
 
@@ -74,11 +81,74 @@ class AssuntoMateriaController extends AbstractCrudController
         return $viewModel->setTerminal(TRUE);
     }
 
-    public function gravarAction(){
-        $controller = $this->params('controller');
-        $this->addSuccessMessage('Registro Alterado com sucesso');
-        $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'index'));
-        return parent::gravar($this->service, $this->form);
+    public function gravarAction()
+    {
+        try {
+            $request = $this->getRequest();
+
+            $controller = $this->params('controller');
+            $service = $this->service;
+            $form = $this->form;
+
+            if (!$request->isPost()) {
+                throw new \Exception('Dados Inválidos');
+            }
+
+            $post = \Estrutura\Helpers\Utilities::arrayMapArray('trim', $request->getPost()->toArray());
+
+            $assuntoMateriaService = new \AssuntoMateria\Service\AssuntoMateriaService();
+            $assuntoMateriaService->setNmAssuntoMateria(trim($this->getRequest()->getPost()->get('nm_assunto_materia')));
+            if ($assuntoMateriaService->filtrarObjeto()->count()) {
+                $this->setPost($post);
+                $this->addErrorMessage('Assunto já cadastrado.');
+                $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'cadastro'));
+                return FALSE;
+            }
+
+            $files = $request->getFiles();
+            $upload = $this->uploadFile($files);
+
+            $post = array_merge($post, $upload);
+
+            if (isset($post['id']) && $post['id']) {
+                $post['id'] = \Estrutura\Helpers\Cript::dec($post['id']);
+            }
+
+            #xd($post);
+            #$assuntoMateriaService = new \AssuntoMateria\Service\AssuntoMateriaService();
+            $assuntoMateriaService->setIdMateria(trim($this->getRequest()->getPost()->get('id_materia')));
+            $assuntoMateriaService->setNmAssuntoMateria(trim($this->getRequest()->getPost()->get('nm_assunto_materia')));
+
+            #xd($assuntoMateriaService->filtrarObjeto()->count());
+            if ($assuntoMateriaService->filtrarObjeto()->count()) {
+                $this->addErrorMessage('O Assunto informado já foi cadastrado para esta disciplina.');
+                $this->setPost($post);
+                $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'cadastro'));
+                return FALSE;
+            }
+
+            $form->setData($post);
+
+            if (!$form->isValid()) {
+                $this->addValidateMessages($form);
+                $this->setPost($post);
+                $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'cadastro'));
+                return false;
+            }
+
+            $service->exchangeArray($form->getData());
+            $this->addSuccessMessage('Assunto cadastrado com sucesso!');
+            $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'index'));
+            return $service->salvar();
+
+        } catch (\Exception $e) {
+
+            $this->setPost($post);
+            $this->addErrorMessage($e->getMessage());
+            $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'cadastro'));
+            return false;
+        }
+
     }
 
     public function cadastroAction()
@@ -90,7 +160,6 @@ class AssuntoMateriaController extends AbstractCrudController
     {
         return parent::excluir($this->service, $this->form);
     }
-    
-    
-    
+
+
 }

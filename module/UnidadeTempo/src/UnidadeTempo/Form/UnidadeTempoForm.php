@@ -13,7 +13,7 @@ class UnidadeTempoForm extends AbstractForm{
         $this->inputFilter = new InputFilter();
         $objForm = new FormObject('unidade_tempoform',$this,$this->inputFilter);
         $objForm->hidden("id")->required(false)->label("Id");  
-        $objForm->text("nm_unidade_tempo")->required(false)->label("unidade_tempo");
+        $objForm->text("nm_unidade_tempo")->required(false)->label("Unidade de Tempo");
       
        
 

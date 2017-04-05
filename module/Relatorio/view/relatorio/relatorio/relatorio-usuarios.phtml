@@ -1,12 +1,15 @@
 <div>
-    <h2>Relatório Usuarios</h2>
+    <h2>Relatório Usuários</h2>
 </div>
 <div>
-    <table>
+    <table  cellspacing= 15>
         <thead>
             <tr>
-                <th>NOME USUARIO :</th>
-                <th>PERFIL :</th>
+                <th>Nome do Usuário</th>
+                <th>Perfil </th>
+                <th>Função </th>
+                <th>Situação </th>
+                
             </tr>
         </thead>
         <tbody>
@@ -14,6 +17,8 @@
                 <tr>
                     <td><?= $linha['nm_usuario'] ?></td>
                     <td><?= $linha['nm_perfil'] ?></td>
+                    <td><?= $linha['nm_funcao'] ?></td>
+                    <td><?= $linha['nm_situacao_usuario'] ?></td>
                 </tr>
             <?php } ?>
         </tbody>
