@@ -7,7 +7,7 @@ return [
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
         ),
     ),
-    'nomeProjeto' => 'A Prova de Tudo!',
+    'nomeProjeto' => 'EJUR',
     'general' => [
         'arquivos' => BASE_PATCH . '/data/arquivos/',
         'cache_css' => BASE_PATCH . '/public/assets/cache/',
