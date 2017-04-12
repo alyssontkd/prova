@@ -8,8 +8,7 @@ use Zend\InputFilter\InputFilter;
 
 class QuestaoForm extends AbstractForm
 {
-    public function __construct($options = [])
-    {
+    public function __construct($options = []){
         parent::__construct('cadastroquestaoform');
 
         $this->inputFilter = new InputFilter();

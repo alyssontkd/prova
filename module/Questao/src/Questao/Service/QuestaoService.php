@@ -3,7 +3,6 @@
 namespace Questao\Service;
 
 use \Questao\Entity\QuestaoEntity as Entity;
-
 use Questao\Table\Questao;
 use Zend\Db\Sql\Select;
 use Zend\Db\ResultSet\HydratingResultSet;
