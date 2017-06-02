@@ -13,7 +13,7 @@ class MateriaForm extends AbstractForm{
         $this->inputFilter = new InputFilter();
         $objForm = new FormObject('materiaform',$this,$this->inputFilter);
         $objForm->hidden("id")->required(false)->label("Id");
-        $objForm->text("nm_materia")->required(false)->label("Nova Materia");
+        $objForm->text("nm_materia")->required(false)->label("Nova Matéria");
 
         $this->formObject = $objForm;
     }

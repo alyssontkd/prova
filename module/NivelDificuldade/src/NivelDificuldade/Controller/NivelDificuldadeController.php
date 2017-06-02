@@ -4,6 +4,7 @@ namespace NivelDificuldade\Controller;
 
 use Estrutura\Controller\AbstractCrudController;
 use Zend\View\Model\JsonModel;
+use Estrutura\Helpers\Data;
 use Estrutura\Helpers\Cript;
 use Zend\View\Model\ViewModel;
 
@@ -19,13 +20,13 @@ class NivelDificuldadeController extends AbstractCrudController
      */
     protected $form;
 
-    public function __construct(){
+    public function __construct()
+	{
         parent::init();
     }
 
     public function indexAction()
     {
-        //return parent::index($this->service, $this->form);
         return new ViewModel([
             'service' => $this->service,
             'form' => $this->form,
@@ -45,21 +46,18 @@ class NivelDificuldadeController extends AbstractCrudController
                 'filter' => "nivel_dificuldade.nm_nivel_dificuldade LIKE ?",
             ],            
             
-            '2' => NULL,
-                
+            '1' => NULL,
         ];
-        
-        
         $paginator = $this->service->getNivelDificuldadePaginator($filter, $camposFilter);
 
         $paginator->setItemCountPerPage($paginator->getTotalItemCount());
 
         $countPerPage = $this->getCountPerPage(
-                current(\Estrutura\Helpers\Pagination::getCountPerPage($paginator->getTotalItemCount()))
+            current(\Estrutura\Helpers\Pagination::getCountPerPage($paginator->getTotalItemCount()))
         );
 
         $paginator->setItemCountPerPage($this->getCountPerPage(
-                        current(\Estrutura\Helpers\Pagination::getCountPerPage($paginator->getTotalItemCount()))
+            current(\Estrutura\Helpers\Pagination::getCountPerPage($paginator->getTotalItemCount()))
         ))->setCurrentPageNumber($this->getCurrentPage());
 
         $viewModel = new ViewModel([
@@ -76,7 +74,7 @@ class NivelDificuldadeController extends AbstractCrudController
         return $viewModel->setTerminal(TRUE);
     }
     
-/*public function gravarAction() {
+/*	public function gravarAction() {
         try {
             $controller = $this->params('controller');
             $request = $this->getRequest();

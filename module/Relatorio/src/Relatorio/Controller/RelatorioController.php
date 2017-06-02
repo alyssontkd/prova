@@ -32,19 +32,19 @@ class RelatorioController extends AbstractCrudController {
         return $pdf;
     }
 
-    public function relatorioUsuarios() {
+    public function relatorioUsuariosAction() {
         $pdf = new PdfModel();
 
-        $pdf->setOption('filename', 'relatorio-usuario.pdf');
+        $pdf->setOption('filename', 'relatorio-usuarios.pdf');
         $pdf->setOption('paperSize', 'a4');
         $pdf->setOption('paperOrientation', 'portrait');
 
-        $resultado = $this->service->getUsuarioPerfis();
+        $resultado = $this->service->getUsuariosPerfis();
 
         $pdf->setVariables(array(
-                //'nm_usaurio' => $usuario,
-                //'nm_perfil' => $perfil,
+                    'resultado' => $resultado 
         ));
+        return $pdf;
     }
 
     public function gerarPdfMateriaSemestreAction() {

@@ -148,5 +148,15 @@ class AssuntoMateriaService extends Entity {
         return new \Zend\Paginator\Paginator(new \Zend\Paginator\Adapter\DbSelect($select, $this->getAdapter()));
     }
 
+    public function carregarAssuntoPorMateria($id_materia)
+    {
+
+        return $this->select(
+            [
+                'assunto_materia.id_materia = ?' => $id_materia,
+            ]
+        );
+    }
+
 
 }

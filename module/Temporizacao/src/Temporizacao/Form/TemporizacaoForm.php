@@ -13,7 +13,7 @@ class TemporizacaoForm extends AbstractForm{
         $this->inputFilter = new InputFilter();
         $objForm = new FormObject('temporizacaoform',$this,$this->inputFilter);
         $objForm->hidden("id")->required(false)->label("Id");  
-        $objForm->text("nm_temporizacao")->required(false)->label("Temporizacao");  
+        $objForm->text("nm_temporizacao")->required(false)->label("Temporização");
       
        
 

@@ -35,20 +35,20 @@
         </div>
         <div style="text-align: center" class="row form-group">
             <div class="well col-md-12">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <a href="<?= $this->url('navegacao', ['controller' => $controller, 'action' => 'adicionar-questao-manual', 'id' => Estrutura\Helpers\Cript::enc($dadosProva->getId())]) ?>"
                        class="btn btn-primary">Adicionar Questão Manual</a>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <a href="<?= $this->url('navegacao', ['controller' => $controller, 'action' => 'adicionar-questao-aleatoria', 'id' => Estrutura\Helpers\Cript::enc($dadosProva->getId())]) ?>"
                        class="btn btn-primary">Adicionar Questão Aleatória</a>
                 </div>
 
-                <div class="col-md-4">
-                    <a href="<?= $this->url('navegacao', ['controller' => $controller, 'action' => 'adicionar-varias-questoes-aleatorias', 'id' => Estrutura\Helpers\Cript::enc($dadosProva->getId())]) ?>"
-                       class="btn btn-primary">Adicionar Varias Questoes</a>
-                </div>
+<!--                <div class="col-md-4">-->
+<!--                    <a href="$this->url('navegacao', ['controller' => $controller, 'action' => 'adicionar-varias-questoes-aleatorias', 'id' => Estrutura\Helpers\Cript::enc($dadosProva->getId())]) ?>"-->
+<!--                       class="btn btn-primary">Adicionar Várias Questões</a>-->
+<!--                </div>-->
             </div>
         </div>
 
@@ -70,7 +70,7 @@
                     <?php
                 } else {
                     $ocultarBotoes = false;
-                    echo "<h2> Questoes da Prova </h2>";
+                    echo "<h2> Questões da Prova </h2>";
                     ?>
                     <div style="text-align: left" class="row form-group">
                         <div class="col-md-12">
@@ -81,7 +81,7 @@
                             foreach ($arQuestoesProva as $key => $item) {
                                 $arQuestao = $questaoService->buscar($item['id_questao'])->toArray();
                                 echo "<div id='quest_{$item['id_questao']}'>";
-                                echo "<span> <button id='btnremoverquest_{$item['id_questao']}' name='btnremoverquest' value='{$item['id_questao']}'> {$i} - Remover </button></span>";
+                                echo "<span> <button id='btnremoverquest_{$item['id_questao']}' name='btnremoverquest' value='{$item['id_questao']}' class='btn btn-default'> {$i} - Remover </button></span>";
                                 echo "<span> <a href='" . $this->url('rota_questao_via_prova', ['controller' => 'questao-questao', 'action'=> 'cadastro-via-prova', 'id' => Estrutura\Helpers\Cript::enc($item['id_questao']), 'id_prova' => Estrutura\Helpers\Cript::enc($dadosProva->getId())]) . "' class='btn btn-default'> {$i} - Corrigir</a></span>";
                                 echo "<h3>" . $i++ . " - " . $arQuestao['nm_titulo_questao'] . " [Identificador: {$item['id_questao']}]" . "</h3>";
                                 echo "<h4>" . $arQuestao['tx_enunciado'] . "</h4>";

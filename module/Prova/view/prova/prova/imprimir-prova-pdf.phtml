@@ -32,7 +32,7 @@
     .tablex {
         line-height: 1.42857;
         padding: 10px;
-        padding-top: 50px;
+        padding-top: 30px;
         vertical-align: top;
     }
     .bloco_pai {
@@ -58,54 +58,70 @@
     }
 
     span.info{
-        font-size: 11px;
+        font-size: 12px;
         padding-left: 10px;
     }
 </style>
 <div class="bloco_pai">
     <div class="bloco_filho_esquerda">
-        <img src="../../../../../public/assets/img/logo/transparente.png" width="160" height="60" />
+        <img src="../../../../../public/assets/img/logo/logo-menu2.png" width="160" height="60" />
     </div>
     <div class="bloco_filho_direita">
-        <img src="../../../../../public/assets/img/logo/transparente.png" width="160" height="60" />
+        <img src="../../../../../public/assets/img/logo/logo-menu.png" width="160" height="60" />
+
     </div>
 </div>
 <br>
 <br>
-<table class="table tablex" border = "1" cellspacing="0" cellpadding="2">
-    <tr>
-        <td width="60%" style="font-weight: 900;">
-            Nome:
-        </td>
-        <td width="40%" style="font-weight: 900;">
-            Matrícula:
-        </td>
-    </tr>
-    <tr>
-        <td style="font-weight: 900;">
-            Disciplina: Estrutura de Dados
-        </td>
-        <td style="font-weight: 900;">
-            Data:
-        </td>
-    </tr>
-    <tr>
-        <td style="font-weight: 900;">
-            Curso: Tecnólogo em Redes de Computadores
-        </td>
-        <td style="font-weight: 900;">
-            Turma: SI – 4AN
-        </td>
-    </tr>
-    <tr>
-        <td style="font-weight: 900;">
-            Professor: Alysson Vicuña de Oliveira
-        </td>
-        <td style="font-weight: 900;">
-            Nota:
-        </td>
-    </tr>
-</table>
+<div class="content">
+
+    <?php
+    //Objetos criados para Recuperar o nomes pelo ID
+    ##
+    $areaMateriaService = new \Materia\Service\MateriaService();
+    $obj_materia = $areaMateriaService->buscar($dadosProva->getIdMateria());
+    ##
+    #xd($dadosProva);
+    //    $areaClassificacaoSemestreService = new \ClassificacaoSemestre\Service\ClassificacaoSemestreService();
+    //    $obj_classificacaoSemestre = $areaClassificacaoSemestreService->buscar($dadosProva->getIdClassificacaoSemestre());
+
+    ?>
+
+    <table class="table tablex" border = "1" cellspacing="0" cellpadding="2" style="font-weight: 900;">
+        <tr>
+            <td width="60%">
+                Nome:
+            </td>
+            <td width="40%">
+                Matrícula:
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Disciplina: <?= $obj_materia->getNmMateria() ?>
+            </td>
+            <td>
+                Data:
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Curso: Direito
+            </td>
+            <td>
+                Turma:
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Professor:
+            </td>
+            <td>
+                Nota:
+            </td>
+        </tr>
+    </table>
+</div>
 <span class="info">
     <b>Orientações gerais:</b><br>
 - Leia atentamente toda a prova;<br>
@@ -117,42 +133,42 @@
 </span>
 
 <div class="conteudo">
-<?php
-$nrQuestoes = count($arQuestoesProva);
-if ($nrQuestoes == 0) { ?>
-    <div style="text-align: left" class="row form-group">
-        <div class="col-md-12">
-            <?php
-            echo "<h2> Nao existem questoes adicionadas a esta avaliação</h2>";
-            ?>
-        </div>
-    </div>
     <?php
-} else {
-    echo "<h2 style='text-align: center'> Questoes da Prova </h2>";
+    $nrQuestoes = count($arQuestoesProva);
+    if ($nrQuestoes == 0) { ?>
+        <div style="text-align: left" class="row form-group">
+            <div class="col-md-12">
+                <?php
+                echo "<h2> Nao existem questoes adicionadas a esta avaliação</h2>";
+                ?>
+            </div>
+        </div>
+        <?php
+    } else {
+        echo "<h2 style='text-align: center'> Questoes da Prova </h2>";
+        ?>
+        <div style="text-align: left" class="row form-group">
+            <div class="col-md-12">
+                <?php
+                $questaoService = new \Questao\Service\QuestaoService();
+                $alternativaquestaoService = new \AlternativaQuestao\Service\AlternativaQuestaoService();
+                $i = 1;
+                foreach ($arQuestoesProva as $key => $item) {
+                    $arQuestao = $questaoService->buscar($item['id_questao'])->toArray();
+                    echo "<h4>" . $i++ . " - " . $arQuestao['nm_titulo_questao'] . "</h4>";
+                    echo "<p>" . $arQuestao['tx_enunciado'] . "</p>";
+                    $arAlternativaQuestao = $alternativaquestaoService->fetchAllById(['id_questao' => $item['id_questao']]);
+                    $j = 'a';
+                    foreach ($arAlternativaQuestao as $key => $alternativa) {
+                        echo "<p>" . $j++ . ") " . $alternativa['tx_alternativa_questao'] . "</p>";
+                    }
+                    echo "<br/>";
+                } ?>
+            </div>
+        </div>
+        <?php
+    }
     ?>
-    <div style="text-align: left" class="row form-group">
-        <div class="col-md-12">
-            <?php
-            $questaoService = new \Questao\Service\QuestaoService();
-            $alternativaquestaoService = new \AlternativaQuestao\Service\AlternativaQuestaoService();
-            $i = 1;
-            foreach ($arQuestoesProva as $key => $item) {
-                $arQuestao = $questaoService->buscar($item['id_questao'])->toArray();
-                echo "<h3>" . $i++ . " - " . $arQuestao['nm_titulo_questao'] . "</h3>";
-                echo "<h4>" . $arQuestao['tx_enunciado'] . "</h4>";
-                $arAlternativaQuestao = $alternativaquestaoService->fetchAllById(['id_questao' => $item['id_questao']]);
-                $j = 'a';
-                foreach ($arAlternativaQuestao as $key => $alternativa) {
-                    echo "<h4>" . $j++ . ") - (___) " . $alternativa['tx_alternativa_questao'] . "</h4>";
-                }
-                echo "<br/>";
-            } ?>
-        </div>
-    </div>
-    <?php
-}
-?>
 </div>
 
 <?=  $dadosProva->getDsProva() ?>
