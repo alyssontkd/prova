@@ -1,17 +1,17 @@
 <VirtualHost *:80>
     SetEnv APPLICATION_ENV development
-    ServerAdmin alysson.oliveira@cultura.gov.br
+    ServerAdmin alyssontkd@gmail.com
 	DocumentRoot "C:/xampp/htdocs/prova_tudo/public"
-    ServerName dev.provatudo.com.br    
+    ServerName dev.prova.com.br    
 	<Directory "C:/xampp/htdocs/prova_tudo/public">
     Order allow,deny
     Allow from all
   </Directory>
-    ErrorLog "logs/dev.provatudo.com.br_error.log"
+    ErrorLog "logs/dev.prova.com.br_error.log"
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel info
-    CustomLog "logs/dev.provatudo.com.br_access.log" combined
+    CustomLog "logs/dev.prova.com.br_access.log" combined
 </VirtualHost>
 
 ###LINUX - Apache 2.2
