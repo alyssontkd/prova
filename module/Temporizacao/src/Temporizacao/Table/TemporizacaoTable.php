@@ -11,6 +11,7 @@ class TemporizacaoTable extends AbstractEstruturaTable{
         'id_temporizacao'=>'id',
         'nm_temporizacao'=>'nm_temporizacao',
         'id_unidade_tempo'=>'id_unidade_tempo',
+        'cs_ativo'=>'cs_ativo',
         
     ];
 

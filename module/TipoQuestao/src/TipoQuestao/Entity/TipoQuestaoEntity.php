@@ -8,8 +8,5 @@ class TipoQuestaoEntity extends AbstractEstruturaService{
 
     protected $id;
     protected $nm_tipo_questao;
-
-
-
-
+    protected $cs_ativo;
 }

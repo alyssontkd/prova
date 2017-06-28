@@ -20,6 +20,10 @@ class QuestaoTable extends AbstractEstruturaTable{
         'nm_titulo_questao'=>'nm_titulo_questao',
         'tx_enunciado'=>'tx_enunciado',
         'tx_caminho_imagem_questao'=>'tx_caminho_imagem_questao',
+        'dt_cadastro'=>'dt_cadastro',
+        'dt_alteracao'=>'dt_alteracao',
+        'dt_ultima_utilizacao'=>'dt_ultima_utilizacao',
+        'cs_ativo'=>'cs_ativo',
     ];
 
 }

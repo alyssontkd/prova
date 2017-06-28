@@ -10,6 +10,8 @@ class MateriaTable extends AbstractEstruturaTable{
     public $campos = [
         'id_materia'=>'id',
         'nm_materia'=>'nm_materia',
+        'cs_ativo'=>'cs_ativo',
+
 
 
     ];

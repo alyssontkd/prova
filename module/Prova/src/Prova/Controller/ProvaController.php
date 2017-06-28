@@ -771,4 +771,27 @@ class ProvaController extends AbstractCrudController
         return $pdf;
     }
 
+    public function excluirLogAction(){
+
+        $auth = $this->getServiceLocator()->get('AuthService')->getStorage()->read();
+        $controller = $this->params('controller');
+        $id_prova = $this->params('id');
+
+        if (isset($id_prova) && $id_prova) {
+            $id_prova = \Estrutura\Helpers\Cript::dec($id_prova);
+        } else {
+            $this->addErrorMessage('ID não informado');
+            return $this->redirect()->toRoute('navegacao', ['controller' => $controller, 'action' => 'index']);
+        }
+        $provaService = new \Prova\Service\ProvaService();
+        $provaEntity = $provaService->buscar($id_prova);
+
+        if (1 == $auth->id_perfil) { //Se o usuario logado for Administrador
+            $provaEntity->setCsAtivo(0); // Valor '0' desabilita o campo cs_ativo
+            $provaEntity->salvar();
+        }
+        $this->addSuccessMessage('Prova excluida com sucesso.');
+        return $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'index'));
+    }
+
 }

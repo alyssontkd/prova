@@ -12,6 +12,32 @@
     <div class="row" id="tipoquestao-pagination"></div>
 </div>
 
+<!--Início do Modal para confirmar a exclusao do TipoQuestao-->
+<div class="modal fade" id="modal-tipoQuestao-excluir">
+    <input type="hidden" name="modal-tipoQuestao-excluir-id" id="modal-tipoQuestao-excluir-id" value="">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Fechar</span>
+                </button>
+                <h3 class="modal-title" style="color: #FF0000">ATENÇÃO!!!</h3>
+            </div>
+            <div class="modal-body alert-danger">
+                <span> O tipo de questão selecionado, está prestes a ser excluído!!!</span>
+                <br/>
+                <span> Deseja confirmar a exclusão?</span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" title="Cancelar">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="btn-tipoQuestao-excluir-confirm" title="Sim"> Sim </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Fim do Modal para confirmar a exclusao da TipoQuestao-->
+
 <script>
     $(function () {
 

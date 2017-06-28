@@ -16,5 +16,6 @@ class FiltroProvaTable extends AbstractEstruturaTable{
         'id_nivel_dificuldade'=>'id_nivel_dificuldade',
         'id_classificacao_semestre'=>'id_classificacao_semestre',
         'nr_questoes'=>'nr_questoes',
+        'cs_ativo'=>'cs_ativo',
     ];
 }

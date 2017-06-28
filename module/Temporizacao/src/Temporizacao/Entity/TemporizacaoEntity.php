@@ -10,4 +10,5 @@ class TemporizacaoEntity extends AbstractEstruturaService{
         protected $id_temporizacao;
         protected $nm_temporizacao;
         protected $id_unidade_tempo;
+        protected $cs_ativo;
 }

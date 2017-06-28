@@ -24,7 +24,7 @@ class AlterarQuestaoForm extends AbstractForm
         $objForm->combo("id_classificacao_semestre", '\Classificacao\Service\ClassificacaoService', 'id', 'nm_classificacao_semestre')->required(true)->label("Classificação do semestre");
         $objForm->combo("id_nivel_dificuldade", '\NivelDificuldade\Service\NivelDificuldadeService', 'id', 'nm_nivel_dificuldade')->required(true)->label("Nível de Dificuldade");
 
-        #$objForm->combo("id_temporizacao", '\Temporizacao\Service\TemporizacaoService', 'id', 'nm_temporizacao')->required(false)->label("Temporizador");
+        $objForm->combo("id_temporizacao", '\Temporizacao\Service\TemporizacaoService', 'id', 'nm_temporizacao')->required(false)->label("Temporizador (Meses)");
         $objForm->hidden("id_temporizacao")->required(false)->label("Id");
         #$objForm->combo("id_tipo_questao", '\TipoQuestao\Service\TipoQuestaoService', 'id', 'nm_tipo_questao')->required(false)->label("Tipo");
         $objForm->hidden("id_tipo_questao")->required(false)->label("Id");

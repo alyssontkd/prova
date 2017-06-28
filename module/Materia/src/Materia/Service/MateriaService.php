@@ -12,8 +12,6 @@ use Zend\Paginator\Paginator;
 
 class MateriaService extends Entity {
 
-
-
     public function getTiposToArray($id) {
 
         $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
@@ -22,6 +20,7 @@ class MateriaService extends Entity {
         $select = $sql->select('materia')
             ->where([
                 'materia.id_materia = ?' => $id,
+                'materia.cs_ativo = 1',
             ]);
 
         return $sql->prepareStatementForSqlObject($select)->execute()->current();
@@ -35,6 +34,7 @@ class MateriaService extends Entity {
             ->columns(array('nm_materia',) ) #Colunas a retornar. Basta Omitir que ele traz todas as colunas
             ->where([
                 "materia.id_materia LIKE ?" => '%'.$nm_materia.'%',
+                'materia.cs_ativo = 1',
             ]);
 
         return $sql->prepareStatementForSqlObject($select)->execute();
@@ -51,6 +51,7 @@ class MateriaService extends Entity {
             ->columns(array('id_materia') )
             ->where([
                 'materia.nm_materia = ?' => $filter->filter($nm_materia),
+                'materia.cs_ativo = 1',
             ]);
 
         return $sql->prepareStatementForSqlObject($select)->execute()->current();
@@ -90,21 +91,14 @@ class MateriaService extends Entity {
 
         # var_dump($paginatorAdapter);
         #die;
-        // resultado da pagina��o
+        // resultado da paginacao
         return (new Paginator($paginatorAdapter))
             // pagina a ser buscada
             ->setCurrentPageNumber((int) $pagina)
-            // quantidade de itens na p�gina
+            // quantidade de itens na pagina
             ->setItemCountPerPage((int) $itensPagina)
             ->setPageRange((int) $itensPaginacao);
     }
-
-    /**
-     *
-     * @param type $dtInicio
-     * @param type $dtFim
-     * @return type
-     */
 
     public function getMateriaPaginator($filter = NULL, $camposFilter = NULL) {
 
@@ -113,32 +107,25 @@ class MateriaService extends Entity {
         $select = $sql->select('materia')->columns([
             'id_materia',
             'nm_materia',
-
-
-
-
+            'cs_ativo',
         ]);
 
         $where = [
+            'materia.cs_ativo = 1',// Condição para filtro da exclusão lógica '0'ativo e '1'inativo
         ];
 
         if (!empty($filter)) {
-
             foreach ($filter as $key => $value) {
-
                 if ($value) {
-
                     if (isset($camposFilter[$key]['mascara'])) {
-
                         eval("\$value = " . $camposFilter[$key]['mascara'] . ";");
                     }
-
                     $where[$camposFilter[$key]['filter']] = '%' . $value . '%';
                 }
             }
         }
 
-        $select->where($where)->order(['nm_materia DESC']);
+        $select->where($where)->order(['id_materia DESC']);
 
         return new \Zend\Paginator\Paginator(new \Zend\Paginator\Adapter\DbSelect($select, $this->getAdapter()));
     }
@@ -154,11 +141,16 @@ class MateriaService extends Entity {
 
         $select->where([
             'questao.id_classificacao_semestre = ?' => $id_classificacao_semestre,
+            'materia.cs_ativo = 1',
         ]);
         $select->order(['materia.nm_materia ASC']);
         $select->quantifier('DISTINCT');
         return $this->getTable()->getTableGateway()->selectWith($select);
     }
 
-
+    public function filtraMateriaAtiva()
+    {
+        $materiaAtiva = $this->select(['cs_ativo'=> '1']);
+        return $materiaAtiva;
+    }
 }

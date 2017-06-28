@@ -14,7 +14,7 @@ class MateriaSemestreForm extends AbstractForm{
         $objForm = new FormObject('materiasemestreform',$this,$this->inputFilter);
         $objForm->hidden("id")->required(false)->label("Id");
         $objForm->combo("id_classificacao_semestre", '\Classificacao\Service\ClassificacaoService', 'id', 'nm_classificacao_semestre')->required(true)->label("Semestre");
-        $objForm->combo("id_materia", '\Materia\Service\MateriaService', 'id', 'nm_materia')->required(true)->label("Matéria");
+        $objForm->combo("id_materia", '\Materia\Service\MateriaService', 'id', 'nm_materia','filtraMateriaAtiva')->required(true)->label("Matéria");
 
         $this->formObject = $objForm;
     }

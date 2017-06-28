@@ -174,18 +174,27 @@ public function gravarAction(){
         return $view->setTerminal(true);
     }
 
-    /**
-     * Return AutoComplete stuff
-     */
-   
+    public function excluirLogAction(){
 
-    /**
-     * @return ViewModel
-     */
+        $auth = $this->getServiceLocator()->get('AuthService')->getStorage()->read();
+        $controller = $this->params('controller');
+        $id_fonte = $this->params('id');
 
-    public function xxxAction()
-    {
+        if (isset($id_fonte) && $id_fonte) {
+            $id_fonte = \Estrutura\Helpers\Cript::dec($id_fonte);
+        } else {
+            $this->addErrorMessage('ID não informado');
+            return $this->redirect()->toRoute('navegacao', ['controller' => $controller, 'action' => 'index']);
+        }
+        $fonteService = new \Fonte\Service\FonteService();
+        $fonteEntity = $fonteService->buscar($id_fonte);
 
+        if (1 == $auth->id_perfil) { //Se o usuario logado for Administrador
+            $fonteEntity->setCsAtivo(0); // Valor '0' desabilita o campo cs_ativo
+            $fonteEntity->salvar();
+        }
+        $this->addSuccessMessage('Fonte excluida com sucesso.');
+        return $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'index'));
     }
 
 }

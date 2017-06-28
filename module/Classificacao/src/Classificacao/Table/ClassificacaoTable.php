@@ -10,7 +10,7 @@ class ClassificacaoTable extends AbstractEstruturaTable{
     public $campos = [
         'id_classificacao_semestre'=>'id',
         'nm_classificacao_semestre'=>'nm_classificacao_semestre',
-        
+        'cs_ativo'=>'cs_ativo',
     ];
 
 }

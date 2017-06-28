@@ -43,10 +43,13 @@ class MateriaSemestreController extends AbstractCrudController
         $filter = $this->getFilterPage();
 
         $camposFilter = [
-            #'0' => [
-            #    'filter' => "materia_semestre.nm_assunto_materia LIKE ?",
-            #],
-            #'1' => NULL,
+            '0' => [
+                'filter' => "classificacao_semestre.nm_classificacao_semestre LIKE ?",
+            ],
+            '1' => [
+                'filter' => "materia.nm_materia LIKE ?",
+            ],
+            '2' => NULL,
         ];
 
 
@@ -125,6 +128,13 @@ class MateriaSemestreController extends AbstractCrudController
             '0' => [
                 //'filter' => "periodoletivodetalhe.nm_sacramento LIKE ?",
             ],
+            '1' => [
+                //'filter' => "periodoletivodetalhe.nm_sacramento LIKE ?",
+            ],
+            '2' => [
+                //'filter' => "periodoletivodetalhe.nm_sacramento LIKE ?",
+            ],
+            '3' =>NULL,
 
         ];
 
@@ -215,4 +225,26 @@ class MateriaSemestreController extends AbstractCrudController
         return parent::excluir($this->service, $this->form);
     }
 
+    public function excluirLogAction(){
+
+        $auth = $this->getServiceLocator()->get('AuthService')->getStorage()->read();
+        $controller = $this->params('controller');
+        $id_materiaSemestre = $this->params('id');
+
+        if (isset($id_materiaSemestre) && $id_materiaSemestre) {
+            $id_materiaSemestre = \Estrutura\Helpers\Cript::dec($id_materiaSemestre);
+        } else {
+            $this->addErrorMessage('ID não informado');
+            return $this->redirect()->toRoute('navegacao', ['controller' => $controller, 'action' => 'index']);
+        }
+        $materiaSemestreService = new \Materia\Service\MateriaService();
+        $materiaSemestreEntity = $materiaSemestreService->buscar($id_materiaSemestre);
+
+        if (1 == $auth->id_perfil) { //Se o usuario logado for Administrador
+            $materiaSemestreEntity->setCsAtivo(0); // Valor '0' desabilita o campo cs_ativo
+            $materiaSemestreEntity->salvar();
+        }
+        $this->addSuccessMessage('Matéria excluida com sucesso.');
+        return $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'index'));
+    }
 }

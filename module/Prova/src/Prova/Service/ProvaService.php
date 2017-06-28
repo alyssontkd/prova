@@ -20,6 +20,7 @@ class ProvaService extends Entity {
         $select = $sql->select('prova')
             ->where([
                 'prova.id_prova = ?' => $id,
+                'prova.cs_ativo = 1',
             ]);
         #xd($select->getSqlString($this->getAdapter()->getPlatform()));
 
@@ -34,6 +35,7 @@ class ProvaService extends Entity {
             ->columns(array('nm_prova', 'id_cidade') ) #Colunas a retornar. Basta Omitir que ele traz todas as colunas
             ->where([
                 "prova.nm_prova LIKE ?" => '%'.$nm_prova.'%',
+                'prova.cs_ativo = 1',
             ]);
 
         return $sql->prepareStatementForSqlObject($select)->execute();
@@ -50,22 +52,13 @@ class ProvaService extends Entity {
             ->columns(array('id_prova') )
             ->where([
                 'prova.nm_prova = ?' => $filter->filter($nm_prova),
+                'prova.cs_ativo = 1',
             ]);
 
         #xd($select->getSqlString($this->getAdapter()->getPlatform()));
         return $sql->prepareStatementForSqlObject($select)->execute()->current();
     }
 
-    /**
-     * Localizar itens por paginaçao
-     *
-     * @param type $pagina
-     * @param type $itensPagina
-     * @param type $ordem
-     * @param type $like
-     * @param type $itensPaginacao
-     * @return type Paginator
-     */
     public function fetchPaginator($pagina = 1, $itensPagina = 5, $ordem = 'nm_prova ASC', $like = null, $itensPaginacao = 5) {
         //http://igorrocha.com.br/tutorial-zf2-parte-9-paginacao-busca-e-listagem/4/
         // preparar um select para tabela contato com uma ordem
@@ -109,12 +102,6 @@ class ProvaService extends Entity {
                         ->setPageRange((int) $itensPaginacao);
     }
 
-    /**
-     * 
-     * @param type $dtInicio
-     * @param type $dtFim
-     * @return type
-     */
     public function getProvasPaginator($filter = NULL, $camposFilter = NULL) {
 
         $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
@@ -135,7 +122,7 @@ class ProvaService extends Entity {
                 ]); */              
                
 
-        $where = [
+        $where = ['prova.cs_ativo = 1',
         ];
 
         if (!empty($filter)) {
@@ -178,6 +165,7 @@ class ProvaService extends Entity {
 
         $where = [
             'id_prova'=>$id_prova,
+            'prova.cs_ativo = 1',
         ];
 
         if (!empty($filter)) {

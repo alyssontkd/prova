@@ -84,98 +84,95 @@ class QuestaoController extends AbstractQuestaoController
 
     public function gravarAction()
     {
-        $controller =  $this->params('controller');
+        $controller = $this->params('controller');
         $id_questao = Cript::dec($this->getRequest()->getPost()->get('id'));
 
         $pos = $this->getRequest()->getPost()->toArray();
-          
+
         if (isset($id_questao) && $id_questao) {
             $this->atualizarAction();
             return FALSE;
         }
-        
-         $this->getRequest()->getPost()->set('id_usuario_cadastro', $this->getServiceLocator()->get('Auth\Table\MyAuth')->read()->id_usuario);
-         $this->getRequest()->getPost()->set('id_usuario_alteracao', $this->getServiceLocator()->get('Auth\Table\MyAuth')->read()->id_usuario);
-         $this->getRequest()->getPost()->set('id_classificacao_semestre',$this->getRequest()->getPost()->get('id_classificacao_semestre'));
-         $this->getRequest()->getPost()->set('id_nivel_dificuldade', $this->getRequest()->getPost()->get('id_nivel_dificuldade'));
-         $this->getRequest()->getPost()->set('id_temporizacao', $this->getRequest()->getPost()->get('id_temporizacao'));
-         $this->getRequest()->getPost()->set('id_tipo_questao', $this->getRequest()->getPost()->get('id_tipo_questao'));
-         $this->getRequest()->getPost()->set('id_fonte_questao', $this->getRequest()->getPost()->get('id_fonte_questao'));
-         $this->getRequest()->getPost()->set('id_assunto_materia',$this->getRequest()->getPost()->get('id_assunto_materia'));
-         $this->getRequest()->getPost()->set('bo_utilizavel',$this->getRequest()->getPost()->get('bo_utilizavel'));
-          $this->getRequest()->getPost()->set('nm_titulo_questao',$this->getRequest()->getPost()->get('nm_titulo_questao'));
-           $this->getRequest()->getPost()->set('tx_enunciado',$this->getRequest()->getPost()->get('tx_enunciado'));
-            $this->getRequest()->getPost()->set('bo_ativo',$this->getRequest()->getPost()->get('bo_ativo'));
-             $this->getRequest()->getPost()->set('bo_utilizavel',$this->getRequest()->getPost()->get('bo_utilizavel'));
-             #$this->getRequest()->getPost()->set('tx_caminho_imagem_questao',$this->getRequest()->getPost()->get('tx_caminho_imagem_questao'));
-          
-                 $resultQuestao = parent::gravar(
-                         $this->getServiceLocator()->get('\Questao\Service\QuestaoService'), new \Questao\Form\QuestaoForm()
-                                      ); 
-                 if($resultQuestao){
-                     
-                     
-                     try {
 
-            #$controller = $this->params('controller');
-            #$id = $this->getRequest()->getPost()->get('id');
-            #$id_questao = $this->getRequest()->getPost()->get('id_questao');
-            #$this->getRequest()->getPost()->set('id', Cript::enc($id_questao));
-            #$resultQuestao = parent::gravar(
-             #   $this->getServiceLocator()->get('\Questao\Service\QuestaoService'), new \Questao\Form\QuestaoForm()
-            #);
-           # $this->getRequest()->getPost()->set('id', $id);
-            if ($resultQuestao) {
-                $post = \Estrutura\Helpers\Utilities::arrayMapArray('trim', $this->getRequest()->getPost()->toArray());
+        $this->getRequest()->getPost()->set('id_usuario_cadastro', $this->getServiceLocator()->get('Auth\Table\MyAuth')->read()->id_usuario);
+        $this->getRequest()->getPost()->set('id_usuario_alteracao', $this->getServiceLocator()->get('Auth\Table\MyAuth')->read()->id_usuario);
+        $this->getRequest()->getPost()->set('id_classificacao_semestre', $this->getRequest()->getPost()->get('id_classificacao_semestre'));
+        $this->getRequest()->getPost()->set('id_nivel_dificuldade', $this->getRequest()->getPost()->get('id_nivel_dificuldade'));
+        $this->getRequest()->getPost()->set('id_temporizacao', $this->getRequest()->getPost()->get('id_temporizacao'));
+        $this->getRequest()->getPost()->set('id_tipo_questao', $this->getRequest()->getPost()->get('id_tipo_questao'));
+        $this->getRequest()->getPost()->set('id_fonte_questao', $this->getRequest()->getPost()->get('id_fonte_questao'));
+        $this->getRequest()->getPost()->set('id_assunto_materia', $this->getRequest()->getPost()->get('id_assunto_materia'));
+        $this->getRequest()->getPost()->set('bo_utilizavel', $this->getRequest()->getPost()->get('bo_utilizavel'));
+        $this->getRequest()->getPost()->set('nm_titulo_questao', $this->getRequest()->getPost()->get('nm_titulo_questao'));
+        $this->getRequest()->getPost()->set('tx_enunciado', $this->getRequest()->getPost()->get('tx_enunciado'));
+        $this->getRequest()->getPost()->set('bo_ativo', $this->getRequest()->getPost()->get('bo_ativo'));
+        $this->getRequest()->getPost()->set('bo_utilizavel', $this->getRequest()->getPost()->get('bo_utilizavel'));
+        #$this->getRequest()->getPost()->set('tx_caminho_imagem_questao',$this->getRequest()->getPost()->get('tx_caminho_imagem_questao'));
 
-               # $files = $this->getRequest()->getFiles();
-                #$upload = $this->uploadFile($files);
+        $resultQuestao = parent::gravar(
+            $this->getServiceLocator()->get('\Questao\Service\QuestaoService'), new \Questao\Form\QuestaoForm()
+        );
+        if ($resultQuestao) {
 
-                #$post = array_merge($post, $upload);
 
-                #if (isset($post['id']) && $post['id']) {
-                 #   $post['id'] = Cript::dec($post['id']);
-                #}
+            try {
 
-                #$alternativaService = new \AlternativaQuestao\Service\AlternativaQuestaoService();
-                #$alternativaService->setIdQuestao($id_questao);
-                #$alternativaService->excluir();
-                for ($i = 1; $i <= 5; $i++) {
-                    $arFormatado['id_alternativa_questao'] = isset($post['id_alternativa_questao_' . $i]) && $post['id_alternativa_questao_' . $i] ? $post['id_alternativa_questao_' . $i] : "";
-                    $arFormatado['tx_alternativa_questao'] = isset($post['tx_alternativa_questao_' . $i]) && $post['tx_alternativa_questao_' . $i] ? $post['tx_alternativa_questao_' . $i] : "";
-                   # $arFormatado['id_questao'] = isset($post['tx_alternativa_questao_' . $i]) && $post['tx_alternativa_questao_' . $i] ? $post['tx_alternativa_questao_' . $i] : "";
-                    $arFormatado['cs_correta'] = isset($post['cs_correta_' . $i]) && $post['cs_correta_' . $i] ? $post['cs_correta_' . $i] : "";
-                    $arFormatado['tx_justificativa'] = isset($post['tx_justificativa_' . $i]) && $post['tx_justificativa_' . $i] ? $post['tx_justificativa_' . $i] : "";
-                    $this->getRequest()->getPost()->set('id_questao', $resultQuestao);
-                    $this->getRequest()->getPost()->set('id_alternativa_questao', $arFormatado['id_alternativa_questao']);
-                   
-                    $this->getRequest()->getPost()->set('tx_alternativa_questao', $arFormatado['tx_alternativa_questao']);
-                    $this->getRequest()->getPost()->set('cs_correta', $arFormatado['cs_correta']);
-                    $this->getRequest()->getPost()->set('tx_justificativa', $arFormatado['tx_justificativa']);
-                    $this->getRequest()->getPost()->set('id_usuario_cadastro', $this->getServiceLocator()->get('Auth\Table\MyAuth')->read()->id_usuario);
-                    $this->getRequest()->getPost()->set('id_usuario_alteracao', $this->getServiceLocator()->get('Auth\Table\MyAuth')->read()->id_usuario);
+                #$controller = $this->params('controller');
+                #$id = $this->getRequest()->getPost()->get('id');
+                #$id_questao = $this->getRequest()->getPost()->get('id_questao');
+                #$this->getRequest()->getPost()->set('id', Cript::enc($id_questao));
+                #$resultQuestao = parent::gravar(
+                #   $this->getServiceLocator()->get('\Questao\Service\QuestaoService'), new \Questao\Form\QuestaoForm()
+                #);
+                # $this->getRequest()->getPost()->set('id', $id);
+                if ($resultQuestao) {
+                    $post = \Estrutura\Helpers\Utilities::arrayMapArray('trim', $this->getRequest()->getPost()->toArray());
 
-                    $resultAlternativa = AbstractCrudController::gravar(
-                        $this->getServiceLocator()->get('\AlternativaQuestao\Service\AlternativaQuestaoService'), new \AlternativaQuestao\Form\AlternativaQuestaoForm()
-                    );
+                    # $files = $this->getRequest()->getFiles();
+                    #$upload = $this->uploadFile($files);
+
+                    #$post = array_merge($post, $upload);
+
+                    #if (isset($post['id']) && $post['id']) {
+                    #   $post['id'] = Cript::dec($post['id']);
+                    #}
+
+                    #$alternativaService = new \AlternativaQuestao\Service\AlternativaQuestaoService();
+                    #$alternativaService->setIdQuestao($id_questao);
+                    #$alternativaService->excluir();
+                    for ($i = 1; $i <= 5; $i++) {
+                        $arFormatado['id_alternativa_questao'] = isset($post['id_alternativa_questao_' . $i]) && $post['id_alternativa_questao_' . $i] ? $post['id_alternativa_questao_' . $i] : "";
+                        $arFormatado['tx_alternativa_questao'] = isset($post['tx_alternativa_questao_' . $i]) && $post['tx_alternativa_questao_' . $i] ? $post['tx_alternativa_questao_' . $i] : "";
+                        # $arFormatado['id_questao'] = isset($post['tx_alternativa_questao_' . $i]) && $post['tx_alternativa_questao_' . $i] ? $post['tx_alternativa_questao_' . $i] : "";
+                        $arFormatado['cs_correta'] = isset($post['cs_correta_' . $i]) && $post['cs_correta_' . $i] ? $post['cs_correta_' . $i] : "";
+                        $arFormatado['tx_justificativa'] = isset($post['tx_justificativa_' . $i]) && $post['tx_justificativa_' . $i] ? $post['tx_justificativa_' . $i] : "";
+                        $this->getRequest()->getPost()->set('id_questao', $resultQuestao);
+                        $this->getRequest()->getPost()->set('id_alternativa_questao', $arFormatado['id_alternativa_questao']);
+
+                        $this->getRequest()->getPost()->set('tx_alternativa_questao', $arFormatado['tx_alternativa_questao']);
+                        $this->getRequest()->getPost()->set('cs_correta', $arFormatado['cs_correta']);
+                        $this->getRequest()->getPost()->set('tx_justificativa', $arFormatado['tx_justificativa']);
+                        $this->getRequest()->getPost()->set('id_usuario_cadastro', $this->getServiceLocator()->get('Auth\Table\MyAuth')->read()->id_usuario);
+                        $this->getRequest()->getPost()->set('id_usuario_alteracao', $this->getServiceLocator()->get('Auth\Table\MyAuth')->read()->id_usuario);
+
+                        $resultAlternativa = AbstractCrudController::gravar(
+                            $this->getServiceLocator()->get('\AlternativaQuestao\Service\AlternativaQuestaoService'), new \AlternativaQuestao\Form\AlternativaQuestaoForm()
+                        );
+                    }
+
+                    return $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'index'));
                 }
-
-                return $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'index'));
+            } catch (\Exception $e) {
+                $this->setPost($post);
+                $this->addErrorMessage($e->getMessage());
+                $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'cadastro'));
+                return false;
             }
-        } catch (\Exception $e) {
-            $this->setPost($post);
-            $this->addErrorMessage($e->getMessage());
-            $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'cadastro'));
-            return false;
+
+
         }
 
-                     
-                     
-                     
-                     
-                 }
-        
-        
+
     }
 
     public function gravarViaProvaAction()
@@ -185,40 +182,40 @@ class QuestaoController extends AbstractQuestaoController
 
     public function cadastroAction()
     {
-         {
-        try {
-            //recuperar o id do Periodo Letivo
-            $id_questao = Cript::dec($this->params('id'));
+        {
+            try {
+                //recuperar o id do Periodo Letivo
+                $id_questao = Cript::dec($this->params('id'));
 
-            $questao = new \Questao\Service\QuestaoService();
-            $dadosQuestao = $questao->buscar($id_questao);
+                $questao = new \Questao\Service\QuestaoService();
+                $dadosQuestao = $questao->buscar($id_questao);
 
-            $alternativaService = new \AlternativaQuestao\Service\AlternativaQuestaoService();
-            $alternativaForm = new \AlternativaQuestao\Form\AlternativaQuestaoCustomizadaForm();
+                $alternativaService = new \AlternativaQuestao\Service\AlternativaQuestaoService();
+                $alternativaForm = new \AlternativaQuestao\Form\AlternativaQuestaoCustomizadaForm();
 
-            $arrResultado = $alternativaService->fetchAllById(array('id_questao' => $id_questao));
+                $arrResultado = $alternativaService->fetchAllById(array('id_questao' => $id_questao));
 
-            $dadosView = [
-                'service' => $alternativaService,
-                'form' => $alternativaForm,
-                'controller' => $this->params('controller'),
-                'atributos' => array(),
-                'id_questao' => $id_questao,
-                'dadosQuestao' => $dadosQuestao,
-                'dadosAlternativasQuestao' => $arrResultado,
-            ];
+                $dadosView = [
+                    'service' => $alternativaService,
+                    'form' => $alternativaForm,
+                    'controller' => $this->params('controller'),
+                    'atributos' => array(),
+                    'id_questao' => $id_questao,
+                    'dadosQuestao' => $dadosQuestao,
+                    'dadosAlternativasQuestao' => $arrResultado,
+                ];
 
-            return new ViewModel($dadosView);
-        } catch (\Exception $e) {
-            $this->addErrorMessage($e->getMessage());
-            return false;
+                return new ViewModel($dadosView);
+            } catch (\Exception $e) {
+                $this->addErrorMessage($e->getMessage());
+                return false;
+            }
         }
     }
-    }
 
-   public function excluirAction($option = null)
+    public function excluirAction($option = null)
     {
-      
+
         $id = Cript::dec($this->params('id'));
         if (!empty($option)) {
             $id = Cript::dec($option);
@@ -226,18 +223,16 @@ class QuestaoController extends AbstractQuestaoController
         if (isset($id) && $id) {
             $obQuestao = new \Questao\Service\QuestaoService();
             $arrQuestao = $obQuestao->getQuestaoToArray($id);
-# x($arrQuestao['id_questao']);
 
             ##############Excluindo dados da tabela filha###############
-           $objAlternativaQuestao = new \AlternativaQuestao\Service\AlternativaQuestaoService();
+            $objAlternativaQuestao = new \AlternativaQuestao\Service\AlternativaQuestaoService();
             $objAlternativaQuestao->setIdQuestao($arrQuestao['id_questao']);
             $objAlternativaQuestao->excluir();
 
-            
 
             $retornoExcluir = parent::excluir($this->service, $this->form);
 
-            
+
         }
 
         return $retornoExcluir;
@@ -247,62 +242,42 @@ class QuestaoController extends AbstractQuestaoController
 
     public function atualizarAction()
     {
-       try {
+        try {
 
 
             $controller = $this->params('controller');
             $post = $this->getRequest()->getPost()->toArray();
             $id = Cript::dec($post['id']);
-            #xd($post);
-           $post['id'] = $id;
-          
-            #$arr = $this->service->buscar($id)->toArray();
+            $post['id'] = $id;
+            $objQuestao = new \Questao\Service\QuestaoService();
 
-            #x($post);
-
-        
-         $objQuestao = new \Questao\Service\QuestaoService();
-            #$arr = $objQuestao->buscar($id)->toArray();
-            #xd($arr);
             $objQuestao->setId($post['id_questao']);
             $objQuestao->setIdClassificacaoSemestre($post['id_classificacao_semestre']);
             $objQuestao->setIdNivelDificuldade($post['id_nivel_dificuldade']);
+            $objQuestao->setIdTemporizacao($post['id_temporizacao']);
             $objQuestao->setIdFonteQuestao($post['id_fonte_questao']);
             $objQuestao->setIdAssuntoMateria($post['id_assunto_materia']);
             $objQuestao->setNmTituloQuestao($post['nm_titulo_questao']);
             $objQuestao->setTxEnunciado($post['tx_enunciado']);
-            
-           $objQuestao->setIdUsuarioAlteracao( $this->getServiceLocator()->get('Auth\Table\MyAuth')->read()->id_usuario);
+
+            $objQuestao->setIdUsuarioAlteracao($this->getServiceLocator()->get('Auth\Table\MyAuth')->read()->id_usuario);
             $objQuestao->salvar();
 
-            
-             $objAlternativaQuestao = new \AlternativaQuestao\Service\AlternativaQuestaoService();
+
+            $objAlternativaQuestao = new \AlternativaQuestao\Service\AlternativaQuestaoService();
             for ($a = 1; $a <= 5; $a++) {
-                
-             
-                 $objAlternativaQuestao->setId($post['id_alternativa_questao_'.$a]);
-                 $objAlternativaQuestao->setTxAlternativaQuestao($post['tx_alternativa_questao_'.$a]);
-                 $objAlternativaQuestao->setCsCorreta($post['cs_correta_'.$a]);
-                 $objAlternativaQuestao->setTxJustificativa($post['tx_justificativa_'.$a]);
-                 $objAlternativaQuestao->setIdQuestao($post['id_questao']);
-                 $objAlternativaQuestao->setIdUsuarioAlteracao( $this->getServiceLocator()->get('Auth\Table\MyAuth')->read()->id_usuario);
-                  $objAlternativaQuestao->salvar();   
+
+                $objAlternativaQuestao->setId($post['id_alternativa_questao_' . $a]);
+                $objAlternativaQuestao->setTxAlternativaQuestao($post['tx_alternativa_questao_' . $a]);
+                $objAlternativaQuestao->setCsCorreta($post['cs_correta_' . $a]);
+                $objAlternativaQuestao->setTxJustificativa($post['tx_justificativa_' . $a]);
+                $objAlternativaQuestao->setIdQuestao($post['id_questao']);
+                $objAlternativaQuestao->setIdUsuarioAlteracao($this->getServiceLocator()->get('Auth\Table\MyAuth')->read()->id_usuario);
+                $objAlternativaQuestao->salvar();
             }
-           # $objQuestaoProva= new \QuestaoProva\Service\QuestaoProvaService();
-            #$objQuestaoProva->setId($post['id_questao']);
-             #  $objQuestaoProva->excluir();
-               
-               
-            #$objQuestao->setId($post['id_questao']);
-             #  $objQuestao->excluir();
-            #xd($arr);
 
-           
-
-                $this->addSuccessMessage('Questão atualizada com sucesso.');
-                $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'index'));
-
-                #return $my_service->salvar();;
+            $this->addSuccessMessage('Questão atualizada com sucesso.');
+            $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'index'));
 
         } catch (\Exception $e) {
 
@@ -530,6 +505,12 @@ class QuestaoController extends AbstractQuestaoController
         $materiaSemestreService = new \MateriaSemestre\Service\MateriaSemestreService();
         $arMaterias = $materiaSemestreService->fetchAllById(['id_classificacao_semestre' => $id_classificacao_semestre]);
 
+        #Recupera os materias cadastradas por semestre
+//        $materiaSemestreService = new \MateriaSemestre\Service\MateriaSemestreService();
+//        $materiaSemestreService->setId($id_classificacao_semestre);
+//        $materiaSemestreService->setCsAtivo(1);
+//        $arMaterias = $materiaSemestreService->buscar()->toArray();
+
         #Faz o Tratamento do Array para enviar para View
         $arMateriasCombo = array();
         $materiaService = new \Materia\Service\MateriaService();
@@ -568,7 +549,7 @@ class QuestaoController extends AbstractQuestaoController
         #Faz o Tratamento do Array para enviar para View
         $arAssuntoMateriaCombo = array();
         foreach ($arAssuntoMaterias as $key => $item) {
-            if(isset($item['id_assunto_materia']) && isset($item['nm_assunto_materia']) && $item['id_assunto_materia'] && $item['nm_assunto_materia']) {
+            if (isset($item['id_assunto_materia']) && isset($item['nm_assunto_materia']) && $item['id_assunto_materia'] && $item['nm_assunto_materia']) {
                 $arAssuntoMateriaCombo[$key]['id'] = $item['id_assunto_materia'];
                 $arAssuntoMateriaCombo[$key]['descricao'] = $item['nm_assunto_materia'];
             }
@@ -584,6 +565,29 @@ class QuestaoController extends AbstractQuestaoController
 
         return $valuesJson;
 
+    }
+
+    public function excluirLogAction(){
+
+        $auth = $this->getServiceLocator()->get('AuthService')->getStorage()->read();
+        $controller = $this->params('controller');
+        $id_questao = $this->params('id');
+
+        if (isset($id_questao) && $id_questao) {
+            $id_questao = \Estrutura\Helpers\Cript::dec($id_questao);
+        } else {
+            $this->addErrorMessage('ID não informado');
+            return $this->redirect()->toRoute('navegacao', ['controller' => $controller, 'action' => 'index']);
+        }
+        $questaoService = new \Questao\Service\QuestaoService();
+        $questaoEntity = $questaoService->buscar($id_questao);
+
+        if (1 == $auth->id_perfil) { //Se o usuario logado for Administrador
+            $questaoEntity->setCsAtivo(0); // Valor '0' desabilita o campo cs_ativo
+            $questaoEntity->salvar();
+        }
+        $this->addSuccessMessage('Questão excluida com sucesso.');
+        return $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'index'));
     }
 
 }

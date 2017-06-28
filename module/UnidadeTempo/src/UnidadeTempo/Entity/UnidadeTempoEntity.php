@@ -9,5 +9,6 @@ class UnidadeTempoEntity extends AbstractEstruturaService{
 		protected $id;
         protected $id_unidade_tempo;
         protected $nm_unidade_tempo;
+        protected $cs_ativo;
         
 }

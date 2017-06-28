@@ -3,8 +3,9 @@
 namespace Materia\Controller;
 
 use Estrutura\Controller\AbstractCrudController;
+use Zend\Db\Adapter\Exception\ErrorException;
 use Zend\View\Model\ViewModel;
-
+use Estrutura\Helpers\Cript;
 
 class MateriaController extends AbstractCrudController
 {
@@ -90,4 +91,28 @@ class MateriaController extends AbstractCrudController
     {
         return parent::excluir($this->service, $this->form);
     }
+
+    public function excluirLogAction(){
+
+        $auth = $this->getServiceLocator()->get('AuthService')->getStorage()->read();
+        $controller = $this->params('controller');
+        $id_materia = $this->params('id');
+
+        if (isset($id_materia) && $id_materia) {
+            $id_materia = \Estrutura\Helpers\Cript::dec($id_materia);
+        } else {
+            $this->addErrorMessage('ID não informado');
+            return $this->redirect()->toRoute('navegacao', ['controller' => $controller, 'action' => 'index']);
+        }
+        $materiaService = new \Materia\Service\MateriaService();
+        $materiaEntity = $materiaService->buscar($id_materia);
+
+        if (1 == $auth->id_perfil) { //Se o usuario logado for Administrador
+            $materiaEntity->setCsAtivo(0); // Valor '0' desabilita o campo cs_ativo
+            $materiaEntity->salvar();
+        }
+        $this->addSuccessMessage('Matéria excluida com sucesso.');
+        return $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'index'));
+    }
+
 }

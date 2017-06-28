@@ -16,13 +16,13 @@
                     <th class="text-center">Ações</th>
                 </tr>
                 <tr>
-                    <th colspan="6" class="ts-pager form-horizontal">
+                    <th colspan="2" class="ts-pager form-horizontal">
                         <?php
                         echo $this->paginationControl(
                                 $paginator, 'Sliding', 'partials/pagination.phtml', [
                             'urlPagination' => '/nivel_dificuldade-niveldificuldade/index-pagination',
                             'countPerPage' => $countPerPage,
-                            'divData' => '#nivel-pagination',
+                            'divData' => '#nivel_dificuldade-pagination',
                                 ]
                         );
                         ?>  
@@ -63,9 +63,9 @@
                         
 
                             <td class="text-center">
-                                <span class="btn-group" style="width: 100px;">
+                                <span class="btn-group nivelDificuldade-acoes-group" style="width: 100px;">
                                     <?= \Estrutura\Service\HtmlHelper::botaoAlterar($this->url('navegacao', array('controller' => $controller, 'action' => 'cadastro', 'id' => Estrutura\Helpers\Cript::enc($nivel['id_nivel_dificuldade'])))) ?>
-                                    <?= \Estrutura\Service\HtmlHelper::botaoExcluir($this->url('navegacao', array('controller' => $controller, 'action' => 'excluir', 'id' => Estrutura\Helpers\Cript::enc($nivel['id_nivel_dificuldade'])))) ?>
+                                    <?= \Estrutura\Service\HtmlHelper::botaoExcluirConfirm(Estrutura\Helpers\Cript::enc($nivel['id_nivel_dificuldade'])) ?>
                                 </span>
                             </td>
                         </tr>
@@ -80,7 +80,6 @@
         <div class="row">
             <div class="col-md-12">
                 <a href="<?=$this->url('navegacao', ['controller'=>'principal-principal'])?>" class="btn btn-primary" title="Retorna para a Página Principal">Início</a>
-                <a class="btn btn-default" href="<?=$this->url('navegacao',array('controller'=>$controller,'action'=>'cadastro'))?>" title="Adicionar Nível de Dificuldade">Novo Nível de Dificuldade</a>
             </div>
         </div>
     </div>
@@ -144,109 +143,18 @@
             }
         });
 
-        $('#filtrarRelatorioSaquesPagos').click(function () {
+        $('.nivelDificuldade-acoes-group .btn-excluir').off('click').on('click', function () {
 
-            $.ajax({
-                type: "post",
-                dataType: "text",
-                cache: false,
-                url: '/mcnetwork-relatorio/relatorio-saques-pagos',
-                async: true,
-                data: {
-                    dt_inicio: $('#dt_inicio').val(),
-                    dt_fim: $('#dt_fim').val()
-                },
-                beforeSend: function () {
-
-                    $('#modal-relatorio-body-3').html(
-                            '<div class="row"><div class="col-md-12 text-center"><p><img src="/assets/img/carregando.gif"><p></div></div>'
-                            );
-                },
-                success: function (data) {
-
-                    $('#modal-relatorio-body-3').html(data);
-                }
-            });
+            var id = $(this).attr('rel');
+            $("#modal-nivelDificuldade-excluir-id").val(id);
+            $('#modal-nivelDificuldade-excluir').modal('show');
         });
 
-        $('#limparRelatorioSaquesPagos').click(function () {
+        $('#btn-nivelDificuldade-excluir-confirm').off('click').on('click', function () {
 
-            $.ajax({
-                type: "post",
-                dataType: "text",
-                cache: false,
-                url: '/mcnetwork-relatorio/relatorio-saques-pagos',
-                async: true,
-                data: {},
-                beforeSend: function () {
-
-                    $('#modal-relatorio-body-3').html(
-                            '<div class="row"><div class="col-md-12 text-center"><p><img src="/assets/img/carregando.gif"><p></div></div>'
-                            );
-                },
-                success: function (data) {
-
-                    $('#modal-relatorio-body-3').html(data);
-                }
-            });
-        });
-
-        $('.relatorio-recibo').off('click').on('click', function () {
-
-            var idPagamento = $(this).attr('rel');
-            var win = window.open('/mcnetwork-cursos/download-img-pay/' + idPagamento, '_blank');
-            win.focus();
-        });
-
-        $('.relatorio-recusar-recibo').off('click').on('click', function () {
-
-            var idPagamento = $(this).attr('rel');
-
-            $.ajax({
-                type: "post",
-                dataType: "text",
-                cache: false,
-                url: '/pagamento-pagamento/recusar-recibo',
-                async: true,
-                beforeSend: function () {
-
-                    $('#modal-relatorio-body-3').html(
-                            '<div class="row"><div class="col-md-12 text-center"><p><img src="/assets/img/carregando.gif"><p></div></div>'
-                            );
-                },
-                data: {
-                    id_saque: idPagamento
-                },
-                success: function () {
-
-                    $.ajax({
-                        type: "post",
-                        dataType: "text",
-                        cache: false,
-                        url: '/mcnetwork-relatorio/relatorio-saques-pagos',
-                        async: true,
-                        data: {},
-                        success: function (data) {
-
-                            $('#modal-relatorio-body-3').html(data);
-                        }
-                    });
-                }
-            });
-        });
-
-        $("#imprimirRelatorioSaquesPagos").click(function () {
-
-            var modalPrint = $('.modalPrint');
-            modalPrint.removeClass('modal');
-            $('.form-inline').hide();
-            $('#printSection').addClass('printSection');
-            $('#printSection').html(modalPrint.html());
-            window.print();
-            modalPrint.addClass('modal');
-            $('.form-inline').show();
-            $('#printSection').removeClass('printSection');
-            $('#printSection').html('');
+            $('#modal-nivelDificuldade-excluir').modal('hide');
+            var id = $("#modal-nivelDificuldade-excluir-id").val();
+            window.location.href = '/nivel_dificuldade-niveldificuldade/excluirLog/' + id;
         });
     });
 </script>

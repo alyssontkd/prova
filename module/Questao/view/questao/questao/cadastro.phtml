@@ -1,12 +1,9 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="/assets/ckeditor/ckedit../../ckeditor.js" type="text/javascript"></script>
 <script src="/assets/ckeditor/adapters/jquery.js" type="text/javascript"></script>
-
-
 <?php
 /** @var $form \Questao\Form\Questao */ //Alysson
 /** @var $lista \Questao\Service\Questao[] */ //Alysson
-
 //$id_controller =  $form->get('id_controller')->getValue(); //Alysson
 ?>
 <div class="page-head">
@@ -23,7 +20,7 @@
             echo $this->form()->openTag($form);
             $form->get('id')->setValue(Estrutura\Helpers\Cript::enc($form->get('id')->getValue()));
             $id_assunto_materia = $form->get('id_assunto_materia')->getValue();
-           #xd($id_assunto_materia);
+            #xd($id_assunto_materia);
             echo $this->formHidden($form->get('id'));
 
             $assunto_materiaService = new \AssuntoMateria\Service\AssuntoMateriaService();
@@ -36,10 +33,6 @@
             $form->get('id_tipo_questao')->setValue(1);
             echo $this->formHidden($form->get('id_tipo_questao'));
 
-            #Temporizador 1 e o de 5 meses
-            $form->get('id_temporizacao')->setValue(1);
-            echo $this->formHidden($form->get('id_temporizacao'));
-
             #Preenche o Nivel de Dificuldade como Nao informdo
             $form->get('id_nivel_dificuldade')->setValue(1);
             echo $this->formHidden($form->get('id_nivel_dificuldade'));
@@ -48,52 +41,53 @@
             $form->get('id_fonte_questao')->setValue(1);
             echo $this->formHidden($form->get('id_fonte_questao'));
 
-           
-                
 
-                $assunto_materiaService = new \AssuntoMateria\Service\AssuntoMateriaService();
-                $ob_assunto_materia = $assunto_materiaService->buscar($id_assunto_materia);
+            $assunto_materiaService = new \AssuntoMateria\Service\AssuntoMateriaService();
+            $ob_assunto_materia = $assunto_materiaService->buscar($id_assunto_materia);
 
-                #$form->get('id_questao')->setValue($dadosQuestao->getId());
-                #echo $this->formHidden($form->get('id_questao'));
+            #$form->get('id_questao')->setValue($dadosQuestao->getId());
+            #echo $this->formHidden($form->get('id_questao'));
 
-                echo $this->formHidden($form->get('id_alternativa_questao_1'));
-                echo $this->formHidden($form->get('id_alternativa_questao_2'));
-                echo $this->formHidden($form->get('id_alternativa_questao_3'));
-                echo $this->formHidden($form->get('id_alternativa_questao_4'));
-                echo $this->formHidden($form->get('id_alternativa_questao_5'));
+            echo $this->formHidden($form->get('id_alternativa_questao_1'));
+            echo $this->formHidden($form->get('id_alternativa_questao_2'));
+            echo $this->formHidden($form->get('id_alternativa_questao_3'));
+            echo $this->formHidden($form->get('id_alternativa_questao_4'));
+            echo $this->formHidden($form->get('id_alternativa_questao_5'));
 
-                #$form->get('id_classificacao_semestre')->setValue($dadosQuestao->getIdClassificacaoSemestre());
-                #$form->get('id_tipo_questao')->setValue($dadosQuestao->getIdTipoQuestao());
-                #$form->get('id_fonte_questao')->setValue($dadosQuestao->getIdFonteQuestao());
-                #$form->get('id_materia')->setValue($ob_assunto_materia->getIdMateria());
-                #$form->get('id_assunto_materia')->setValue($dadosQuestao->getIdAssuntoMateria());
-                #$form->get('id_nivel_dificuldade')->setValue($dadosQuestao->getIdNivelDificuldade());
-                #$form->get('id_temporizacao')->setValue($dadosQuestao->getIdTemporizacao());
-                #$form->get('nm_titulo_questao')->setValue($dadosQuestao->getNmTituloQuestao());
-                #$form->get('tx_enunciado')->setValue($dadosQuestao->getTxEnunciado());
+            #$form->get('id_classificacao_semestre')->setValue($dadosQuestao->getIdClassificacaoSemestre());
+            #$form->get('id_tipo_questao')->setValue($dadosQuestao->getIdTipoQuestao());
+            #$form->get('id_fonte_questao')->setValue($dadosQuestao->getIdFonteQuestao());
+            #$form->get('id_materia')->setValue($ob_assunto_materia->getIdMateria());
+            #$form->get('id_assunto_materia')->setValue($dadosQuestao->getIdAssuntoMateria());
+            #$form->get('id_nivel_dificuldade')->setValue($dadosQuestao->getIdNivelDificuldade());
+            #$form->get('id_temporizacao')->setValue($dadosQuestao->getIdTemporizacao());
+            #$form->get('nm_titulo_questao')->setValue($dadosQuestao->getNmTituloQuestao());
+            #$form->get('tx_enunciado')->setValue($dadosQuestao->getTxEnunciado());
 
-                if(count($dadosAlternativasQuestao) > 0) {
-                    $i = 0;
-                    foreach ($dadosAlternativasQuestao as $key => $item) {
-                        ++$i;
-                        $form->get('id_alternativa_questao_'.$i)->setValue($item['id_alternativa_questao']);
-                        $form->get('tx_alternativa_questao_'.$i)->setValue($item['tx_alternativa_questao']);
-                        $form->get('cs_correta_'.$i)->setValue($item['cs_correta']);
-                        $form->get('tx_justificativa_'.$i)->setValue($item['tx_justificativa']);
-                    }
+            if (count($dadosAlternativasQuestao) > 0) {
+                $i = 0;
+                foreach ($dadosAlternativasQuestao as $key => $item) {
+                    ++$i;
+                    $form->get('id_alternativa_questao_' . $i)->setValue($item['id_alternativa_questao']);
+                    $form->get('tx_alternativa_questao_' . $i)->setValue($item['tx_alternativa_questao']);
+                    $form->get('cs_correta_' . $i)->setValue($item['cs_correta']);
+                    $form->get('tx_justificativa_' . $i)->setValue($item['tx_justificativa']);
                 }
-                ?>
-            
-            
-            
+            }
+            ?>
+
+
             <div class="form-group">
-                <div class="col-md-6">-
+                <div class="col-md-4">-
                     <?= $this->formRow($form->get('id_fonte_questao')) ?>
                     <div class="help-block with-errors"></div>
                 </div>
-                <div class="col-md-6">-
+                <div class="col-md-4">-
                     <?= $this->formRow($form->get('id_nivel_dificuldade')) ?>
+                    <div class="help-block with-errors"></div>
+                </div>
+                <div class="col-md-4">-
+                    <?= $this->formRow($form->get('id_temporizacao')) ?>
                     <div class="help-block with-errors"></div>
                 </div>
             </div>
@@ -120,297 +114,315 @@
                 </div>
             </div>
             <div id="up">
-            <div class="form-group">
-                <div class="col-md-12" >-
-                    <?= $this->formRow($form->get('tx_enunciado')) ?>
-                    <div class="help-block with-errors"></div>
-   
+                <div class="form-group">
+                    <div class="col-md-12">-
+                        <?= $this->formRow($form->get('tx_enunciado')) ?>
+                        <div class="help-block with-errors"></div>
+
+                    </div>
                 </div>
             </div>
-            </div>
             <div class="form-group">
-                
-                  <div class="panel panel-info">
-                                    <div class="panel-heading">
-                                        <h3 class="light panel-title">Alternativa - 1</h3>
-                                    </div>
-                                    <div class="panel-body" style="background-color: white;">
-                                        <!-- Objetivo -->
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <?= $this->formRow($form->get('tx_alternativa_questao_1')) ?>
-                                            </div>
-                                        </div>
 
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <?= $this->formRow($form->get('cs_correta_1')) ?>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <?= $this->formRow($form->get('tx_justificativa_1')) ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                 <div class="panel panel-info">
-                                    <div class="panel-heading">
-                                        <h3 class="light panel-title">Alternativa - 2</h3>
-                                    </div>
-                                    <div class="panel-body" style="background-color: white;">
-                                        <!-- Objetivo -->
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <?= $this->formRow($form->get('tx_alternativa_questao_2')) ?>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <?= $this->formRow($form->get('cs_correta_2')) ?>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <?= $this->formRow($form->get('tx_justificativa_2')) ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-
-                          
-                                <div class="panel panel-info">
-                                    <div class="panel-heading">
-                                        <h3 class="light panel-title">Alternativa - 3</h3>
-                                    </div>
-                                    <div class="panel-body" style="background-color: white;">
-                                        <!-- Objetivo -->
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <?= $this->formRow($form->get('tx_alternativa_questao_3')) ?>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <?= $this->formRow($form->get('cs_correta_3')) ?>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <?= $this->formRow($form->get('tx_justificativa_3')) ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-
-                            
-                                <div class="panel panel-info">
-                                    <div class="panel-heading">
-                                        <h3 class="light panel-title">Alternativa - 4</h3>
-                                    </div>
-                                    <div class="panel-body" style="background-color: white;">
-                                        <!-- Objetivo -->
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <?= $this->formRow($form->get('tx_alternativa_questao_4')) ?>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <?= $this->formRow($form->get('cs_correta_4')) ?>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <?= $this->formRow($form->get('tx_justificativa_4')) ?>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            
-           
-                                <div class="panel panel-info">
-                                    <div class="panel-heading">
-                                        <h3 class="light panel-title">Alternativa - 5</h3>
-                                    </div>
-                                    <div class="panel-body" style="background-color: white;">
-                                        <!-- Objetivo -->
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <?= $this->formRow($form->get('tx_alternativa_questao_5')) ?>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <?= $this->formRow($form->get('cs_correta_5')) ?>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="col-md-12">
-                                                <?= $this->formRow($form->get('tx_justificativa_5')) ?>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
+                    <div class="panel-heading">
+                        <h3 class="light panel-title">Alternativa - 1</h3>
+                    </div>
+                    <div class="panel-body" style="background-color: white;">
+                        <!-- Objetivo -->
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <?= $this->formRow($form->get('tx_alternativa_questao_1')) ?>
                             </div>
-         
-            </div>
-                
-                <div class="col-md-10">
-                    <br/>
-                    <a href="<?= $this->url('navegacao', ['controller' => $controller]) ?>"
-                       class="btn btn-default">Voltar</a>
-                    <button type="submit" class="btn btn-primary">Salvar</button>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <?= $this->formRow($form->get('cs_correta_1')) ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <?= $this->formRow($form->get('tx_justificativa_1')) ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="light panel-title">Alternativa - 2</h3>
+                    </div>
+                    <div class="panel-body" style="background-color: white;">
+                        <!-- Objetivo -->
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <?= $this->formRow($form->get('tx_alternativa_questao_2')) ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <?= $this->formRow($form->get('cs_correta_2')) ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <?= $this->formRow($form->get('tx_justificativa_2')) ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="light panel-title">Alternativa - 3</h3>
+                    </div>
+                    <div class="panel-body" style="background-color: white;">
+                        <!-- Objetivo -->
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <?= $this->formRow($form->get('tx_alternativa_questao_3')) ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <?= $this->formRow($form->get('cs_correta_3')) ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <?= $this->formRow($form->get('tx_justificativa_3')) ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="light panel-title">Alternativa - 4</h3>
+                    </div>
+                    <div class="panel-body" style="background-color: white;">
+                        <!-- Objetivo -->
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <?= $this->formRow($form->get('tx_alternativa_questao_4')) ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <?= $this->formRow($form->get('cs_correta_4')) ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <?= $this->formRow($form->get('tx_justificativa_4')) ?>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="light panel-title">Alternativa - 5</h3>
+                    </div>
+                    <div class="panel-body" style="background-color: white;">
+                        <!-- Objetivo -->
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <?= $this->formRow($form->get('tx_alternativa_questao_5')) ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-2">
+                                <?= $this->formRow($form->get('cs_correta_5')) ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <?= $this->formRow($form->get('tx_justificativa_5')) ?>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
 
         </div>
-        <br/>
 
-        <div class="row" id=""></div>
+        <div class="col-md-10">
+            <br/>
+            <a href="<?= $this->url('navegacao', ['controller' => $controller]) ?>"
+               class="btn btn-default">Voltar</a>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
     </div>
-       <script type="text/javascript">
-          
-                             CKEDITOR.replace('tx_enunciado',
- {
-     filebrowserBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=files',
-     filebrowserImageBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=images',
-     filebrowserUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=files',
-     filebrowserImageUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=images'
- });
- 
-                              CKEDITOR.replace('tx_alternativa_questao_1',
- {
-      filebrowserBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=files',
-     filebrowserImageBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=images',
-     filebrowserUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=files',
-     filebrowserImageUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=images'
- });
-                             CKEDITOR.replace('tx_alternativa_questao_2',
- {
-      filebrowserBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=files',
-     filebrowserImageBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=images',
-     filebrowserUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=files',
-     filebrowserImageUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=images'
- });
-                             CKEDITOR.replace('tx_alternativa_questao_3',
- {
-     filebrowserBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=files',
-     filebrowserImageBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=images',
-     filebrowserUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=files',
-     filebrowserImageUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=images'
- });
-                             CKEDITOR.replace('tx_alternativa_questao_4',
- {
-      filebrowserBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=files',
-     filebrowserImageBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=images',
-     filebrowserUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=files',
-     filebrowserImageUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=images'
- });
-                             CKEDITOR.replace('tx_alternativa_questao_5',
- {
-      filebrowserBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=files',
-     filebrowserImageBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=images',
-     filebrowserUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=files',
-     filebrowserImageUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=images'
- });
- 
-    $( '#tx_enunciado' ).ckeditor();
-            $( '#tx_alternativa_questao_1' ).ckeditor();
-            $( '#tx_alternativa_questao_2' ).ckeditor();
-            $( '#tx_alternativa_questao_3' ).ckeditor();
-            $( '#tx_alternativa_questao_4' ).ckeditor();
-            $( '#tx_alternativa_questao_5' ).ckeditor();
-                
 
-    </script>
-    
-    
-    <div class="carregando"><p><img src="/assets/img/carregando1.gif"><p></div>
-    <script type="text/javascript" language="javascript" class="init">
-      
-        $(document).ready(function () {
-          
-            
-            $('.carregando').hide();
-            $('#id_classificacao_semestre').change(function () {
-                if ($(this).val()) {
-                    $('#id_materia').hide();
-                    $('.carregando').show();
-                    $.ajax({
-                        type: 'POST',
-                        dataType: 'json',
-                        url: '/questao-questao/carregar-combo-materias-ajax',
-                        async: true,
-                        data: {
-                            id_classificacao_semestre: $(this).val(),
-                        },
-                        success: function (response) {
-                            if (response.sucesso == true) {
-                                var options = '<option value=""> Selecione...</option>';
-                                $.each(response.ar_materias, function (i, item) {
-                                    options += '<option value="' + response.ar_materias[i].id + '">' + response.ar_materias[i].descricao + '</option>';
-                                });
-                                $('#id_materia').html(options).show();
-                                $('#id_assunto_materia').html('<option value="">-- Escolha uma Matéria --</option>');
-                                $('.carregando').hide();
-                            } else {
-                                $('#id_materia').html('<option value="">-- Erro ao carregar matérias --</option>');
+</div>
+<br/>
 
-                            }
-                        }
-                    });
-                } else {
-                    $('#id_materia').html('<option value="">-- Escolha uma Classificação --</option>');
-                    $('#id_assunto_materia').html('<option value="">-- Escolha uma Matéria --</option>');
+<div class="row" id=""></div>
+</div>
+<script type="text/javascript">
+
+    CKEDITOR.replace('tx_enunciado',
+        {
+            filebrowserBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=files',
+            filebrowserImageBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=images',
+            filebrowserUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=files',
+            filebrowserImageUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=images',
+        });
+
+    CKEDITOR.replace('tx_alternativa_questao_1',
+        {
+            filebrowserBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=files',
+            filebrowserImageBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=images',
+            filebrowserUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=files',
+            filebrowserImageUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=images'
+        });
+    CKEDITOR.replace('tx_alternativa_questao_2',
+        {
+            filebrowserBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=files',
+            filebrowserImageBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=images',
+            filebrowserUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=files',
+            filebrowserImageUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=images'
+        });
+    CKEDITOR.replace('tx_alternativa_questao_3',
+        {
+            filebrowserBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=files',
+            filebrowserImageBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=images',
+            filebrowserUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=files',
+            filebrowserImageUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=images'
+        });
+    CKEDITOR.replace('tx_alternativa_questao_4',
+        {
+            filebrowserBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=files',
+            filebrowserImageBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=images',
+            filebrowserUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=files',
+            filebrowserImageUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=images'
+        });
+    CKEDITOR.replace('tx_alternativa_questao_5',
+        {
+            filebrowserBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=files',
+            filebrowserImageBrowseUrl: '/assets/kcfinder/browse.php?opener=ckeditor&type=images',
+            filebrowserUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=files',
+            filebrowserImageUploadUrl: '/assets/kcfinder/upload.php?opener=ckeditor&type=images'
+        });
+
+    /*
+    $(function ($) {
+        $("#cke_tx_enunciado").validate({
+            event: 'blur',
+            rules: {
+                title: {required: true},
+                content: {
+                    required: function (textarea) {
+                        alert('Vsf fdp!');
+                        CKEDITOR.instances[textarea.id].updateElement(); // update textarea
+                        var editorcontent = textarea.value.replace(/<[^>]*>/gi, ''); // strip tags
+                        return editorcontent.length === 0;
+                    }
                 }
-            });
+            }
+        });
+    });
+*/
+    $('#tx_enunciado').ckeditor();
+    $('#tx_alternativa_questao_1').ckeditor();
+    $('#tx_alternativa_questao_2').ckeditor();
+    $('#tx_alternativa_questao_3').ckeditor();
+    $('#tx_alternativa_questao_4').ckeditor();
+    $('#tx_alternativa_questao_5').ckeditor();
 
-                $('#id_materia').change(function () {
-                    if ($(this).val()) {
-                        $('#id_assunto_materia').hide();
-                        $('.carregando').show();
-                        $.ajax({
-                            type: 'POST',
-                            dataType: 'json',
-                            url: '/questao-questao/carregar-combo-assunto-materia-ajax',
-                            async: true,
-                            data: {
-                                id_materia: $(this).val(),
-                            },
-                            success: function (response) {
-                                if (response.sucesso == true) {
-                                    var options = '<option value=""> Selecione...</option>';
-                                    $.each(response.ar_assunto_materia, function (i, item) {
-                                        options += '<option value="' + response.ar_assunto_materia[i].id + '">' + response.ar_assunto_materia[i].descricao + '</option>';
-                                    });
-                                    $('#id_assunto_materia').html(options).show();
-                                    $('.carregando').hide();
-                                   
-                                } else {
-                                    $('#id_assunto_materia').html('<option value="">-- Erro ao carregar Assuntos --</option>');
-                                }
-                            }
-                        });
-                    } else {
-                        $('#id_assunto_materia').html('<option value="">-- Escolha uma Matéria --</option>');
+
+</script>
+
+
+<div class="carregando"><p><img src="/assets/img/carregando1.gif">
+
+    <p></div>
+<script type="text/javascript" language="javascript" class="init">
+
+    $(document).ready(function () {
+
+
+        $('.carregando').hide();
+        $('#id_classificacao_semestre').change(function () {
+            if ($(this).val()) {
+                $('#id_materia').hide();
+                $('.carregando').show();
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: '/questao-questao/carregar-combo-materias-ajax',
+                    async: true,
+                    data: {
+                        id_classificacao_semestre: $(this).val(),
+                    },
+                    success: function (response) {
+                        if (response.sucesso == true) {
+                            var options = '<option value=""> Selecione...</option>';
+                            $.each(response.ar_materias, function (i, item) {
+                                options += '<option value="' + response.ar_materias[i].id + '">' + response.ar_materias[i].descricao + '</option>';
+                            });
+                            $('#id_materia').html(options).show();
+                            $('#id_assunto_materia').html('<option value="">-- Escolha uma Matéria --</option>');
+                            $('.carregando').hide();
+                        } else {
+                            $('#id_materia').html('<option value="">-- Erro ao carregar matérias --</option>');
+
+                        }
                     }
                 });
+            } else {
+                $('#id_materia').html('<option value="">-- Escolha uma Classificação --</option>');
+                $('#id_assunto_materia').html('<option value="">-- Escolha uma Matéria --</option>');
+            }
+        });
 
-            });
+        $('#id_materia').change(function () {
+            if ($(this).val()) {
+                $('#id_assunto_materia').hide();
+                $('.carregando').show();
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: '/questao-questao/carregar-combo-assunto-materia-ajax',
+                    async: true,
+                    data: {
+                        id_materia: $(this).val(),
+                    },
+                    success: function (response) {
+                        if (response.sucesso == true) {
+                            var options = '<option value=""> Selecione...</option>';
+                            $.each(response.ar_assunto_materia, function (i, item) {
+                                options += '<option value="' + response.ar_assunto_materia[i].id + '">' + response.ar_assunto_materia[i].descricao + '</option>';
+                            });
+                            $('#id_assunto_materia').html(options).show();
+                            $('.carregando').hide();
 
-    </script>
-  
+                        } else {
+                            $('#id_assunto_materia').html('<option value="">-- Erro ao carregar Assuntos --</option>');
+                        }
+                    }
+                });
+            } else {
+                $('#id_assunto_materia').html('<option value="">-- Escolha uma Matéria --</option>');
+            }
+        });
+
+    });
+
+</script>
+

@@ -62,9 +62,9 @@
                         
 
                         <td class="text-center">
-                                <span class="btn-group" style="width: 100px;">
+                                <span class="btn-group tipoQuestao-acoes-group" style="width: 100px;">
                                     <?= \Estrutura\Service\HtmlHelper::botaoAlterar($this->url('navegacao', array('controller' => $controller, 'action' => 'cadastro', 'id' => Estrutura\Helpers\Cript::enc($tipoquestao['id_tipo_questao'])))) ?>
-                                    <?= \Estrutura\Service\HtmlHelper::botaoExcluir($this->url('navegacao', array('controller' => $controller, 'action' => 'excluir', 'id' => Estrutura\Helpers\Cript::enc($tipoquestao['id_tipo_questao'])))) ?>
+                                    <?= \Estrutura\Service\HtmlHelper::botaoExcluirConfirm(Estrutura\Helpers\Cript::enc($tipoquestao['id_tipo_questao'])) ?>
                                 </span>
                         </td>
                     </tr>
@@ -79,7 +79,6 @@
         <div class="row">
             <div class="col-md-12">
                 <a href="<?= $this->url('navegacao', ['controller' => 'principal-principal']) ?>" class="btn btn-primary" title="Retorna para a Página Principal">Home</a>
-                <a class="btn btn-default" href="<?= $this->url('navegacao', array('controller' => $controller, 'action' => 'cadastro')) ?>" title="Adicionar um novo tipo de Questão">Novo tipo de Questão</a>
             </div>
         </div>
     </div>
@@ -137,109 +136,20 @@
             }
         });
 
-        $('#filtrarRelatorioSaquesPagos').click(function () {
+        $('.tipoQuestao-acoes-group .btn-excluir').off('click').on('click', function () {
 
-            $.ajax({
-                type: "post",
-                dataType: "text",
-                cache: false,
-                url: '/mcnetwork-relatorio/relatorio-saques-pagos',
-                async: true,
-                data: {
-                    dt_inicio: $('#dt_inicio').val(),
-                    dt_fim: $('#dt_fim').val()
-                },
-                beforeSend: function () {
-
-                    $('#modal-relatorio-body-3').html(
-                        '<div class="row"><div class="col-md-12 text-center"><p><img src="/assets/img/carregando.gif"><p></div></div>'
-                    );
-                },
-                success: function (data) {
-
-                    $('#modal-relatorio-body-3').html(data);
-                }
-            });
+            var id = $(this).attr('rel');
+            $("#modal-tipoQuestao-excluir-id").val(id);
+            $('#modal-tipoQuestao-excluir').modal('show');
         });
 
-        $('#limparRelatorioSaquesPagos').click(function () {
+        $('#btn-tipoQuestao-excluir-confirm').off('click').on('click', function () {
 
-            $.ajax({
-                type: "post",
-                dataType: "text",
-                cache: false,
-                url: '/mcnetwork-relatorio/relatorio-saques-pagos',
-                async: true,
-                data: {},
-                beforeSend: function () {
-
-                    $('#modal-relatorio-body-3').html(
-                        '<div class="row"><div class="col-md-12 text-center"><p><img src="/assets/img/carregando.gif"><p></div></div>'
-                    );
-                },
-                success: function (data) {
-
-                    $('#modal-relatorio-body-3').html(data);
-                }
-            });
+            $('#modal-tipoQuestao-excluir').modal('hide');
+            var id = $("#modal-tipoQuestao-excluir-id").val();
+            window.location.href = '/tipo_questao-tipoquestao/excluirLog/' + id;
         });
 
-        $('.relatorio-recibo').off('click').on('click', function () {
 
-            var idPagamento = $(this).attr('rel');
-            var win = window.open('/mcnetwork-cursos/download-img-pay/' + idPagamento, '_blank');
-            win.focus();
-        });
-
-        $('.relatorio-recusar-recibo').off('click').on('click', function () {
-
-            var idPagamento = $(this).attr('rel');
-
-            $.ajax({
-                type: "post",
-                dataType: "text",
-                cache: false,
-                url: '/pagamento-pagamento/recusar-recibo',
-                async: true,
-                beforeSend: function () {
-
-                    $('#modal-relatorio-body-3').html(
-                        '<div class="row"><div class="col-md-12 text-center"><p><img src="/assets/img/carregando.gif"><p></div></div>'
-                    );
-                },
-                data: {
-                    id_saque: idPagamento
-                },
-                success: function () {
-
-                    $.ajax({
-                        type: "post",
-                        dataType: "text",
-                        cache: false,
-                        url: '/mcnetwork-relatorio/relatorio-saques-pagos',
-                        async: true,
-                        data: {},
-                        success: function (data) {
-
-                            $('#modal-relatorio-body-3').html(data);
-                        }
-                    });
-                }
-            });
-        });
-
-        $("#imprimirRelatorioSaquesPagos").click(function () {
-
-            var modalPrint = $('.modalPrint');
-            modalPrint.removeClass('modal');
-            $('.form-inline').hide();
-            $('#printSection').addClass('printSection');
-            $('#printSection').html(modalPrint.html());
-            window.print();
-            modalPrint.addClass('modal');
-            $('.form-inline').show();
-            $('#printSection').removeClass('printSection');
-            $('#printSection').html('');
-        });
     });
 </script>

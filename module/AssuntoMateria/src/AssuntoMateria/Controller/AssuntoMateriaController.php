@@ -161,5 +161,26 @@ class AssuntoMateriaController extends AbstractCrudController
         return parent::excluir($this->service, $this->form);
     }
 
+    public function excluirLogAction(){
 
+        $auth = $this->getServiceLocator()->get('AuthService')->getStorage()->read();
+        $controller = $this->params('controller');
+        $id_assunto_materia = $this->params('id');
+
+        if (isset($id_assunto_materia) && $id_assunto_materia) {
+            $id_assunto_materia = \Estrutura\Helpers\Cript::dec($id_assunto_materia);
+        } else {
+            $this->addErrorMessage('ID não informado');
+            return $this->redirect()->toRoute('navegacao', ['controller' => $controller, 'action' => 'index']);
+        }
+        $assuntoMateriaService = new \AssuntoMateria\Service\AssuntoMateriaService();
+        $assuntoMateriaEntity = $assuntoMateriaService->buscar($id_assunto_materia);
+
+        if (1 == $auth->id_perfil) { //Se o usuario logado for Administrador
+            $assuntoMateriaEntity->setCsAtivo(0); // Valor '0' desabilita o campo cs_ativo
+            $assuntoMateriaEntity->salvar();
+        }
+        $this->addSuccessMessage('Assunto excluido com sucesso.');
+        return $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'index'));
+    }
 }
