@@ -2,7 +2,7 @@
 
 <div class="col-md-12">
     <div class="table-responsive">
-        <table class="table table-striped" id="tablesorterAtletas">
+        <table class="table table-striped" id="tablesorterMaterias">
             <thead>
             <tr>
                 <th class="text-center">Matéria</th> <!--Correção - Nathália-->
@@ -62,9 +62,9 @@
 
 
                         <td class="text-center">
-                                <span class="btn-group" style="width: 100px;">
+                                <span class="btn-group materia-acoes-group" style="width: 100px;">
                                     <?= \Estrutura\Service\HtmlHelper::botaoAlterar($this->url('navegacao', array('controller' => $controller, 'action' => 'cadastro', 'id' => Estrutura\Helpers\Cript::enc($materia['id_materia'])))) ?>
-                                    <?= \Estrutura\Service\HtmlHelper::botaoExcluir($this->url('navegacao', array('controller' => $controller, 'action' => 'excluir', 'id' => Estrutura\Helpers\Cript::enc($materia['id_materia'])))) ?>
+                                    <?= \Estrutura\Service\HtmlHelper::botaoExcluirConfirm(Estrutura\Helpers\Cript::enc($materia['id_materia'])) ?>
                                 </span>
                         </td>
                     </tr>
@@ -109,7 +109,7 @@
         };
 
         // call the tablesorter plugin and apply the uitheme widget
-        $("#tablesorterAtletas").tablesorter({
+        $("#tablesorterMaterias").tablesorter({
             // this will apply the bootstrap theme if "uitheme" widget is included
             // the widgetOptions.uitheme is no longer required to be set
             theme: "bootstrap",
@@ -136,109 +136,18 @@
             }
         });
 
-        $('#filtrarRelatorioSaquesPagos').click(function () {
+        $('.materia-acoes-group .btn-excluir').off('click').on('click', function () {
 
-            $.ajax({
-                type: "post",
-                dataType: "text",
-                cache: false,
-                url: '/mcnetwork-relatorio/relatorio-saques-pagos',
-                async: true,
-                data: {
-                    dt_inicio: $('#dt_inicio').val(),
-                    dt_fim: $('#dt_fim').val()
-                },
-                beforeSend: function () {
-
-                    $('#modal-relatorio-body-3').html(
-                        '<div class="row"><div class="col-md-12 text-center"><p><img src="/assets/img/carregando.gif"><p></div></div>'
-                    );
-                },
-                success: function (data) {
-
-                    $('#modal-relatorio-body-3').html(data);
-                }
-            });
+            var id = $(this).attr('rel');
+            $("#modal-materia-excluir-id").val(id);
+            $('#modal-materia-excluir').modal('show');
         });
 
-        $('#limparRelatorioSaquesPagos').click(function () {
+        $('#btn-materia-excluir-confirm').off('click').on('click', function () {
 
-            $.ajax({
-                type: "post",
-                dataType: "text",
-                cache: false,
-                url: '/mcnetwork-relatorio/relatorio-saques-pagos',
-                async: true,
-                data: {},
-                beforeSend: function () {
-
-                    $('#modal-relatorio-body-3').html(
-                        '<div class="row"><div class="col-md-12 text-center"><p><img src="/assets/img/carregando.gif"><p></div></div>'
-                    );
-                },
-                success: function (data) {
-
-                    $('#modal-relatorio-body-3').html(data);
-                }
-            });
-        });
-
-        $('.relatorio-recibo').off('click').on('click', function () {
-
-            var idPagamento = $(this).attr('rel');
-            var win = window.open('/mcnetwork-cursos/download-img-pay/' + idPagamento, '_blank');
-            win.focus();
-        });
-
-        $('.relatorio-recusar-recibo').off('click').on('click', function () {
-
-            var idPagamento = $(this).attr('rel');
-
-            $.ajax({
-                type: "post",
-                dataType: "text",
-                cache: false,
-                url: '/pagamento-pagamento/recusar-recibo',
-                async: true,
-                beforeSend: function () {
-
-                    $('#modal-relatorio-body-3').html(
-                        '<div class="row"><div class="col-md-12 text-center"><p><img src="/assets/img/carregando.gif"><p></div></div>'
-                    );
-                },
-                data: {
-                    id_saque: idPagamento
-                },
-                success: function () {
-
-                    $.ajax({
-                        type: "post",
-                        dataType: "text",
-                        cache: false,
-                        url: '/mcnetwork-relatorio/relatorio-saques-pagos',
-                        async: true,
-                        data: {},
-                        success: function (data) {
-
-                            $('#modal-relatorio-body-3').html(data);
-                        }
-                    });
-                }
-            });
-        });
-
-        $("#imprimirRelatorioSaquesPagos").click(function () {
-
-            var modalPrint = $('.modalPrint');
-            modalPrint.removeClass('modal');
-            $('.form-inline').hide();
-            $('#printSection').addClass('printSection');
-            $('#printSection').html(modalPrint.html());
-            window.print();
-            modalPrint.addClass('modal');
-            $('.form-inline').show();
-            $('#printSection').removeClass('printSection');
-            $('#printSection').html('');
+            $('#modal-materia-excluir').modal('hide');
+            var id = $("#modal-materia-excluir-id").val();
+            window.location.href = '/materia-materia/excluirLog/' + id;
         });
     });
 </script>

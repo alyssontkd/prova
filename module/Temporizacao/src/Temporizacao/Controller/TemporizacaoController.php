@@ -176,18 +176,27 @@ class TemporizacaoController extends AbstractCrudController
         return $view->setTerminal(true);
     }
 
-    /**
-     * Return AutoComplete stuff
-     */
+    public function excluirLogAction(){
 
+        $auth = $this->getServiceLocator()->get('AuthService')->getStorage()->read();
+        $controller = $this->params('controller');
+        $id_temporizacao = $this->params('id');
 
-    /**
-     * @return ViewModel
-     */
+        if (isset($id_temporizacao) && $id_temporizacao) {
+            $id_temporizacao = \Estrutura\Helpers\Cript::dec($id_temporizacao);
+        } else {
+            $this->addErrorMessage('ID não informado');
+            return $this->redirect()->toRoute('navegacao', ['controller' => $controller, 'action' => 'index']);
+        }
+        $temporizacaoService = new \Temporizacao\Service\TemporizacaoService();
+        $temporizacaoEntity = $temporizacaoService->buscar($id_temporizacao);
 
-    public function xxxAction()
-    {
-
+        if (1 == $auth->id_perfil) { //Se o usuario logado for Administrador
+            $temporizacaoEntity->setCsAtivo(0); // Valor '0' desabilita o campo cs_ativo
+            $temporizacaoEntity->salvar();
+        }
+        $this->addSuccessMessage('Temporização excluida com sucesso.');
+        return $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'index'));
     }
 
 }

@@ -122,7 +122,6 @@ abstract class AbstractCrudController extends AbstractEstruturaController
         }
     }
 
-
     public function excluir($service, $form, $atributos = [])
     {
         try {
@@ -148,7 +147,7 @@ abstract class AbstractCrudController extends AbstractEstruturaController
             return $this->redirect()->toRoute('navegacao', ['controller' => $controller]);
         } catch (\Exception $e) {
             if( strstr($e->getMessage(), '1451') ) { #ERRO de SQL (Mysql) para nao excluir registro que possua filhos
-                $this->addErrorMessage('A matéria não foi excluída porque existe(m) assunto(s) vinculado(s) a ela. Para excluí-la, primeiro exclua o(s) assunto(s) vinculado(s). ');
+                $this->addErrorMessage('O item não pode ser excluido porque existe(m) vinculado(s) com outros módulos. Para excluí-lo, primeiro exclua o(s) vinculado(s). ');
             }else {
                 $this->addErrorMessage($e->getMessage());
             }

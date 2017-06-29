@@ -11,6 +11,7 @@ class AssuntoMateriaTable extends AbstractEstruturaTable{
         'id_assunto_materia'=>'id',
         'id_materia'=> 'id_materia',
         'nm_assunto_materia'=>'nm_assunto_materia',
+        'cs_ativo'=>'cs_ativo',
 
 
     ];

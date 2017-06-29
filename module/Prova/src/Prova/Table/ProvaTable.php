@@ -15,6 +15,7 @@ class ProvaTable extends AbstractEstruturaTable{
         'dt_geracao_prova'=>'dt_geracao_prova',
         'tx_complemento'=>'tx_complemento',
         'ds_prova'=>'ds_prova',
+        'cs_ativo'=>'cs_ativo',
     ];
 
 }

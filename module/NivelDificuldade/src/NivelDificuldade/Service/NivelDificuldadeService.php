@@ -10,9 +10,11 @@ use Zend\Stdlib\Hydrator\Reflection;
 use Zend\Paginator\Adapter\DbSelect;
 use Zend\Paginator\Paginator;
 
-class NivelDificuldadeService extends Entity {
+class NivelDificuldadeService extends Entity
+{
 
-    public function getNivelDificuldadeToArray($id) {
+    public function getNivelDificuldadeToArray($id)
+    {
 
         $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
 
@@ -20,26 +22,30 @@ class NivelDificuldadeService extends Entity {
         $select = $sql->select('nivel_dificuldade')
             ->where([
                 'nivel_dificuldade.id_nivel_dificuldade = ?' => $id,
+                'nivel_dificuldade.cs_Ativo=1',
             ]);
         #print_r($sql->prepareStatementForSqlObject($select)->execute());exit;
 
         return $sql->prepareStatementForSqlObject($select)->execute()->current();
     }
 
-    public function getFiltrarNivelDificuldadePorNomeToArray($nm_nivel_dificuldade) {
+    public function getFiltrarNivelDificuldadePorNomeToArray($nm_nivel_dificuldade)
+    {
 
         $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
 
         $select = $sql->select('nivel_dificuldade')
-            ->columns(array('nm_nivel_dificuldade', 'id_cidade') ) #Colunas a retornar. Basta Omitir que ele traz todas as colunas
+            ->columns(array('nm_nivel_dificuldade', 'id_cidade'))#Colunas a retornar. Basta Omitir que ele traz todas as colunas
             ->where([
-                "nivel_dificuldade.nm_nivel_dificuldade LIKE ?" => '%'.$nm_nivel_dificuldade.'%',
+                "nivel_dificuldade.nm_nivel_dificuldade LIKE ?" => '%' . $nm_nivel_dificuldade . '%',
+                'nivel_dificuldade.cs_Ativo=1',
             ]);
 
         return $sql->prepareStatementForSqlObject($select)->execute();
     }
 
-    public function getIdNivelDificuldadePorNomeToArray($nm_nivel_dificuldade) {
+    public function getIdNivelDificuldadePorNomeToArray($nm_nivel_dificuldade)
+    {
 
         $arNomeNivelDificuldade = explode('(', $nm_nivel_dificuldade);
         $nm_nivel_dificuldade = $arNomeNivelDificuldade[0];
@@ -47,9 +53,10 @@ class NivelDificuldadeService extends Entity {
         $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
         $filter = new \Zend\Filter\StringTrim();
         $select = $sql->select('nivel_dificuldade')
-            ->columns(array('id_nivel_dificuldade') )
+            ->columns(array('id_nivel_dificuldade'))
             ->where([
                 'nivel_dificuldade.nm_nivel_dificuldade = ?' => $filter->filter($nm_nivel_dificuldade),
+                'nivel_dificuldade.cs_Ativo=1',
             ]);
 
         return $sql->prepareStatementForSqlObject($select)->execute()->current();
@@ -60,7 +67,8 @@ class NivelDificuldadeService extends Entity {
      *
      * @return null|\Zend\Db\ResultSet\ResultSetInterface
      */
-    public function filtrarNivelDificuldadePorBancoQuestao() {
+    public function filtrarNivelDificuldadePorBancoQuestao()
+    {
         $select = new \Zend\Db\Sql\Select('nivel_dificuldade');
         $select->columns([
             'id_nivel_dificuldade',
@@ -82,7 +90,8 @@ class NivelDificuldadeService extends Entity {
      * @param type $itensPaginacao
      * @return type Paginator
      */
-    public function fetchPaginator($pagina = 1, $itensPagina = 5, $ordem = 'nm_nivel_dificuldade ASC', $like = null, $itensPaginacao = 5) {
+    public function fetchPaginator($pagina = 1, $itensPagina = 5, $ordem = 'nm_nivel_dificuldade ASC', $like = null, $itensPaginacao = 5)
+    {
         //http://igorrocha.com.br/tutorial-zf2-parte-9-paginacao-busca-e-listagem/4/
         // preparar um select para tabela contato com uma ordem
         $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
@@ -90,14 +99,14 @@ class NivelDificuldadeService extends Entity {
 
         if (isset($like)) {
             $select
-                    ->where
-                    ->like('id_nivel_dificuldade', "%{$like}%")
-                    ->or
-                    ->like('nm_nivel_dificuldade', "%{$like}%")
-            #->or
-            #->like('telefone_principal', "%{$like}%")
-            #->or
-            #->like('data_criacao', "%{$like}%")
+                ->where
+                ->like('id_nivel_dificuldade', "%{$like}%")
+                ->or
+                ->like('nm_nivel_dificuldade', "%{$like}%")
+                #->or
+                #->like('telefone_principal', "%{$like}%")
+                #->or
+                #->like('data_criacao', "%{$like}%")
             ;
         }
 
@@ -106,50 +115,45 @@ class NivelDificuldadeService extends Entity {
 
         // criar um objeto adapter paginator
         $paginatorAdapter = new DbSelect(
-                // nosso objeto select
-                $select,
-                // nosso adapter da tabela
-                $this->getAdapter(),
-                // nosso objeto base para ser populado
-                $resultSet
+        // nosso objeto select
+            $select,
+            // nosso adapter da tabela
+            $this->getAdapter(),
+            // nosso objeto base para ser populado
+            $resultSet
         );
 
         # var_dump($paginatorAdapter);
         #die;
         // resultado da pagina��o
         return (new Paginator($paginatorAdapter))
-                        // pagina a ser buscada
-                        ->setCurrentPageNumber((int) $pagina)
-                        // quantidade de itens na p�gina
-                        ->setItemCountPerPage((int) $itensPagina)
-                        ->setPageRange((int) $itensPaginacao);
+            // pagina a ser buscada
+            ->setCurrentPageNumber((int)$pagina)
+            // quantidade de itens na p�gina
+            ->setItemCountPerPage((int)$itensPagina)
+            ->setPageRange((int)$itensPaginacao);
     }
 
-    /**
-     * 
-     * @param type $dtInicio
-     * @param type $dtFim
-     * @return type
-     */
-    public function getNivelDificuldadePaginator($filter = NULL, $camposFilter = NULL) {
+    public function getNivelDificuldadePaginator($filter = NULL, $camposFilter = NULL)
+    {
 
         $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
 
         $select = $sql->select('nivel_dificuldade')->columns([
-                    'id_nivel_dificuldade',
-                    'nm_nivel_dificuldade'
-                    
-                    
-                ]);
-                /*->join('cidade', 'cidade.id_cidade = academias.id_cidade', [
-                    'nm_cidade'
-                ])
-                ->join('estado', 'estado.id_estado = cidade.id_estado', [
-                    'sg_estado'
-                ]); */              
-               
+            'id_nivel_dificuldade',
+            'nm_nivel_dificuldade'
 
-        $where = [
+
+        ]);
+        /*->join('cidade', 'cidade.id_cidade = academias.id_cidade', [
+            'nm_cidade'
+        ])
+        ->join('estado', 'estado.id_estado = cidade.id_estado', [
+            'sg_estado'
+        ]); */
+
+
+        $where = ['nivel_dificuldade.cs_Ativo=1',
         ];
 
         if (!empty($filter)) {
@@ -168,12 +172,14 @@ class NivelDificuldadeService extends Entity {
             }
         }
 
-        $select->where($where)->order(['nm_nivel_dificuldade DESC']);
+        $select->where($where)->order(['id_nivel_dificuldade DESC']);
 
         return new \Zend\Paginator\Paginator(new \Zend\Paginator\Adapter\DbSelect($select, $this->getAdapter()));
     }
 
-
-
-
+    public function filtraNivelAtivo()
+    {
+        $NivelAtivo = $this->select(['cs_ativo'=> '1']);
+        return $NivelAtivo;
+    }
 }

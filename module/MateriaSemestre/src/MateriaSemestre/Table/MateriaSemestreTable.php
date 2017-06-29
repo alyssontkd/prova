@@ -11,6 +11,7 @@ class MateriaSemestreTable extends AbstractEstruturaTable{
         'id_materia_semestre'=>'id',
         'id_classificacao_semestre'=>'id_classificacao_semestre',
         'id_materia'=> 'id_materia',
+        'cs_ativo'=>'cs_ativo',
 
 
     ];

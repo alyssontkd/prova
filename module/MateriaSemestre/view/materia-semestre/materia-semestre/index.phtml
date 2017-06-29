@@ -9,7 +9,7 @@
         </div>
     </div>
     <br />
-    <div class="row" id="classificacao_semestre-pagination"></div>
+    <div class="row" id="materiasemestre-pagination"></div>
 </div>
 
 <script>
@@ -25,13 +25,13 @@
             },
             beforeSend: function () {
 
-                $('#classificacao_semestre-pagination').html(
+                $('#materiasemestre-pagination').html(
                     '<div class="row"><div class="col-md-12 text-center"><p><img src="/assets/img/carregando.gif"><p></div></div>'
                 );
             },
             success: function (data) {
 
-                $('#classificacao_semestre-pagination').html(data);
+                $('#materiasemestre-pagination').html(data);
             }
         });
 

@@ -10,7 +10,7 @@ class UnidadeTempoTable extends AbstractEstruturaTable{
     public $campos = [
         'id_unidade_tempo'=>'id',
         'nm_unidade_tempo'=>'nm_unidade_tempo',
-        
+        'cs_ativo'=>'cs_ativo',
     ];
 
 }

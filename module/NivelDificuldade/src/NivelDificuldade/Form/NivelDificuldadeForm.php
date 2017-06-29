@@ -6,8 +6,7 @@ use Estrutura\Form\AbstractForm;
 use Estrutura\Form\FormObject;
 use Zend\InputFilter\InputFilter;
 
-class NivelDificuldadeForm extends AbstractForm
-{
+class NivelDificuldadeForm extends AbstractForm{
     public function __construct($options=[]){
         parent::__construct('nivelform');
 

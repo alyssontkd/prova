@@ -20,6 +20,7 @@ class FonteService extends Entity {
         $select = $sql->select('fonte_questao')
             ->where([
                 'fonte_questao.id_fonte_questao = ?' => $id,
+                'fonte_questao.cs_ativo=1',
             ]);
         #print_r($sql->prepareStatementForSqlObject($select)->execute());exit;
 
@@ -34,6 +35,7 @@ class FonteService extends Entity {
             ->columns(array('nm_fonte_questao', 'id_cidade') ) #Colunas a retornar. Basta Omitir que ele traz todas as colunas
             ->where([
                 "fonte_questao.nm_fonte_questao LIKE ?" => '%'.$nm_fonte_questao.'%',
+                'fonte_questao.cs_ativo=1',
             ]);
 
         return $sql->prepareStatementForSqlObject($select)->execute();
@@ -50,6 +52,7 @@ class FonteService extends Entity {
             ->columns(array('id_fonte_questao') )
             ->where([
                 'fonte_questao.nm_fonte_questao = ?' => $filter->filter($nm_fonte_questao),
+                'fonte_questao.cs_ativo=1',
             ]);
 
         return $sql->prepareStatementForSqlObject($select)->execute()->current();
@@ -150,7 +153,7 @@ class FonteService extends Entity {
                 ]); */              
                
 
-        $where = [
+        $where = ['fonte_questao.cs_ativo=1',
         ];
 
         if (!empty($filter)) {
@@ -169,11 +172,15 @@ class FonteService extends Entity {
             }
         }
 
-        $select->where($where)->order(['nm_fonte_questao DESC']);
+        $select->where($where)->order(['id_fonte_questao DESC']);
 
         return new \Zend\Paginator\Paginator(new \Zend\Paginator\Adapter\DbSelect($select, $this->getAdapter()));
     }
 
-
+    public function filtraFonteAtivo()
+    {
+        $fonteAtivo = $this->select(['cs_ativo'=> '1']);
+        return $fonteAtivo;
+    }
 
 }

@@ -1,36 +1,121 @@
-<div>
-    <h2>Relatório Materias Semestre</h2>
-</div>
-<div>
-    <table>
-        <thead>
-            <tr>
-                <th>Classificação semestre</th>
-                <th>Nome Materia</th>
+<html>
+<head>
+    
+    <meta charset=utf-8"/>
+    <title>Layout de Impressão</title>
+    <style type="text/css">
+        @page {
+            margin: 120px 50px 80px 50px;
+        }
 
-            </tr>
+        #img {
+            position: fixed;
+            left: 0%;
+            top: -8%;
+        }
+
+        #topo {
+            background-repeat: no-repeat;
+            font-size: 25px;
+            text-align: center;
+            height: 110px;
+            width: 100%;
+            position: fixed;
+            top: -75px;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        #corpo {
+            width: 700px;
+            position: relative;
+            margin: auto;
+            top: 75px;
+        }
+
+        #table {
+            background-color: transparent;
+            width: 100%;
+        }
+
+        .table {
+            margin-bottom: 8px;
+            width: 100%;
+        }
+
+        #rodape {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: right;
+            border-top: 1px solid gray;
+        }
+
+        .rodape .page:after {
+            content: counter(page);
+        }
+    </style>
+</head>
+<body>
+
+<div id="topo" class="text-center">
+    <div class="table">
+        <div>
+            <div class="td" style="font-size: 22px"><b>SIESP - EJUS</b></div>
+        </div>
+        
+        <div>
+            <hr>
+            <p style="font-size: 24px"><b>Relatório de Matérias por Semestre</b></p>
+        </div>
+    </div>
+</div>
+
+<div id="rodape">
+    <div class="page" align="right"><span>Arquivo gerado em: </span>
+        <?php
+        $data = date("d/m/Y H:i");
+        #xd($data);
+        echo $data;
+        ?>
+
+    </div>
+</div>
+<div id="corpo">
+    <br>
+    <table border="1" id="table">
+
+        <thead>
+        <tr>
+            <th class="text-center">Classificação do semestre</th>
+            <th class="text-center">Nome da Materia</th>
+
+        </tr>
         </thead>
-        <tbody>
-            <?php $ael = null ?>
-            <?php foreach ($resultado as $linha) { ?>
+
+       
+        <?php $ael = null ?>
+        <?php foreach ($resultado as $linha) { ?>
+        
             <tr>
-                    <td>
-                    <?php if ($ael != $linha['id_classificacao_semestre']) { ?>
+                
+                <td align="center"> <?php if ($ael != $linha['id_classificacao_semestre']) { ?>
 
                         <?= $linha['nm_classificacao_semestre']  ?>
-                    <?php } ?>
-                    </td>
-                    
-                        <td><?= $linha['nm_materia'] ?></td> 
-                        
-                    <?php $ael = $linha['id_classificacao_semestre'] ?>
-
-                </tr>
-
-            <?php } ?>
-        </tbody>
+                    <?php } ?></td>
+                <td align="center"><?= $linha['nm_materia'] ?></td>
+                
+                <?php $ael = $linha['id_classificacao_semestre'] ?>
+                
+            </tr>
+            
+            <?php ;
+        } ?>
     </table>
 
 </div>
+</body>
+</html>
 
 

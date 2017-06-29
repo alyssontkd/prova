@@ -10,6 +10,7 @@ class FonteTable extends AbstractEstruturaTable{
     public $campos = [
         'id_fonte_questao'=>'id',
         'nm_fonte_questao'=>'nm_fonte_questao',
+        'cs_ativo'=>'cs_ativo',
         
     ];
 

@@ -112,18 +112,27 @@ class ClassificacaoController extends AbstractCrudController
         return $view->setTerminal(true);
     }
 
-    /**
-     * Return AutoComplete stuff
-     */
+    public function excluirLogAction(){
 
+        $auth = $this->getServiceLocator()->get('AuthService')->getStorage()->read();
+        $controller = $this->params('controller');
+        $id_classificacao_semestre = $this->params('id');
 
-    /**
-     * @return ViewModel
-     */
+        if (isset($id_classificacao_semestre) && $id_classificacao_semestre) {
+            $id_classificacao_semestre = \Estrutura\Helpers\Cript::dec($id_classificacao_semestre);
+        } else {
+            $this->addErrorMessage('ID não informado');
+            return $this->redirect()->toRoute('navegacao', ['controller' => $controller, 'action' => 'index']);
+        }
+        $classificacaoSemestreService = new \Classificacao\Service\ClassificacaoService();
+        $mclassificacaoSemestreEntity = $classificacaoSemestreService->buscar($id_classificacao_semestre);
 
-    public function xxxAction()
-    {
-
+        if (1 == $auth->id_perfil) { //Se o usuario logado for Administrador
+            $mclassificacaoSemestreEntity->setCsAtivo(0); // Valor '0' desabilita o campo cs_ativo
+            $mclassificacaoSemestreEntity->salvar();
+        }
+        $this->addSuccessMessage('Classificação excluida com sucesso.');
+        return $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'index'));
     }
 
 }

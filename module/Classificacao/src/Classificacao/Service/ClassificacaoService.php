@@ -22,8 +22,8 @@ class ClassificacaoService extends Entity
         $select = $sql->select('classificacao_semestre')
             ->where([
                 'classificacao_semestre.id_classificacao_semestre = ?' => $id,
+                'classificacao_semestre.cs_ativo = 1',
             ]);
-        #print_r($sql->prepareStatementForSqlObject($select)->execute());exit;
 
         return $sql->prepareStatementForSqlObject($select)->execute()->current();
     }
@@ -37,6 +37,7 @@ class ClassificacaoService extends Entity
             ->columns(array('nm_classificacao_semestre', 'id_cidade'))#Colunas a retornar. Basta Omitir que ele traz todas as colunas
             ->where([
                 "classificacao_semestre.nm_classificacao_semestre LIKE ?" => '%' . $nm_classificacao_semestre . '%',
+                'classificacao_semestre.cs_ativo = 1',
             ]);
 
         return $sql->prepareStatementForSqlObject($select)->execute();
@@ -54,6 +55,7 @@ class ClassificacaoService extends Entity
             ->columns(array('id_classificacao_semestre'))
             ->where([
                 'classificacao_semestre.nm_classificacao_semestre = ?' => $filter->filter($nm_classificacao_semestre),
+                'classificacao_semestre.cs_ativo = 1',
             ]);
 
         return $sql->prepareStatementForSqlObject($select)->execute()->current();
@@ -130,12 +132,6 @@ class ClassificacaoService extends Entity
             ->setPageRange((int)$itensPaginacao);
     }
 
-    /**
-     *
-     * @param type $dtInicio
-     * @param type $dtFim
-     * @return type
-     */
     public function getClassificacaoPaginator($filter = NULL, $camposFilter = NULL)
     {
 
@@ -155,7 +151,8 @@ class ClassificacaoService extends Entity
         ]); */
 
 
-        $where = [
+        $where = [ 'classificacao_semestre.cs_ativo = 1',
+
         ];
 
         if (!empty($filter)) {
@@ -174,9 +171,15 @@ class ClassificacaoService extends Entity
             }
         }
 
-        $select->where($where)->order(['nm_classificacao_semestre DESC']);
+        $select->where($where)->order(['id_classificacao_semestre DESC']);
 
         return new \Zend\Paginator\Paginator(new \Zend\Paginator\Adapter\DbSelect($select, $this->getAdapter()));
+    }
+
+    public function filtraClassificacaoAtivo()
+    {
+        $classificacaoAtivo = $this->select(['cs_ativo'=> '1']);
+        return $classificacaoAtivo;
     }
 
 }

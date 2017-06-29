@@ -90,4 +90,27 @@ class TipoQuestaoController extends AbstractCrudController
     {
         return parent::excluir($this->service, $this->form);
     }
+
+    public function excluirLogAction(){
+
+        $auth = $this->getServiceLocator()->get('AuthService')->getStorage()->read();
+        $controller = $this->params('controller');
+        $id_tipoQuestao = $this->params('id');
+
+        if (isset($id_tipoQuestao) && $id_tipoQuestao) {
+            $id_tipoQuestao = \Estrutura\Helpers\Cript::dec($id_tipoQuestao);
+        } else {
+            $this->addErrorMessage('ID não informado');
+            return $this->redirect()->toRoute('navegacao', ['controller' => $controller, 'action' => 'index']);
+        }
+        $tipoQuestaoService = new \TipoQuestao\Service\TipoQuestaoService();
+        $tipoQuestaoEntity = $tipoQuestaoService->buscar($id_tipoQuestao);
+
+        if (1 == $auth->id_perfil) { //Se o usuario logado for Administrador
+            $tipoQuestaoEntity->setCsAtivo(0); // Valor '0' desabilita o campo cs_ativo
+            $tipoQuestaoEntity->salvar();
+        }
+        $this->addSuccessMessage('Tipo de Questão excluido com sucesso.');
+        return $this->redirect()->toRoute('navegacao', array('controller' => $controller, 'action' => 'index'));
+    }
 }

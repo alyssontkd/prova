@@ -22,6 +22,7 @@ class TipoQuestaoService extends Entity {
         $select = $sql->select('tipo_questao')
             ->where([
                 'tipo_questao.id_tipo_questao = ?' => $id,
+                'tipo_questao.cs_ativo = 1',
             ]);
 
         return $sql->prepareStatementForSqlObject($select)->execute()->current();
@@ -35,6 +36,7 @@ class TipoQuestaoService extends Entity {
             ->columns(array('nm_tipo_questao',) ) #Colunas a retornar. Basta Omitir que ele traz todas as colunas
             ->where([
                 "tipo_questao.id_tipo_questao LIKE ?" => '%'.$nm_tipo_questao.'%',
+                'tipo_questao.cs_ativo = 1',
             ]);
 
         return $sql->prepareStatementForSqlObject($select)->execute();
@@ -51,6 +53,7 @@ class TipoQuestaoService extends Entity {
             ->columns(array('id_tipo_questao') )
             ->where([
                 'tipo_questao.nm_tipo_questao = ?' => $filter->filter($nm_tipo_questao),
+                'tipo_questao.cs_ativo = 1',
             ]);
 
         return $sql->prepareStatementForSqlObject($select)->execute()->current();
@@ -113,22 +116,9 @@ class TipoQuestaoService extends Entity {
         $select = $sql->select('tipo_questao')->columns([
             'id_tipo_questao',
             'nm_tipo_questao',
-
-
-
-
         ]);
-//            ->join('estado', 'estado.id_estado = cidade.id_estado', [
-//                'nm_estado'
-//            ]);
 
-
-
-
-
-
-
-        $where = [
+        $where = ['tipo_questao.cs_ativo = 1',
         ];
 
         if (!empty($filter)) {

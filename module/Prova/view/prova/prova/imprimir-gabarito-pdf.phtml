@@ -1,161 +1,185 @@
-<style>
-    html, body {
-        height: 100%;
-        min-height: 100%;
-    }
+<html>
+<head>
+    <!--        <link rel="stylesheet" href="../../../../../public/assets/css/bootstrap.css">-->
+    <meta charset=utf-8"/>
+    <title>Layout de Impressão</title>
 
-    body {
-        font: 15px arial;
-        color: rgba(0, 0, 0, .7);
-    }
+    <style type="text/css">
+        @page {
+            margin: 120px 50px 80px 50px;
+        }
 
-    .conteudo {
-        margin-left: auto;
-        margin-right: auto;
-        padding-left: 20px;
-        padding-right: 20px;
-        text-align: justify;
-        font-size: medium;
-    }
+        #topo {
+            background-repeat: no-repeat;
+            font-size: 25px;
+            text-align: center;
+            height: 50px;
+            width: 100%;
+            position: fixed;
+            top: -80px;
+            left: 0;
+            right: 0;
+            margin: auto;
+            border-bottom: 1px solid #2e2e2e;
+        }
 
-    table {
-        background-color: transparent;
-        max-width: 100%;
-    }
+        .topo_esquerda {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+        }
 
-    .table {
-        margin-bottom: 10px;
-        width: 100%;
-    }
+        .topo_direita {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            font-family: Arial;
 
-    .tablex {
-        line-height: 1.42857;
-        padding: 10px;
-        padding-top: 50px;
-        vertical-align: top;
-    }
-    .bloco_pai {
-        width:100%;
-        position: relative;
-    }
+        }
 
-    .bloco_filho_direita {
-        position: absolute;
-        right: 0px;
-        top: 0px;
-    }
+        #corpo {
+            width: 700px;
+            position: relative;
+            margin: auto;
+            top: -25px;
+            text-align: justify;
+            font-size: 12px;
+            font-family: Arial;
+            float: right;
+        }
 
-    .bloco_filho_esquerda {
-        position: absolute;
-        left: 0px;
-        top: 0px;
-    }
+        /*@media screen and (min-width: 480px) {*/
+        @media print, dompdf {
+            #corpo {
+                -webkit-column-count: 2; /* Chrome, Safari, Opera */
+                -moz-column-count: 2; /* Firefox */
+                column-count: 2;
+            }
+        }
 
-    span.info{
-        font-size: 11px;
-        padding-left: 10px;
-    }
-</style>
-<div class="bloco_pai">
-    <div class="bloco_filho_esquerda">
-        <img src="../../../../../public/assets/img/logo/transparente.png" width="160" height="60" />
+        #rodape {
+            position: fixed;
+            bottom: -10px;
+            width: 100%;
+            text-align: right;
+            border-top: 1px solid #2e2e2e;
+        }
+
+        #rodape .page:after {
+            content: counter(page);
+        }
+
+        .rodape_esquerda {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+        }
+
+        .rodape_direita {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+        }
+        .questao {
+            background: #000000;
+            color: white;
+            width: 12%;
+            height: 1.5%;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+<!--NÃO ALTERAR A ESTRUTURA DO CÓDIGO - MANTER COMO TOPO / RODAPÉ / CORPO-->
+<!--informações do cabeçalho-->
+<div id="topo" class="text-center">
+    <div class="topo_esquerda">
+        <img src="../../../../../public/assets/img/logo/logo-faculdade.png" width="160" height="45">
     </div>
-    <div class="bloco_filho_direita">
-        <img src="../../../../../public/assets/img/logo/transparente.png" width="160" height="60" />
+    <div class="topo_direita">
+
+
+        <?php
+
+        #xd($dadosProva);
+        $questoesprovaService = new \QuestoesProva\Service\QuestoesProvaService();
+        $questoesprovaService->setIdProva($dadosProva->getId());
+        #xd($questoesprovaService);
+        $nm_prova = '';
+
+        if ($questoesprovaService) {
+            $provaService = new \Prova\Service\ProvaService();
+            $obProvaEntity = $provaService->buscar($questoesprovaService->getIdProva());
+            $nm_prova = $obProvaEntity->getNmProva();
+            echo "$nm_prova";
+        }
+        ?>
     </div>
 </div>
-<br>
-<br>
-<table class="table tablex" border = "1" cellspacing="0" cellpadding="2">
-    <tr>
-        <td width="60%" style="font-weight: 900;">
-            Nome:
-        </td>
-        <td width="40%" style="font-weight: 900;">
-            Matrícula:
-        </td>
-    </tr>
-    <tr>
-        <td style="font-weight: 900;">
-            Disciplina: Estrutura de Dados
-        </td>
-        <td style="font-weight: 900;">
-            Data:
-        </td>
-    </tr>
-    <tr>
-        <td style="font-weight: 900;">
-            Curso: Tecnólogo em Redes de Computadores
-        </td>
-        <td style="font-weight: 900;">
-            Turma: SI – 4AN
-        </td>
-    </tr>
-    <tr>
-        <td style="font-weight: 900;">
-            Professor: Alysson Vicuña de Oliveira
-        </td>
-        <td style="font-weight: 900;">
-            Nota:
-        </td>
-    </tr>
-</table>
-<span class="info">
-    <b>Orientações gerais:</b><br>
-- Leia atentamente toda a prova;<br>
-- Verifique o tempo de duração com o professor;<br>
-- Utilize apenas caneta azul ou preta;<br>
-- A prova é individual e sem consulta;<br>
-- Não será considerada questão objetiva que estiver rasurada;<br>
-- Saída permitida após 30 minutos do início de provas<br>
-</span>
+<!--informações do rodapé-->
+<div id="rodape" style="font-size: 8px; font-family: Calibri; font-weight: bold">
+    <div class="rodape_esquerda">
+        <span class="esquerda">Prova Institucional 2º Semestre de 2016</span>
+    </div>
+    <div class="rodape_direita">
+        <span class="direita">Núcleo da Prova Institucional - NPI</span>
+    </div>
+    <br/>
+   <div class="page" align="center">
 
-<div class="conteudo">
-<?php
-$nrQuestoes = count($arQuestoesProva);
-if ($nrQuestoes == 0) { ?>
-    <div style="text-align: left" class="row form-group">
-        <div class="col-md-12">
+    </div>
+</div>
+<!--informações do corpo onde será será impresso as questões-->
+<div id="corpo">
+        <?php
+        $nrQuestoes = count($arQuestoesProva);
+        if ($nrQuestoes == 0) { ?>
+            <div style="text-align: center" class="row form-group">
+                <div class="col-md-12">
+                    <?php
+                    echo "<h2> Nao existem questoes adicionadas a esta avaliação</h2>";
+                    ?>
+                </div>
+            </div>
             <?php
-            echo "<h2> Nao existem questoes adicionadas a esta avaliação</h2>";
+        } else {
+            echo "<h1 style='text-align: center'> Gabarito da Prova</h1>";
+//            echo "<h2 style='text-align: center'> Gabarito da Prova - " . $dadosProva->getNmProva() ."</h2>";
             ?>
-        </div>
-    </div>
-    <?php
-} else {
-    echo "<h2 style='text-align: center'> Gabarito da Prova - " . $dadosProva->getNmProva() . "</h2>";
-    ?>
-    <div style="text-align: left" class="row form-group">
-        <div class="col-md-12">
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <?php
+                    $questaoService = new \Questao\Service\QuestaoService();
+                    $alternativaquestaoService = new \AlternativaQuestao\Service\AlternativaQuestaoService();
+                    $i = 1;
+                    foreach ($arQuestoesProva as $key => $item) {
+                        $arQuestao = $questaoService->buscar($item['id_questao'])->toArray();
+                        echo "<h4 class='questao'> QUESTÃO". " ".$i++. "</h4>";
+                        echo "<p>" . $arQuestao['tx_enunciado'] . "</p>";
+                        $arAlternativaQuestao = $alternativaquestaoService->fetchAllById(['id_questao' => $item['id_questao']]);
+                        $j = 'a';
+                        foreach ($arAlternativaQuestao as $key => $alternativa) {
+                            if($alternativa['cs_correta'] == 'C'){
+                                echo "<span style='background-color: #84E958'>" . $j++ . ") " . $alternativa['tx_alternativa_questao'] . "</span>";
+                                echo"<br>";
+                                echo "<span style='background-color: #84E958'>Justificativa: " . $alternativa['tx_justificativa'] . "</span>";
+                                echo"<br>";
+                            } else {
+                                echo "<span>" . $j++ . ") " . $alternativa['tx_alternativa_questao'] . "</span>";
+                                echo"<br>";
+//                                echo "<h5>Justificativa: " . $alternativa['tx_justificativa'] . "</h5>";
+                            }
+                        }
+                        echo "<br/>";
+                    } ?>
+                </div>
+            </div>
             <?php
-            $questaoService = new \Questao\Service\QuestaoService();
-            $alternativaquestaoService = new \AlternativaQuestao\Service\AlternativaQuestaoService();
-            $i = 1;
-            foreach ($arQuestoesProva as $key => $item) {
-                $arQuestao = $questaoService->buscar($item['id_questao'])->toArray();
-                echo "<h3>" . $i++ . " - " . $arQuestao['nm_titulo_questao'] . "</h3>";
-                echo "<h4>" . $arQuestao['tx_enunciado'] . "</h4>";
-                $arAlternativaQuestao = $alternativaquestaoService->fetchAllById(['id_questao' => $item['id_questao']]);
-                $j = 'a';
-                foreach ($arAlternativaQuestao as $key => $alternativa) {
-                    if($alternativa['cs_correta'] == 'C'){
-                        echo "<h4 style='background-color: #FCC612'>" . $j++ . ") - (_x_) " . $alternativa['tx_alternativa_questao'] . "</h4>";
-                        echo "<h5 style='background-color: #4cae4c'>Justificativa: " . $alternativa['tx_justificativa'] . "</h5>";
-                    } else {
-                        echo "<h4>" . $j++ . ") - (___) " . $alternativa['tx_alternativa_questao'] . "</h4>";
-                        echo "<h5>Justificativa: " . $alternativa['tx_justificativa'] . "</h5>";
-                    }
-                }
-                echo "<br/>";
-            } ?>
-        </div>
-    </div>
-    <?php
-}
-?>
+        }
+        ?>
 </div>
+<?= $dadosProva->getDsProva() ?>
+</body>
 
-<?=  $dadosProva->getDsProva() ?>
-
-
-
+</html>

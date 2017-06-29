@@ -1,26 +1,113 @@
-<div>
-    <h2>Relatório Quantitativo de Questões por Assunto</h2>
+<html>
+<head>
+    <meta charset=utf-8"/>
+    <title>Layout de Impressão</title>
+
+    <style type="text/css">
+        @page {
+            margin: 120px 50px 80px 50px;
+        }
+
+        #img {
+            position: fixed;
+            left: 0%;
+            top: -8%;
+        }
+
+        #topo {
+            background-repeat: no-repeat;
+            font-size: 25px;
+            text-align: center;
+            height: 110px;
+            width: 100%;
+            position: fixed;
+            top: -75px;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        #corpo {
+            width: 700px;
+            position: relative;
+            margin: auto;
+            top: 75px;
+        }
+
+        #table {
+            background-color: transparent;
+            width: 100%;
+        }
+
+        .table {
+            margin-bottom: 8px;
+            width: 100%;
+        }
+
+        #rodape {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: right;
+            border-top: 1px solid gray;
+        }
+
+        .rodape .page:after {
+            content: counter(page);
+        }
+    </style>
+</head>
+<body>
+
+<div id="topo" class="text-center">
+    <div class="table">
+        <div>
+            <div class="td" style="font-size: 22px"><b>SIESP - EJUS</b></div>
+        </div>
+        
+        <div>
+            <hr>
+            <p style="font-size: 24px"><b>Relatório Quantitativo de Questões por Assunto</b></p>
+        </div>
+    </div>
 </div>
-<div>
-    <table>
+
+<div id="rodape">
+    <div class="page" align="right"><span>Arquivo gerado em: </span>
+        <?php
+        $data = date("d/m/Y H:i");
+        #xd($data);
+        echo $data;
+        ?>
+
+    </div>
+</div>
+<div id="corpo">
+    <br>
+    <table border="1" id="table">
+
         <thead>
-            <tr>
-                <th>Fonte Questão</th>
-                <th>Assunto</th>
-                <th>Quantidade de Questões</th>
-            </tr>
+        <tr>
+            <th class="text-center">Fonte da Questão</th>
+            <th class="text-center">Assunto</th>
+            <th class="text-center">Quantidade de Questões</th>  
+        </tr>
         </thead>
-        <tbody>
-            <?php foreach ($resultado as $linha) { ?>
-                <tr>
-                    <td><?= $linha['nm_fonte_questao'] ?></td> 
-                    <td><?= $linha['nm_assunto_materia'] ?></td> 
-                    <td><?= $linha['quantidade'] ?></td>
-                </tr>
-            <?php } ?>
-        </tbody>
+
+       
+        
+        <?php foreach ($resultado as $linha) { ?>
+        
+            <tr>
+                <td><?= $linha['nm_fonte_questao'] ?></td>
+                <td align="center"><?= $linha['nm_assunto_materia'] ?></td>
+                <td align="center"><?= $linha['quantidade'] ?></td>
+            </tr>
+            
+            <?php ;
+        } ?>
     </table>
 
 </div>
-
-
+</body>
+</html>
