@@ -1,6 +1,6 @@
 -- MySQL dump 10.16  Distrib 10.1.9-MariaDB, for Win32 (AMD64)
 --
--- Host: localhost    Database: bdprovatudo
+-- Host: localhost    Database: bdprova
 -- ------------------------------------------------------
 -- Server version	10.1.9-MariaDB
 
@@ -16,12 +16,12 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `bdprovatudo`
+-- Current Database: `bdprova`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `bdprovatudo` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `bdprova` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
-USE `bdprovatudo`;
+USE `bdprova`;
 
 --
 -- Temporary table structure for view `acl`
@@ -990,10 +990,10 @@ INSERT INTO `usuario` VALUES (1,'Admin','Administrador',1,1,1,1,1),(2,'Alysson V
 UNLOCK TABLES;
 
 --
--- Current Database: `bdprovatudo`
+-- Current Database: `bdprova`
 --
 
-USE `bdprovatudo`;
+USE `bdprova`;
 
 --
 -- Final view structure for view `acl`
