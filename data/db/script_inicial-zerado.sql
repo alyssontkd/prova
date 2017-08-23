@@ -109,9 +109,10 @@ CREATE TABLE `assunto_materia` (
   `id_assunto_materia` int(11) NOT NULL AUTO_INCREMENT,
   `id_materia` smallint(6) DEFAULT NULL,
   `nm_assunto_materia` varchar(100) DEFAULT NULL,
+  `cs_ativo` char(1) DEFAULT '1',
   PRIMARY KEY (`id_assunto_materia`),
-  KEY `FK_id_materia` (`id_materia`),
-  CONSTRAINT `FK_id_materia` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`)
+  KEY `FK_Reference_45` (`id_materia`),
+  CONSTRAINT `FK_Reference_45` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -327,6 +328,7 @@ DROP TABLE IF EXISTS `fonte_questao`;
 CREATE TABLE `fonte_questao` (
   `id_fonte_questao` smallint(6) NOT NULL AUTO_INCREMENT,
   `nm_fonte_questao` varchar(25) DEFAULT NULL,
+  `cs_ativo` char(1) DEFAULT '1',
   PRIMARY KEY (`id_fonte_questao`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -337,7 +339,7 @@ CREATE TABLE `fonte_questao` (
 
 LOCK TABLES `fonte_questao` WRITE;
 /*!40000 ALTER TABLE `fonte_questao` DISABLE KEYS */;
-INSERT INTO `fonte_questao` VALUES (1,'Projeção'),(2,'Universia'),(3,'CESPE'),(4,'Wikipedia');
+INSERT INTO `fonte_questao` VALUES (1,'Projeção','1'),(2,'Universia','1'),(3,'CESPE','1'),(4,'Wikipedia','1');
 /*!40000 ALTER TABLE `fonte_questao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -444,24 +446,25 @@ DROP TABLE IF EXISTS `login`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `login` (
-  `id_login` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id_Login` int(11) NOT NULL AUTO_INCREMENT,
   `pw_senha` varchar(40) DEFAULT NULL COMMENT '{"label":"Senha"}',
   `nr_tentativas` int(11) DEFAULT NULL COMMENT '{"label":"Tentativas"}',
-  `dt_visita` datetime DEFAULT NULL COMMENT '{"label":"Data da ultima visita"}',
+  `dt_visita` datetime DEFAULT NULL COMMENT '{"label":"Data da última visita"}',
   `dt_registro` datetime DEFAULT NULL COMMENT '{"label":"Data de Registro"}',
   `id_usuario` int(11) NOT NULL,
   `id_email` int(11) NOT NULL,
   `id_situacao` int(11) NOT NULL,
   `id_perfil` int(11) NOT NULL,
-  KEY `ix_login_emails` (`id_email`),
-  KEY `FK_id_perfil` (`id_perfil`),
-  KEY `FK_id_usuario` (`id_usuario`),
-  KEY `fk_login_situacao` (`id_situacao`),
-  CONSTRAINT `FK_id_perfil` FOREIGN KEY (`id_perfil`) REFERENCES `perfil` (`id_perfil`),
-  CONSTRAINT `FK_id_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`),
-  CONSTRAINT `fk_login_emails` FOREIGN KEY (`id_email`) REFERENCES `email` (`id_email`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_login_situacao` FOREIGN KEY (`id_situacao`) REFERENCES `situacao` (`id_situacao`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id_Login`),
+  KEY `ix_Login_emails` (`id_email`),
+  KEY `FK_Reference_26` (`id_perfil`),
+  KEY `FK_Reference_39` (`id_usuario`),
+  KEY `fk_Login_situacao` (`id_situacao`),
+  CONSTRAINT `fk_Login_emails` FOREIGN KEY (`id_email`) REFERENCES `email` (`id_email`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Login_situacao` FOREIGN KEY (`id_situacao`) REFERENCES `situacao` (`id_situacao`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_Reference_26` FOREIGN KEY (`id_perfil`) REFERENCES `perfil` (`id_perfil`),
+  CONSTRAINT `FK_Reference_39` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -495,7 +498,7 @@ CREATE TABLE `materia` (
 
 LOCK TABLES `materia` WRITE;
 /*!40000 ALTER TABLE `materia` DISABLE KEYS */;
-INSERT INTO `materia` VALUES (1,'Estrutura de Dados');
+INSERT INTO `materia` VALUES (1,'Estrutura de Dados', '1');
 /*!40000 ALTER TABLE `materia` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -512,11 +515,11 @@ CREATE TABLE `materia_semestre` (
   `id_materia` smallint(6) DEFAULT NULL,
   `cs_ativo` char(1) DEFAULT '1',
   PRIMARY KEY (`id_materia_semestre`),
-  KEY `FK_id_classificacao_semestre` (`id_classificacao_semestre`),
-  KEY `FK_id_materia` (`id_materia`),
-  CONSTRAINT `FK_id_classificacao_semestre` FOREIGN KEY (`id_classificacao_semestre`) REFERENCES `classificacao_semestre` (`id_classificacao_semestre`),
-  CONSTRAINT `FK_id_materia` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+  KEY `FK_Reference_117` (`id_classificacao_semestre`),
+  KEY `FK_Reference_118` (`id_materia`),
+  CONSTRAINT `FK_Reference_117` FOREIGN KEY (`id_classificacao_semestre`) REFERENCES `classificacao_semestre` (`id_classificacao_semestre`),
+  CONSTRAINT `FK_Reference_118` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -667,22 +670,22 @@ CREATE TABLE `questao` (
   `cs_ativo` char(1) DEFAULT '1',
   `dt_ultima_utilizacao` datetime DEFAULT NULL,
   PRIMARY KEY (`id_questao`),
-  KEY `FK_id_usuario_cadastro` (`id_usuario_cadastro`),
-  KEY `FK_id_usuario_alteracao` (`id_usuario_alteracao`),
-  KEY `FK_id_classificacao_semestre` (`id_classificacao_semestre`),
-  KEY `FK_id_nivel_dificuldade` (`id_nivel_dificuldade`),
-  KEY `FK_id_temporizacao` (`id_temporizacao`),
-  KEY `FK_id_tipo_questao` (`id_tipo_questao`),
-  KEY `FK_id_fonte_questao` (`id_fonte_questao`),
-  KEY `FK_id_assunto_materia` (`id_assunto_materia`),
-  CONSTRAINT `FK_id_usuario_cadastro` FOREIGN KEY (`id_usuario_cadastro`) REFERENCES `usuario` (`id_usuario`),
-  CONSTRAINT `FK_id_usuario_alteracao` FOREIGN KEY (`id_usuario_alteracao`) REFERENCES `usuario` (`id_usuario`),
-  CONSTRAINT `FK_id_classificacao_semestre` FOREIGN KEY (`id_classificacao_semestre`) REFERENCES `classificacao_semestre` (`id_classificacao_semestre`),
-  CONSTRAINT `FK_id_nivel_dificuldade` FOREIGN KEY (`id_nivel_dificuldade`) REFERENCES `nivel_dificuldade` (`id_nivel_dificuldade`),
-  CONSTRAINT `FK_id_temporizacao` FOREIGN KEY (`id_temporizacao`) REFERENCES `temporizacao` (`id_temporizacao`),
-  CONSTRAINT `FK_id_tipo_questao` FOREIGN KEY (`id_tipo_questao`) REFERENCES `tipo_questao` (`id_tipo_questao`),
-  CONSTRAINT `FK_id_fonte_questao` FOREIGN KEY (`id_fonte_questao`) REFERENCES `fonte_questao` (`id_fonte_questao`),
-  CONSTRAINT `FK_id_assunto_materia` FOREIGN KEY (`id_assunto_materia`) REFERENCES `assunto_materia` (`id_assunto_materia`)
+  KEY `FK_Reference_48` (`id_usuario_cadastro`),
+  KEY `FK_Reference_49` (`id_usuario_alteracao`),
+  KEY `FK_Reference_50` (`id_classificacao_semestre`),
+  KEY `FK_Reference_51` (`id_nivel_dificuldade`),
+  KEY `FK_Reference_52` (`id_temporizacao`),
+  KEY `FK_Reference_53` (`id_tipo_questao`),
+  KEY `FK_Reference_54` (`id_fonte_questao`),
+  KEY `FK_Reference_55` (`id_assunto_materia`),
+  CONSTRAINT `FK_Reference_48` FOREIGN KEY (`id_usuario_cadastro`) REFERENCES `usuario` (`id_usuario`),
+  CONSTRAINT `FK_Reference_49` FOREIGN KEY (`id_usuario_alteracao`) REFERENCES `usuario` (`id_usuario`),
+  CONSTRAINT `FK_Reference_50` FOREIGN KEY (`id_classificacao_semestre`) REFERENCES `classificacao_semestre` (`id_classificacao_semestre`),
+  CONSTRAINT `FK_Reference_51` FOREIGN KEY (`id_nivel_dificuldade`) REFERENCES `nivel_dificuldade` (`id_nivel_dificuldade`),
+  CONSTRAINT `FK_Reference_52` FOREIGN KEY (`id_temporizacao`) REFERENCES `temporizacao` (`id_temporizacao`),
+  CONSTRAINT `FK_Reference_53` FOREIGN KEY (`id_tipo_questao`) REFERENCES `tipo_questao` (`id_tipo_questao`),
+  CONSTRAINT `FK_Reference_54` FOREIGN KEY (`id_fonte_questao`) REFERENCES `fonte_questao` (`id_fonte_questao`),
+  CONSTRAINT `FK_Reference_55` FOREIGN KEY (`id_assunto_materia`) REFERENCES `assunto_materia` (`id_assunto_materia`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -707,10 +710,10 @@ CREATE TABLE `questoes_prova` (
   `id_questao` bigint(20) DEFAULT NULL,
   `id_prova` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_questao_prova`),
-  KEY `FK_id_questao` (`id_questao`),
-  KEY `FK_id_prova` (`id_prova`),
-  CONSTRAINT `FK_id_questao` FOREIGN KEY (`id_questao`) REFERENCES `questao` (`id_questao`),
-  CONSTRAINT `FK_id_prova` FOREIGN KEY (`id_prova`) REFERENCES `prova` (`id_prova`)
+  KEY `FK_Reference_56` (`id_questao`),
+  KEY `FK_Reference_57` (`id_prova`),
+  CONSTRAINT `FK_Reference_56` FOREIGN KEY (`id_questao`) REFERENCES `questao` (`id_questao`),
+  CONSTRAINT `FK_Reference_57` FOREIGN KEY (`id_prova`) REFERENCES `prova` (`id_prova`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
