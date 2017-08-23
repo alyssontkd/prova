@@ -444,7 +444,7 @@ DROP TABLE IF EXISTS `login`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `login` (
-  `id_login` int(11) NOT NULL AUTO_INCREMENT,
+  `id_login` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `pw_senha` varchar(40) DEFAULT NULL COMMENT '{"label":"Senha"}',
   `nr_tentativas` int(11) DEFAULT NULL COMMENT '{"label":"Tentativas"}',
   `dt_visita` datetime DEFAULT NULL COMMENT '{"label":"Data da ultima visita"}',
@@ -453,7 +453,6 @@ CREATE TABLE `login` (
   `id_email` int(11) NOT NULL,
   `id_situacao` int(11) NOT NULL,
   `id_perfil` int(11) NOT NULL,
-  PRIMARY KEY (`id_login`),
   KEY `ix_login_emails` (`id_email`),
   KEY `FK_id_perfil` (`id_perfil`),
   KEY `FK_id_usuario` (`id_usuario`),
@@ -471,7 +470,7 @@ CREATE TABLE `login` (
 
 LOCK TABLES `login` WRITE;
 /*!40000 ALTER TABLE `login` DISABLE KEYS */;
-INSERT INTO `login` VALUES (1,'e10adc3949ba59abbe56e057f20f883e',1,'2014-08-27 21:53:33','2014-08-27 21:53:37',1,1,1,1),(2,'d04cbb637213179e1f8269f75d5d7cfc',NULL,NULL,'2015-01-30 15:01:11',2,2,1,2);
+INSERT INTO `login` VALUES (1,'e10adc3949ba59abbe56e057f20f883e',1,'2014-08-27 21:53:33','2014-08-27 21:53:37',1,1,1,1),(2,'e10adc3949ba59abbe56e057f20f883e',NULL,NULL,'2015-01-30 15:01:11',2,2,1,2);
 /*!40000 ALTER TABLE `login` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -517,7 +516,7 @@ CREATE TABLE `materia_semestre` (
   KEY `FK_id_materia` (`id_materia`),
   CONSTRAINT `FK_id_classificacao_semestre` FOREIGN KEY (`id_classificacao_semestre`) REFERENCES `classificacao_semestre` (`id_classificacao_semestre`),
   CONSTRAINT `FK_id_materia` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
