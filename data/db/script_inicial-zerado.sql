@@ -668,23 +668,23 @@ CREATE TABLE `questao` (
   `cs_ativo` char(1) DEFAULT '1',
   `dt_ultima_utilizacao` datetime DEFAULT NULL,
   PRIMARY KEY (`id_questao`),
-  KEY `FK_id_usuario_cadastro` (`id_usuario_cadastro`),
-  KEY `FK_id_usuario_alteracao` (`id_usuario_alteracao`),
-  KEY `FK_id_classificacao_semestre` (`id_classificacao_semestre`),
-  KEY `FK_id_nivel_dificuldade` (`id_nivel_dificuldade`),
-  KEY `FK_id_temporizacao` (`id_temporizacao`),
-  KEY `FK_id_tipo_questao` (`id_tipo_questao`),
-  KEY `FK_id_fonte_questao` (`id_fonte_questao`),
-  KEY `FK_id_assunto_materia` (`id_assunto_materia`),
-  CONSTRAINT `FK_id_usuario_cadastro` FOREIGN KEY (`id_usuario_cadastro`) REFERENCES `usuario` (`id_usuario`),
-  CONSTRAINT `FK_id_usuario_alteracao` FOREIGN KEY (`id_usuario_alteracao`) REFERENCES `usuario` (`id_usuario`),
-  CONSTRAINT `FK_id_classificacao_semestre` FOREIGN KEY (`id_classificacao_semestre`) REFERENCES `classificacao_semestre` (`id_classificacao_semestre`),
-  CONSTRAINT `FK_id_nivel_dificuldade` FOREIGN KEY (`id_nivel_dificuldade`) REFERENCES `nivel_dificuldade` (`id_nivel_dificuldade`),
-  CONSTRAINT `FK_id_temporizacao` FOREIGN KEY (`id_temporizacao`) REFERENCES `temporizacao` (`id_temporizacao`),
-  CONSTRAINT `FK_id_tipo_questao` FOREIGN KEY (`id_tipo_questao`) REFERENCES `tipo_questao` (`id_tipo_questao`),
-  CONSTRAINT `FK_id_fonte_questao` FOREIGN KEY (`id_fonte_questao`) REFERENCES `fonte_questao` (`id_fonte_questao`),
-  CONSTRAINT `FK_id_assunto_materia` FOREIGN KEY (`id_assunto_materia`) REFERENCES `assunto_materia` (`id_assunto_materia`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+  KEY `FK_Reference_48` (`id_usuario_cadastro`),
+  KEY `FK_Reference_49` (`id_usuario_alteracao`),
+  KEY `FK_Reference_50` (`id_classificacao_semestre`),
+  KEY `FK_Reference_51` (`id_nivel_dificuldade`),
+  KEY `FK_Reference_52` (`id_temporizacao`),
+  KEY `FK_Reference_53` (`id_tipo_questao`),
+  KEY `FK_Reference_54` (`id_fonte_questao`),
+  KEY `FK_Reference_55` (`id_assunto_materia`),
+  CONSTRAINT `FK_Reference_48` FOREIGN KEY (`id_usuario_cadastro`) REFERENCES `usuario` (`id_usuario`),
+  CONSTRAINT `FK_Reference_49` FOREIGN KEY (`id_usuario_alteracao`) REFERENCES `usuario` (`id_usuario`),
+  CONSTRAINT `FK_Reference_50` FOREIGN KEY (`id_classificacao_semestre`) REFERENCES `classificacao_semestre` (`id_classificacao_semestre`),
+  CONSTRAINT `FK_Reference_51` FOREIGN KEY (`id_nivel_dificuldade`) REFERENCES `nivel_dificuldade` (`id_nivel_dificuldade`),
+  CONSTRAINT `FK_Reference_52` FOREIGN KEY (`id_temporizacao`) REFERENCES `temporizacao` (`id_temporizacao`),
+  CONSTRAINT `FK_Reference_53` FOREIGN KEY (`id_tipo_questao`) REFERENCES `tipo_questao` (`id_tipo_questao`),
+  CONSTRAINT `FK_Reference_54` FOREIGN KEY (`id_fonte_questao`) REFERENCES `fonte_questao` (`id_fonte_questao`),
+  CONSTRAINT `FK_Reference_55` FOREIGN KEY (`id_assunto_materia`) REFERENCES `assunto_materia` (`id_assunto_materia`)
+) ENGINE=InnoDB AUTO_INCREMENT=1322 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
