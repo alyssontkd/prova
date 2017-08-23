@@ -109,9 +109,10 @@ CREATE TABLE `assunto_materia` (
   `id_assunto_materia` int(11) NOT NULL AUTO_INCREMENT,
   `id_materia` smallint(6) DEFAULT NULL,
   `nm_assunto_materia` varchar(100) DEFAULT NULL,
+  `cs_ativo` char(1) DEFAULT '1',
   PRIMARY KEY (`id_assunto_materia`),
-  KEY `FK_id_materia` (`id_materia`),
-  CONSTRAINT `FK_id_materia` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`)
+  KEY `FK_Reference_45` (`id_materia`),
+  CONSTRAINT `FK_Reference_45` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
