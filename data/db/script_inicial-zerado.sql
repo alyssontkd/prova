@@ -444,16 +444,16 @@ DROP TABLE IF EXISTS `login`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `login` (
-  `id_Login` int(11) NOT NULL AUTO_INCREMENT,
+  `id_login` int(11) NOT NULL AUTO_INCREMENT,
   `pw_senha` varchar(40) DEFAULT NULL COMMENT '{"label":"Senha"}',
   `nr_tentativas` int(11) DEFAULT NULL COMMENT '{"label":"Tentativas"}',
-  `dt_visita` datetime DEFAULT NULL COMMENT '{"label":"Data da última visita"}',
+  `dt_visita` datetime DEFAULT NULL COMMENT '{"label":"Data da ultima visita"}',
   `dt_registro` datetime DEFAULT NULL COMMENT '{"label":"Data de Registro"}',
   `id_usuario` int(11) NOT NULL,
   `id_email` int(11) NOT NULL,
   `id_situacao` int(11) NOT NULL,
   `id_perfil` int(11) NOT NULL,
-  PRIMARY KEY (`id_Login`),
+  PRIMARY KEY (`id_login`),
   KEY `ix_login_emails` (`id_email`),
   KEY `FK_id_perfil` (`id_perfil`),
   KEY `FK_id_usuario` (`id_usuario`),
