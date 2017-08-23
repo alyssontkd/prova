@@ -444,24 +444,25 @@ DROP TABLE IF EXISTS `login`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `login` (
-  `id_login` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id_Login` int(11) NOT NULL AUTO_INCREMENT,
   `pw_senha` varchar(40) DEFAULT NULL COMMENT '{"label":"Senha"}',
   `nr_tentativas` int(11) DEFAULT NULL COMMENT '{"label":"Tentativas"}',
-  `dt_visita` datetime DEFAULT NULL COMMENT '{"label":"Data da ultima visita"}',
+  `dt_visita` datetime DEFAULT NULL COMMENT '{"label":"Data da última visita"}',
   `dt_registro` datetime DEFAULT NULL COMMENT '{"label":"Data de Registro"}',
   `id_usuario` int(11) NOT NULL,
   `id_email` int(11) NOT NULL,
   `id_situacao` int(11) NOT NULL,
   `id_perfil` int(11) NOT NULL,
-  KEY `ix_login_emails` (`id_email`),
-  KEY `FK_id_perfil` (`id_perfil`),
-  KEY `FK_id_usuario` (`id_usuario`),
-  KEY `fk_login_situacao` (`id_situacao`),
-  CONSTRAINT `FK_id_perfil` FOREIGN KEY (`id_perfil`) REFERENCES `perfil` (`id_perfil`),
-  CONSTRAINT `FK_id_usuario` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`),
-  CONSTRAINT `fk_login_emails` FOREIGN KEY (`id_email`) REFERENCES `email` (`id_email`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_login_situacao` FOREIGN KEY (`id_situacao`) REFERENCES `situacao` (`id_situacao`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id_Login`),
+  KEY `ix_Login_emails` (`id_email`),
+  KEY `FK_Reference_26` (`id_perfil`),
+  KEY `FK_Reference_39` (`id_usuario`),
+  KEY `fk_Login_situacao` (`id_situacao`),
+  CONSTRAINT `fk_Login_emails` FOREIGN KEY (`id_email`) REFERENCES `email` (`id_email`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Login_situacao` FOREIGN KEY (`id_situacao`) REFERENCES `situacao` (`id_situacao`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_Reference_26` FOREIGN KEY (`id_perfil`) REFERENCES `perfil` (`id_perfil`),
+  CONSTRAINT `FK_Reference_39` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
