@@ -328,6 +328,7 @@ DROP TABLE IF EXISTS `fonte_questao`;
 CREATE TABLE `fonte_questao` (
   `id_fonte_questao` smallint(6) NOT NULL AUTO_INCREMENT,
   `nm_fonte_questao` varchar(25) DEFAULT NULL,
+  `cs_ativo` char(1) DEFAULT '1',
   PRIMARY KEY (`id_fonte_questao`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -338,7 +339,7 @@ CREATE TABLE `fonte_questao` (
 
 LOCK TABLES `fonte_questao` WRITE;
 /*!40000 ALTER TABLE `fonte_questao` DISABLE KEYS */;
-INSERT INTO `fonte_questao` VALUES (1,'Projeção'),(2,'Universia'),(3,'CESPE'),(4,'Wikipedia');
+INSERT INTO `fonte_questao` VALUES (1,'Projeção','1'),(2,'Universia','1'),(3,'CESPE','1'),(4,'Wikipedia','1');
 /*!40000 ALTER TABLE `fonte_questao` ENABLE KEYS */;
 UNLOCK TABLES;
 
