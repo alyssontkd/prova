@@ -513,11 +513,11 @@ CREATE TABLE `materia_semestre` (
   `id_materia` smallint(6) DEFAULT NULL,
   `cs_ativo` char(1) DEFAULT '1',
   PRIMARY KEY (`id_materia_semestre`),
-  KEY `FK_id_classificacao_semestre` (`id_classificacao_semestre`),
-  KEY `FK_id_materia` (`id_materia`),
-  CONSTRAINT `FK_id_classificacao_semestre` FOREIGN KEY (`id_classificacao_semestre`) REFERENCES `classificacao_semestre` (`id_classificacao_semestre`),
-  CONSTRAINT `FK_id_materia` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+  KEY `FK_Reference_117` (`id_classificacao_semestre`),
+  KEY `FK_Reference_118` (`id_materia`),
+  CONSTRAINT `FK_Reference_117` FOREIGN KEY (`id_classificacao_semestre`) REFERENCES `classificacao_semestre` (`id_classificacao_semestre`),
+  CONSTRAINT `FK_Reference_118` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
