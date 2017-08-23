@@ -684,7 +684,7 @@ CREATE TABLE `questao` (
   CONSTRAINT `FK_Reference_53` FOREIGN KEY (`id_tipo_questao`) REFERENCES `tipo_questao` (`id_tipo_questao`),
   CONSTRAINT `FK_Reference_54` FOREIGN KEY (`id_fonte_questao`) REFERENCES `fonte_questao` (`id_fonte_questao`),
   CONSTRAINT `FK_Reference_55` FOREIGN KEY (`id_assunto_materia`) REFERENCES `assunto_materia` (`id_assunto_materia`)
-) ENGINE=InnoDB AUTO_INCREMENT=1322 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -708,10 +708,10 @@ CREATE TABLE `questoes_prova` (
   `id_questao` bigint(20) DEFAULT NULL,
   `id_prova` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_questao_prova`),
-  KEY `FK_id_questao` (`id_questao`),
-  KEY `FK_id_prova` (`id_prova`),
-  CONSTRAINT `FK_id_questao` FOREIGN KEY (`id_questao`) REFERENCES `questao` (`id_questao`),
-  CONSTRAINT `FK_id_prova` FOREIGN KEY (`id_prova`) REFERENCES `prova` (`id_prova`)
+  KEY `FK_Reference_56` (`id_questao`),
+  KEY `FK_Reference_57` (`id_prova`),
+  CONSTRAINT `FK_Reference_56` FOREIGN KEY (`id_questao`) REFERENCES `questao` (`id_questao`),
+  CONSTRAINT `FK_Reference_57` FOREIGN KEY (`id_prova`) REFERENCES `prova` (`id_prova`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
