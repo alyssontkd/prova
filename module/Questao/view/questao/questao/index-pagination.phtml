@@ -70,7 +70,7 @@
                     <tr>
                         <td class="text-center"><?= \Estrutura\Helpers\String::nomeMaiusculo($questao['nm_titulo_questao']) ?></td>
                         
-                        <td class="text-center"><?= \Estrutura\Helpers\String::nomeMaiusculo($questao['tx_enunciado']) ?></td>
+                        <td class="text-center"><?= $questao['tx_enunciado'] ?></td>
                         <td class="text-center"><?= \Estrutura\Helpers\String::nomeMaiusculo($questao['nm_nivel_dificuldade']) ?></td>
                         <!--na linha abaixo o nm_materia deve ficar sem a estrutura nomeMaiúsculo para corrigir os algarimos romanos-->
                         <td class="text-center"><?= $questao['nm_materia'] ?></td>
