@@ -34,11 +34,11 @@
             echo $this->formHidden($form->get('id_tipo_questao'));
 
             #Preenche o Nivel de Dificuldade como Nao informdo
-            $form->get('id_nivel_dificuldade')->setValue(1);
+            $form->get('id_nivel_dificuldade')->setValue(0);
             echo $this->formHidden($form->get('id_nivel_dificuldade'));
 
             #Seleciona o Projeçao com Fonte padrao da Questao
-            $form->get('id_fonte_questao')->setValue(1);
+            $form->get('id_fonte_questao')->setValue(0);
             echo $this->formHidden($form->get('id_fonte_questao'));
 
 
