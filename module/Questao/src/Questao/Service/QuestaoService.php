@@ -124,7 +124,7 @@ class QuestaoService extends Entity{
 
             ->join('materia', 'materia.id_materia = assunto_materia.id_materia', [
                 'nm_materia'
-           ])
+            ])
 
             ->join('temporizacao', 'temporizacao.id_temporizacao = questao.id_temporizacao', [
                 'nm_temporizacao',
@@ -132,7 +132,7 @@ class QuestaoService extends Entity{
 //            ->join('tipo_questao', 'tipo_questao.id_tipo_questao = questao.id_tipo_questao', [
 //                'nm_tipo_questao',
 //           ])
-         ;
+        ;
 
 
         $where = ['questao.cs_ativo = 1',
@@ -159,7 +159,6 @@ class QuestaoService extends Entity{
         #xd($select->getSqlString($this->getAdapter()->getPlatform()));
         return new \Zend\Paginator\Paginator(new \Zend\Paginator\Adapter\DbSelect($select, $this->getAdapter()));
     }
-
 
 
 }

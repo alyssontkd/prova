@@ -12,10 +12,10 @@ class QuestoesProvaService extends Entity {
         $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
 
         $select = $sql->select('questoes_prova')
-                ->columns(['id_questao']) #Colunas a retornar. Basta Omitir que ele traz todas as colunas
-                ->where([
-            'questoes_prova.id_prova = ?' => $id_prova,
-        ]);
+            ->columns(['id_questao']) #Colunas a retornar. Basta Omitir que ele traz todas as colunas
+            ->where([
+                'questoes_prova.id_prova = ?' => $id_prova,
+            ]);
 
         $where = new Where();
         $where->in('questoes_prova.id_questao', $arIdQuestoes);
@@ -29,18 +29,18 @@ class QuestoesProvaService extends Entity {
         $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
 
         $subselect = $sql->select()
-                ->from('questoes_prova')
-                ->columns(array('id_questao'))
-                ->where(array('questoes_prova.id_prova = ?' => $post['id']));
+            ->from('questoes_prova')
+            ->columns(array('id_questao'))
+            ->where(array('questoes_prova.id_prova = ?' => $post['id']));
 
         $where = new Where();
         $where->notIn('questao.id_questao', $subselect);
 
         $select = $sql->select()
-                ->from('questao')
-                ->columns(array('id_questao', 'tx_enunciado', 'nm_titulo_questao'))
-                ->join('assunto_materia', 'assunto_materia.id_assunto_materia = questao.id_assunto_materia')
-                ->where($where);
+            ->from('questao')
+            ->columns(array('id_questao', 'tx_enunciado', 'nm_titulo_questao'))
+            ->join('assunto_materia', 'assunto_materia.id_assunto_materia = questao.id_assunto_materia')
+            ->where($where);
 
         if (isset($post['id_classificacao_semestre']) && $post['id_classificacao_semestre']) {
             $select->where(array('questao.id_classificacao_semestre = ?' => $post['id_classificacao_semestre']));
@@ -61,6 +61,8 @@ class QuestoesProvaService extends Entity {
             $select->where(array('questao.id_tipo_questao = ?' => $post['id_tipo_questao']));
         }
 
+        $select->where(array('questao.bo_utilizavel = ?' => 'S'));
+        #xd($select->getSqlString($this->getAdapter()->getPlatform()));
         return new \Zend\Paginator\Paginator(new \Zend\Paginator\Adapter\DbSelect($select, $this->getAdapter()));
     }
 

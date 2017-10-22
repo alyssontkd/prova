@@ -24,6 +24,7 @@ class QuestaoTable extends AbstractEstruturaTable{
         'dt_alteracao'=>'dt_alteracao',
         'dt_ultima_utilizacao'=>'dt_ultima_utilizacao',
         'cs_ativo'=>'cs_ativo',
+        'bo_utilizavel'=>'bo_utilizavel',
     ];
 
 }

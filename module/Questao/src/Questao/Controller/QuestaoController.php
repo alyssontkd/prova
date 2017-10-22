@@ -300,7 +300,7 @@ class QuestaoController extends AbstractQuestaoController
             $alternativaService = new \AlternativaQuestao\Service\AlternativaQuestaoService();
             $alternativaForm = new \AlternativaQuestao\Form\AlternativaQuestaoCustomizadaForm();
 
-            $arrResultado = $alternativaService->fetchAllById(array('id_questao' => $id_questao));
+            $arrResultado = $alternativaService->fetchAllById(['id_questao' => $id_questao]);
 
             $dadosView = [
                 'service' => $alternativaService,
@@ -503,13 +503,8 @@ class QuestaoController extends AbstractQuestaoController
 
         #Recupera os materias cadastradas por semestre
         $materiaSemestreService = new \MateriaSemestre\Service\MateriaSemestreService();
-        $arMaterias = $materiaSemestreService->fetchAllById(['id_classificacao_semestre' => $id_classificacao_semestre]);
+        $arMaterias = $materiaSemestreService->carregarMateriaPorSemestreParaCombo($id_classificacao_semestre);
 
-        #Recupera os materias cadastradas por semestre
-//        $materiaSemestreService = new \MateriaSemestre\Service\MateriaSemestreService();
-//        $materiaSemestreService->setId($id_classificacao_semestre);
-//        $materiaSemestreService->setCsAtivo(1);
-//        $arMaterias = $materiaSemestreService->buscar()->toArray();
 
         #Faz o Tratamento do Array para enviar para View
         $arMateriasCombo = array();
@@ -541,10 +536,11 @@ class QuestaoController extends AbstractQuestaoController
         }
         $post = \Estrutura\Helpers\Utilities::arrayMapArray('trim', $request->getPost()->toArray());
         $id_materia = $post['id_materia'];
+        #xd($post);
 
         #Recupera os materias cadastradas por semestre
         $assuntoMateriaService = new \AssuntoMateria\Service\AssuntoMateriaService();
-        $arAssuntoMaterias = $assuntoMateriaService->fetchAllById(['id_materia' => $id_materia]);
+        $arAssuntoMaterias = $assuntoMateriaService->carregarAssuntoPorMateriaParaCombo($id_materia);
 
         #Faz o Tratamento do Array para enviar para View
         $arAssuntoMateriaCombo = array();
@@ -554,13 +550,45 @@ class QuestaoController extends AbstractQuestaoController
                 $arAssuntoMateriaCombo[$key]['descricao'] = $item['nm_assunto_materia'];
             }
         }
-
         if (count($arAssuntoMateriaCombo) > 0) {
             $valuesJson = new JsonModel(array('ar_assunto_materia' => $arAssuntoMateriaCombo, 'sucesso' => true, 'id_materia' => $id_materia));
         } else {
             $arAssuntoMateriaCombo[0]['id'] = "";
             $arAssuntoMateriaCombo[0]['descricao'] = 'Não Existem Assuntos cadastrados';
             $valuesJson = new JsonModel(array('ar_assunto_materia' => $arAssuntoMateriaCombo, 'sucesso' => true, 'id_materia' => $id_materia));
+        }
+        return $valuesJson;
+    }
+
+    public function carregarComboSubAssuntoMateriaAjaxAction()
+    {
+        $request = $this->getRequest();
+
+        if (!$request->isPost()) {
+            throw new \Exception('Dados Inválidos');
+        }
+        $post = \Estrutura\Helpers\Utilities::arrayMapArray('trim', $request->getPost()->toArray());
+        $id_assunto_materia = $post['id_assunto_materia'];
+        #xd($post);
+        #Recupera os materias cadastradas por semestre
+        $subAssuntoMateriaService = new \SubAssuntoMateria\Service\SubAssuntoMateriaService();
+        $arSubAssuntoMaterias = $subAssuntoMateriaService->fetchAllByArrayAtributo(['id_assunto_materia' => $id_assunto_materia, 'cs_ativo' => 1]);
+
+        #Faz o Tratamento do Array para enviar para View
+        $arSubAssuntoMateriaCombo = array();
+        foreach ($arSubAssuntoMaterias as $key => $item) {
+            if (isset($item['id_sub_assunto_materia']) && isset($item['nm_sub_assunto_materia']) && $item['id_sub_assunto_materia'] && $item['nm_sub_assunto_materia']) {
+                $arSubAssuntoMateriaCombo[$key]['id'] = $item['id_sub_assunto_materia'];
+                $arSubAssuntoMateriaCombo[$key]['descricao'] = $item['nm_sub_assunto_materia'];
+            }
+        }
+
+        if (count($arSubAssuntoMateriaCombo) > 0) {
+            $valuesJson = new JsonModel(array('ar_sub_assunto_materia' => $arSubAssuntoMateriaCombo, 'sucesso' => true, 'id_assunto_materia' => $id_assunto_materia));
+        } else {
+            $arSubAssuntoMateriaCombo[0]['id'] = "";
+            $arSubAssuntoMateriaCombo[0]['descricao'] = 'Não Existem Assuntos cadastrados';
+            $valuesJson = new JsonModel(array('ar_sub_assunto_materia' => $arSubAssuntoMateriaCombo, 'sucesso' => true, 'id_assunto_materia' => $id_assunto_materia));
         }
 
         return $valuesJson;

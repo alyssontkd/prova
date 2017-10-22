@@ -16,6 +16,7 @@ class ProvaTable extends AbstractEstruturaTable{
         'tx_complemento'=>'tx_complemento',
         'ds_prova'=>'ds_prova',
         'cs_ativo'=>'cs_ativo',
+        'bo_prova_definitiva'=>'bo_prova_definitiva',
     ];
 
 }

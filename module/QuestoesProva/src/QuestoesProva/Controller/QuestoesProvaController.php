@@ -49,7 +49,7 @@ class QuestoesProvaController extends AbstractCrudController {
 
         $camposFilter = [
             '0' => [
-            //'filter' => "periodoletivodetalhe.nm_sacramento LIKE ?",
+                //'filter' => "periodoletivodetalhe.nm_sacramento LIKE ?",
             ],
         ];
 
@@ -63,11 +63,11 @@ class QuestoesProvaController extends AbstractCrudController {
         $paginator->setItemCountPerPage($paginator->getTotalItemCount());
 
         $countPerPage = $this->getCountPerPage(
-                current(\Estrutura\Helpers\Pagination::getCountPerPage($paginator->getTotalItemCount()))
+            current(\Estrutura\Helpers\Pagination::getCountPerPage($paginator->getTotalItemCount()))
         );
 
         $limit = $post['nr_questoes'] ? $post['nr_questoes'] : $this->getCountPerPage(
-                        current(\Estrutura\Helpers\Pagination::getCountPerPage($paginator->getTotalItemCount()))
+            current(\Estrutura\Helpers\Pagination::getCountPerPage($paginator->getTotalItemCount()))
         );
 
         $paginator->setItemCountPerPage($limit)->setCurrentPageNumber($this->getCurrentPage());
@@ -123,7 +123,7 @@ class QuestoesProvaController extends AbstractCrudController {
             $paginator->setItemCountPerPage($paginator->getTotalItemCount());
 
             $questao = $paginator->getCurrentItems()->toArray();
-            
+
             if (count($questao) < $post['nr_questoes']) {
                 $this->addErrorMessage('Número de questões maior que o número de questões não adicionadas à prova!');
 

@@ -111,8 +111,9 @@ class ProvaService extends Entity {
                     'nm_prova',
                     'dt_aplicacao_prova',
                     'dt_geracao_prova',
-                    'ds_prova'
-                    
+                    'ds_prova',
+                    'bo_prova_definitiva'
+
                 ]);
                 /*->join('cidade', 'cidade.id_cidade = academias.id_cidade', [
                     'nm_cidade'
@@ -122,7 +123,8 @@ class ProvaService extends Entity {
                 ]); */              
                
 
-        $where = ['prova.cs_ativo = 1',
+        $where = [
+            'prova.cs_ativo = 1',
         ];
 
         if (!empty($filter)) {

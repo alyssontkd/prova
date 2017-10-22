@@ -79,6 +79,11 @@
                                 $arQuestao = $questaoService->buscar($item['id_questao'])->toArray();
                                 echo"<hr>";
                                 echo "<div id='quest_{$item['id_questao']}'>";
+                                if($arQuestao['bo_utilizavel'] == 'N'){
+                                    echo "<span id='liberar_temporizador'> <button id='btnliberartemporizador_{$item['id_questao']}' name='btnliberartemporizador' value='{$item['id_questao']}' class='btn btn-danger'> {$i} - Liberar Temporizador </button></span>";
+                                } else {
+                                    echo "<span id='aplicar_temporizador'> <button id='btnaplicartemporizador_{$item['id_questao']}' name='btnaplicartemporizador' value='{$item['id_questao']}' class='btn btn-success'> {$i} - Aplicar Temporizador </button></span>";
+                                }
                                 echo "<span> <button id='btnremoverquest_{$item['id_questao']}' name='btnremoverquest' value='{$item['id_questao']}' class='btn btn-default'> {$i} - Remover </button></span>";
                                 echo "<span> <a href='" . $this->url('rota_questao_via_prova', ['controller' => 'questao-questao', 'action'=> 'cadastro-via-prova', 'id' => Estrutura\Helpers\Cript::enc($item['id_questao']), 'id_prova' => Estrutura\Helpers\Cript::enc($dadosProva->getId())]) . "' class='btn btn-default'> {$i} - Corrigir</a></span>";
                                 echo"<br><br>";
@@ -168,6 +173,56 @@
             return false;
         });
 
+        $("*[name='btnaplicartemporizador']").click(function () {
+            $('.carregando').show();
+            var questao = $(this).val();
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '/prova-prova/aplicar-temporizador-questao-prova-ajax',
+                async: true,
+                data: {
+                    id_questao: $(this).val(),
+                    id_prova: <?=$dadosProva->getId()?>
+                },
+                success: function (response) {
+                    if (response.sucesso == true) {
+                        $('#btnliberartemporizador_' + questao).show();
+                        $('#btnaplicartemporizador_' + questao).hide();
+                        $('.carregando').hide();
+                    }
+                    $('.carregando').hide();
+                }
+            });
+            //Cancelar o submit do formulario.
+            return false;
+        });
+
+
+        $("*[name='btnliberartemporizador']").click(function () {
+            $('.carregando').show();
+            var questao = $(this).val();
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '/prova-prova/liberar-temporizador-questao-prova-ajax',
+                async: true,
+                data: {
+                    id_questao: $(this).val(),
+                    id_prova: <?=$dadosProva->getId()?>
+                },
+                success: function (response) {
+                    if (response.sucesso == true) {
+                        $('#btnliberartemporizador_' + questao).hide();
+                        $('#btnaplicartemporizador_' + questao).show();
+                        $('.carregando').hide();
+                    }
+                    $('.carregando').hide();
+                }
+            });
+            //Cancelar o submit do formulario.
+            return false;
+        });
     });
 </script>
 <style>

@@ -23,6 +23,7 @@ class QuestaoEntity extends AbstractEstruturaService{
     protected $dt_cadastro;
     protected $dt_alteracao;
     protected $dt_ultima_utilizacao;
+    protected $bo_utilizavel;
 
 
 
